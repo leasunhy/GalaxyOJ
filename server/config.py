@@ -9,7 +9,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class ConfigBase:
     SECRET_KEY = 'Something you will never know:-)'
-
+    TESTING = False
+    CSRF_ENABLED = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
 
 
