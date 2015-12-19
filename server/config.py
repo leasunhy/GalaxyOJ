@@ -12,7 +12,8 @@ class ConfigBase:
     TESTING = False
     CSRF_ENABLED = False
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-
+    DEFAULT_TIME_LIMIT = 1000  # in milliseconds
+    DEFAULT_MEMORY_LIMIT = 65536  # in kibibytes
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True
@@ -32,5 +33,5 @@ class ProductionConfig(ConfigBase):
 config = {
     'DEVELOPMENT': DevelopmentConfig,
     'PRODUCTION': ProductionConfig,
-}
+}[CONFIG_NAME]
 
