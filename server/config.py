@@ -16,7 +16,7 @@ class ConfigBase:
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///dev.db"
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "dev.db")
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
