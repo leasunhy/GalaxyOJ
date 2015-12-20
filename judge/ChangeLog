@@ -1,0 +1,80 @@
+2010-06-26 19:01  hovey
+
+	* judge.c: enable to judge with framework
+
+2010-06-26 18:34  hovey
+
+	* .: Ignore config file
+
+2010-06-26 18:19  hovey
+
+	* ., err.txt, log, log.txt, preset.h, run_java: Clean duplicated
+	  files
+
+2010-06-25 09:56  hovey
+
+	* judge.c: special_judge redefine as bool instead of enum
+
+2010-04-09 07:28  hovey
+
+	* judge.conf.sample: modify judge.conf sample
+
+2010-04-07 03:08  tigersoldier
+
+	* config.c: Add config parser source file
+
+2010-04-06 16:45  tigersoldier
+
+	* judge.conf.sample: Add configure file support
+
+2010-04-06 15:07  tigersoldier
+
+	* Makefile, config.h, judge.c, run_java: Add command line argument
+	  support
+
+2010-04-03 03:22  hovey
+
+	* ., judge: remove judge binary file
+
+2010-04-03 03:12  hovey
+
+	* config.h, judge.c: enable to multiple judge
+
+2009-12-20 03:20  hovey
+
+	* execute.c, judge.c: Fix contest statistic
+	  Improve Java support(Missing code?)
+
+2009-10-20 09:02  hovey
+
+	* execute.c, judge, judge.c, run_java, run_java.c: enable to detect
+	  runtime error in java now
+
+2009-10-20 02:09  hovey
+
+	* Makefile, backup, backup0323, config.h, contest, err.txt,
+	  execute.c, judge, judge.c, log, log.txt, run_java, run_java.c:
+	  Upload judge
+
+2009-07-13 18:20  hovey
+
+	* backup0323/\: fix file name
+
+2009-07-13 18:18  hovey
+
+	* \:
+
+2009-07-13 18:06  hovey
+
+	* ., Makefile, \, backup, backup/execute.c.org, backup/fix.c,
+	  backup/judge.c.orig, backup/judge.orig, backup/judge2.c,
+	  backup/judge3.c, backup/judge_old.c, backup0323,
+	  backup0323/Makefile, backup0323/\, backup0323/config.h,
+	  backup0323/execute.c, backup0323/execute.h, backup0323/judge,
+	  backup0323/judge.c, backup0323/preset.h, config.h, contest,
+	  contest/Makefile, contest/config.h, contest/execute.c,
+	  contest/execute.h, contest/judge, contest/judge.c,
+	  contest/judge.c.orig, contest/judge.orig, contest/nohup.out,
+	  contest/test.c, execute.c, execute.h, judge, judge.c, preset.h:
+	  New
+
