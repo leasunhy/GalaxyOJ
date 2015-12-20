@@ -7,12 +7,12 @@
 #include "config.h"
 
 #define ARG_LEN 1024
-char HOST[ARG_LEN] =    "localhost";
-char USER[ARG_LEN] =	"";
-char PASSWD[ARG_LEN] =	"";
-char DATABASE[ARG_LEN] ="sicily";
-char DATA_PREFIX[ARG_LEN] = "/home/sicily/testdata";
-char SRC_PREFIX[ARG_LEN] = "/home/sicily/source";
+char HOST[ARG_LEN] =        "localhost";
+char USER[ARG_LEN] =	    "";
+char PASSWD[ARG_LEN] =	    "";
+char DATABASE[ARG_LEN] =    "";
+char DATA_PREFIX[ARG_LEN] = "";
+char SRC_PREFIX[ARG_LEN] =  "";
 int SERVER_ID = 0;
 
 const char status[][30] = {
