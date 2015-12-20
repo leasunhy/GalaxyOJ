@@ -1,0 +1,24 @@
+#main_contents{
+    margin-top: 80px;
+}
+#page-footer{
+    text-align: center;
+    margin: 60px;
+    font-family: "Lora";
+}
+.site-copyright {
+    padding: 12px;
+}
+.site-credit {
+    padding: 12px;
+}
+h1,h2,h3{
+    text-align: left;
+}
+.post-abstract a:hover {
+    text-decoration: none; 
+}
+
+.yahei {
+    font-family:"Microsoft YaHei";
+}
