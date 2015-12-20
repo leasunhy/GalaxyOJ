@@ -8,5 +8,8 @@ __all__ = ['index']
 @app.route('/')
 @app.route('/index')
 def index():
-    return 'Success!'
+    return render_template('index.html')
 
+#@app.route('/login')
+#def login():
+#    return render_template('login.html')
