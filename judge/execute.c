@@ -237,7 +237,7 @@ int execute(
 			}
 			// SIGTRAP
 			ptrace(PTRACE_GETREGS, pid, 0, &regs);
-			syscall_number = regs.orig_eax;
+			syscall_number = regs.orig_rax;
 			if (syscall_enter){
 				syscall_cnt++;
 
@@ -245,7 +245,7 @@ int execute(
 				//fprintf(stderr, "[trace]: syscall[%d]: %s\n", 
 				//		syscall_number, syscall_names[syscall_number]);
 				if (syscall_number==45){//brk
-					fprintf(stderr, "[trace]: brk (ebx = 0x%08lx) %lu\n", regs.ebx, regs.ebx);
+					fprintf(stderr, "[trace]: brk (ebx = 0x%08lx) %lu\n", regs.rbx, regs.rbx);
 				}
 				//
 				// check before execute syscall
