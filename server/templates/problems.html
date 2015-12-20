@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% block headers %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/bootstrap-theme.min.css')}}">
+{% endblock %}
+
+{% block content %}
+      <div class="row" style="padding-bottom: 10px;">
+        <div class="col col-lg-12">
+          <ul class="nav nav-pills">
+            <li role="presentation" class="active"><a href="#">所有题目</a></li>
+            <li role="presentation"><a href="#">经典题</a></li>
+            <li role="presentation"><a href="#">喜欢的题</a></li>
+            <li role="presentation"><a href="#">待解决</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" style="padding-left:6px;padding-right:6px">
+          <table class="table table-bordered table-condensed table-striped table-hover">
+            <tr>
+              <th style="width:10%">ID </th>
+              <th style="width:60%">Title </th>
+              <th style="width:30%">Tags </th>
+            </tr>
+            <tr>
+              <td><a href="/view">1000</a></td>
+              <td><a href="/view">A+B problem</a></td>
+              <td style="vertical-align: middle"><span class="label label-primary">Easy</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1001</a></td>
+              <td><a href="http://www.baidu.com">完全背包 </a></td>
+              <td style="vertical-align: middle"><span class="label label-primary">Dynamic Programing</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+            <tr>
+              <td><a href="http://www.baidu.com">1002</a></td>
+              <td><a href="http://www.baidu.com">哈哈</a></td>
+              <td style="vertical-align: middle"><span class="label label-warning">NOIP</span> </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      </div>
+{% endblock %}
