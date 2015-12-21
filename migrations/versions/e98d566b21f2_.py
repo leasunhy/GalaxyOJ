@@ -1,4 +1,4 @@
-"""empty message
+"""Add comment model.
 
 Revision ID: e98d566b21f2
 Revises: ba17ee371e75
