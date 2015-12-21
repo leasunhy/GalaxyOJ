@@ -16,6 +16,11 @@ class UserRegisterForm(Form):
     password = TextField('Password', validators = [Required()])
     confirmpwd = TextField('Confirm password', validators = [Required()])
     email = TextField('Email', validators = [Email()])
+    # unimportant parts
+    nickname = TextField('nickname', validators = [Required()])
+    signature = TextField('signature')
+    real_name = TextField('real_name')
+    note = TextAreaField('note')
 
 #class CommentForm(Form):
 #    nickname = TextField('NickName')
