@@ -1,5 +1,10 @@
 from .. import db, app
 
+problem_tag_rel = db.Table('problem_tag_rel',
+        db.Column('tag_id', db.Integer, db.ForeignKey('problem_tag.id')),
+        db.Column('problem_id', db.Integer, db.ForeignKey('problem.id'))
+)
+
 class Problem(db.Model):
     """Problem model."""
 
@@ -26,4 +31,15 @@ class Problem(db.Model):
 
     # relationships
     submissions = db.relationship('Submission', backref='problem', lazy='dynamic')
+    tags = db.relationship('ProblemTag', secondary='problem_tag_rel',
+            backref=db.backref('problems', lazy='dynamic'))
+
+
+class ProblemTag(db.Model):
+    """ProblemTag model"""
+
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(32), nullable=False)
+
+
 
