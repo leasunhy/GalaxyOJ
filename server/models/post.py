@@ -17,6 +17,7 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tags = db.relationship('PostTag', secondary='post_tag_rel',
             backref=db.backref('posts', lazy='dynamic'))
+    comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     # polymorphic mapper
     __mapper_args__ = {

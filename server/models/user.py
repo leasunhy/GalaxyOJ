@@ -38,6 +38,7 @@ class User(UserMixin, db.Model):
     submissions = db.relationship('Submission', backref='owner', lazy='dynamic')
     owned_contests = db.relationship('Contest', backref='owner', lazy='dynamic')
     posts = db.relationship('Post', backref='owner', lazy='dynamic')
+    comments = db.relationship('Comment', backref='owner', lazy='dynamic')
 
 
 @login_manager.user_loader
