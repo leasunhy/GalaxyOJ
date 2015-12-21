@@ -34,6 +34,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %s>' % self.login_name
 
+    # relationships
+    submissions = db.relationship('Submission', backref='owner', lazy='dynamic')
+
 
 @login_manager.user_loader
 def load_user(id):

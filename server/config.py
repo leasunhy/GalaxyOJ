@@ -4,6 +4,8 @@ import os
 CONFIG_NAME = 'DEVELOPMENT'
 PRODUCTION_DATABASE_URI = ''
 PRODUCTION_SECRET_KEY = ''
+COMPILER_LIST = {}
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,6 +16,8 @@ class ConfigBase:
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     DEFAULT_TIME_LIMIT = 1000  # in milliseconds
     DEFAULT_MEMORY_LIMIT = 65536  # in kibibytes
+    COMPILER_NAME_DICT = dict(map(lambda i, x: (x, i), enumerate(COMPILER_LIST)))
+    COMPILER_INDEX_DICT = dict(enumerate(COMPILER_LIST))
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True

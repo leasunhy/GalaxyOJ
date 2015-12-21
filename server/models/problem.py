@@ -24,3 +24,6 @@ class Problem(db.Model):
     def __repr__(self):
         return '<Problem: %s>' % self.title
 
+    # relationships
+    submissions = db.relationship('Submission', backref='problem', lazy='dynamic')
+
