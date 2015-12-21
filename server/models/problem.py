@@ -33,6 +33,7 @@ class Problem(db.Model):
     submissions = db.relationship('Submission', backref='problem', lazy='dynamic')
     tags = db.relationship('ProblemTag', secondary='problem_tag_rel',
             backref=db.backref('problems', lazy='dynamic'))
+    solutions = db.relationship('Solution', backref='problem', lazy='dynamic')
 
 
 class ProblemTag(db.Model):
