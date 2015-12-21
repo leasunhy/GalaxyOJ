@@ -11,6 +11,13 @@ class Submission(db.Model):
     filename = db.Column(db.String(128), nullable=False, unique=True)
     compiler_id = db.Column(db.Integer, nullable=False)
 
+    time_usage = db.Column(db.Integer)
+    memory_usage = db.Column(db.Integer)
+    code_length = db.Column(db.Integer)
+    verdict = db.Column(db.Enum('Accepted', 'Wrong Answer', 'Runtime Error',
+        'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',
+        'Output Limit Exceeded', 'Presentation Error'))
+
     @property
     def compiler(self):
         return app.config['COMPILER_INDEX_DICT'][self.compiler_id]
