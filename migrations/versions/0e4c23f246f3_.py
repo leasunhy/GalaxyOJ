@@ -1,4 +1,4 @@
-"""empty message
+"""Add problem model.
 
 Revision ID: 0e4c23f246f3
 Revises: 68e8dc54baaf

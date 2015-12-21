@@ -1,4 +1,4 @@
-"""empty message
+"""Add problem tag model.
 
 Revision ID: a84c87fe89b6
 Revises: 8d1f976c8cbe

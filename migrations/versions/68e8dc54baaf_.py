@@ -1,4 +1,4 @@
-"""empty message
+"""Add user model.
 
 Revision ID: 68e8dc54baaf
 Revises: None

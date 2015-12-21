@@ -1,4 +1,4 @@
-"""empty message
+"""Add Submission model.
 
 Revision ID: 8d1f976c8cbe
 Revises: 0e4c23f246f3
