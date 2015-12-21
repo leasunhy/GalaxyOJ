@@ -135,6 +135,10 @@ int execute(
 	syscall_used[  4] = 1;// write
 	syscall_used[  5] = 1;// open
 	syscall_used[  6] = 1;// close
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//syscall_used[ 33] = 1;// access
+	//syscall_used[ 125] = 1;// mprotect
+    ////////////
 	syscall_used[ 45] = 1;// brk
 	syscall_used[ 54] = 1;// ioctl
 	//syscall_used[ 67] = 1;// sigaction
@@ -237,7 +241,7 @@ int execute(
 			}
 			// SIGTRAP
 			ptrace(PTRACE_GETREGS, pid, 0, &regs);
-			syscall_number = regs.orig_rax;
+			syscall_number = regs.orig_eax;
 			if (syscall_enter){
 				syscall_cnt++;
 
@@ -245,16 +249,16 @@ int execute(
 				//fprintf(stderr, "[trace]: syscall[%d]: %s\n", 
 				//		syscall_number, syscall_names[syscall_number]);
 				if (syscall_number==45){//brk
-					fprintf(stderr, "[trace]: brk (ebx = 0x%08lx) %lu\n", regs.rbx, regs.rbx);
+					fprintf(stderr, "[trace]: brk (ebx = 0x%08lx) %lu\n", regs.ebx, regs.ebx);
 				}
 				//
 				// check before execute syscall
 				// modify syscall for restricted function call
 				if (!syscall_used[syscall_number] && !isJava){
 					// oh no~ kill it!!!!!
-					fprintf("/home/mayf3/err.log", "[trace]: syscall[%d]: %s : Restrict function!\n",
+					printf("[trace]: syscall[%d]: %s : Restrict function!\n",
 							syscall_number, syscall_names[syscall_number]);
-					fprintf("/home/mayf3/err.log", "[trace]: killing process %d  .\\/.\n", pid);
+					printf("[trace]: killing process %d  .\\/.\n", pid);
 					exitcode = -5;
 					ptrace(PTRACE_KILL, pid, 0, 0);//
 					continue;

@@ -1,8 +1,8 @@
 CC	= gcc
-CFLAGS	= -Wall -Wunused -g -O2
-CFILES	= judge.c execute.c config.c
-COBJS	= judge.o execute.o config.o
-LIBS	= -lmysqlclient
+CFLAGS	= -Wall -Wunused -g -O2 -m32
+CFILES	= main.c execute.c
+COBJS	= main.o execute.o
+LIBS	= -lm
 
 .SUFFIXES: .c.o
 
@@ -11,9 +11,9 @@ LIBS	= -lmysqlclient
 
 judge: $(COBJS)
 	$(CC) $(CFLAGS) -o judge $(COBJS) $(LIBS)
-	$(CC) $(CFLAGS) -o run_java run_java.c
+	#$(CC) $(CFLAGS) -o run_java run_java.c
 	rm -f $(COBJS)	
-	cp run_java /usr/bin
+	#cp run_java /usr/bin
 
 clean:
 	rm -f $(COBJS)
