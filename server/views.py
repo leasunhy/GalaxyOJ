@@ -76,9 +76,10 @@ def hello_world(word):
         print("Haha")
 
 @app.route('/test')
-def test():
+def test(submission_id):
     # get url that the person has entered
     job = q.enqueue_call(
+        #TODO
         func=hello_world, args=("haha",), result_ttl=5000
     )
     print(job.get_id())
