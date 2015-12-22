@@ -5,13 +5,31 @@ from server.models import User
 from server.forms import LoginForm, UserRegisterForm
 
 from . import app, db, login_manager, q
+from .models import *
 
 __all__ = ['index']
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    page = int(request.args.get('page', '1'))
+    notifs = Notification.query.paginate(page=page, per_page=20).items
+    return render_template('index.html', notifs=notifs)
+
+
+@app.route('/problems')
+@app.route('/problems/<int:page>')
+def list_problems(page=1):
+    problems = Problem.query.filter(Problem.visible==True)\
+                            .paginate(page=page, per_page=20).items
+    return render_template('problems.html', problems=problems)
+
+
+@app.route('/problem/<int:id>')
+def problem(id=1):
+    problem = Problem.query.get(id)
+    return render_template('show_problem.html', p=problem)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def user_login():
@@ -28,10 +46,12 @@ def user_login():
         return redirect('/')
     return render_template('login.html', form = form)
 
+
 @app.route('/logout')
-def logout():
+def user_logout():
     session.pop('username', None)
     return redirect('/')
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def user_register():
@@ -84,3 +104,4 @@ def test(submission_id):
     )
     print(job.get_id())
     return redirect('/')
+
