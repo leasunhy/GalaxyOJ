@@ -21,4 +21,4 @@ clean:
 
 exec: 
 	killall run
-	./run &
+	./judge &

@@ -35,4 +35,3 @@ int main(int argc,char *argv[]) {
     fprintf(stdout, "%s,%d,%d\n", result[-ret], (int)(time * 1000), mem);
     return 0;
 }
-

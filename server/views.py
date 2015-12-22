@@ -84,4 +84,3 @@ def test(submission_id):
     )
     print(job.get_id())
     return redirect('/')
-

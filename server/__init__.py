@@ -7,7 +7,9 @@ from flask.ext.login import LoginManager
 #For Redis
 from rq import Queue
 from rq.job import Job
-from worker import conn
+from judge.worker import conn
+
+from judge import judge
 
 app = Flask(__name__)
 app.config.from_object(config)

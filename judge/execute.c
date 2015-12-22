@@ -255,6 +255,7 @@ int execute(
 				// modify syscall for restricted function call
 				if (!syscall_used[syscall_number] && !isJava){
 					// oh no~ kill it!!!!!
+
 					fprintf(stderr, "[trace]: syscall[%d]: %s : Restrict function!\n",
 							syscall_number, syscall_names[syscall_number]);
 					fprintf(stderr, "[trace]: killing process %d  .\\/.\n", pid);
