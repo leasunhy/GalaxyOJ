@@ -20,7 +20,6 @@ class Problem(db.Model):
 
     visible = db.Column(db.Boolean, nullable=False, default=True)
 
-    test_case_count = db.Column(db.Integer, nullable=False, default=1)
     time_limit = db.Column(db.Integer, nullable=False,
                            default=app.config['DEFAULT_TIME_LIMIT'])
     memory_limit = db.Column(db.Integer, nullable=False,

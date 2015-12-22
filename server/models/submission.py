@@ -16,7 +16,7 @@ class Submission(db.Model):
     code_length = db.Column(db.Integer)
     verdict = db.Column(db.Enum('Accepted', 'Wrong Answer', 'Runtime Error',
         'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',
-        'Output Limit Exceeded', 'Presentation Error'))
+        'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types'))
 
     @property
     def compiler(self):
