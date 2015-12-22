@@ -81,5 +81,5 @@ cheatsheet.rst
 *.docx
 
 # judge program binary
-judge/judge
+judge/run
 
