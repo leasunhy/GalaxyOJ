@@ -32,8 +32,12 @@ class ProductionConfig(ConfigBase):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
+class TestingConfig(DevelopmentConfig):
+    TESTING = True
+
 config = {
     'DEVELOPMENT': DevelopmentConfig,
     'PRODUCTION': ProductionConfig,
+    'TESTING': TestingConfig
 }[CONFIG_NAME]
 
