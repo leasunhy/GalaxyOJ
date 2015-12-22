@@ -10,6 +10,7 @@ itsdangerous==0.24
 Jinja2==2.8
 Mako==1.0.3
 MarkupSafe==0.23
+psycopg2==2.6.1
 python-editor==0.5
 redis==2.10.5
 rq==0.5.6
