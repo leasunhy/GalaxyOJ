@@ -1,5 +1,7 @@
 import os
 
+from . import worker
+
 def compile():
     pass
 
@@ -11,4 +13,5 @@ def compare():
 
 def judge():
     pass
+
 
