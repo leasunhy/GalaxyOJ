@@ -1,18 +1,19 @@
 import os
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 # config the following lines when used in production environment
-CONFIG_NAME = 'DEVELOPMENT'
-PRODUCTION_DATABASE_URI = ''
-PRODUCTION_SECRET_KEY = ''
+CONFIG_NAME = os.getenv('CONFIG_NAME', 'DEVELOPMENT')
+DATABASE_URI = os.getenv('DATABASE_URI', 'sqlite:///' + os.path.join(basedir, 'dev.db'))
+SECRET_KEY = os.getenv('SECRET_KEY', 'Something you will never know:-)')
 COMPILER_LIST = {}
 
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-
 class ConfigBase:
-    SECRET_KEY = 'Something you will never know:-)'
+    SECRET_KEY = SECRET_KEY
     TESTING = False
     CSRF_ENABLED = False
+    SQLALCHEMY_DATABASE_URI = DATABASE_URI
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     DEFAULT_TIME_LIMIT = 1000  # in milliseconds
     DEFAULT_MEMORY_LIMIT = 65536  # in kibibytes
@@ -21,17 +22,14 @@ class ConfigBase:
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, "dev.db")
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
 class ProductionConfig(ConfigBase):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = PRODUCTION_DATABASE_URI
     SQLALCHEMY_RECORD_QUERIES = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = PRODUCTION_SECRET_KEY
 
 
 config = {
