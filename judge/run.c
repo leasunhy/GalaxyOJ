@@ -22,12 +22,11 @@ void parse_arguments(int argc, char* argv[]) {
     }
 }
 
-int main() {
+int main(int argc,char *argv[]) {
+    parse_arguments(argc, argv);
     int mem;
     double time;
     int ret = execute("in", "out", "a", 1000, 1000, 1000, &mem, &time);
-    printf("%d\n", ret);
-    printf("%d\n", mem);
-    printf("%lf\n", time);
+    fprintf(stdout, "%d,%d,%d\n", ret, (int)(time * 1000), mem);
 }
 
