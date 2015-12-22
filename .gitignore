@@ -79,3 +79,7 @@ cheatsheet.rst
 
 # word
 *.docx
+
+# judge program binary
+judge/judge
+
