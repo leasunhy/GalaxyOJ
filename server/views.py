@@ -4,7 +4,7 @@ from flask.ext.login import login_required, login_user, current_user
 from server.models import User
 from server.forms import LoginForm, UserRegisterForm
 
-from . import app, db, login_manager
+from . import app, db, login_manager, q
 
 __all__ = ['index']
 
@@ -71,3 +71,16 @@ def user_register():
         return redirect('/')
     return render_template('register.html', form = form)
 
+def hello_world(word):
+    for i in range(18):
+        print("Haha")
+
+@app.route('/test')
+def test(submission_id):
+    # get url that the person has entered
+    job = q.enqueue_call(
+        #TODO
+        func=hello_world, args=("haha",), result_ttl=5000
+    )
+    print(job.get_id())
+    return redirect('/')
