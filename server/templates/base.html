@@ -30,14 +30,24 @@
       </ul>
       <ul class="nav navbar-nav pull-right">
       {% if not logged_in %}
-        <li><a href="url_for('user_login')">Log In</a></li>
-        <li><a href="url_for('user_register')">Sign Up</a></li>
+        <li><a href="{{url_for('user_login')}}">Log In</a></li>
+        <li><a href="{{url_for('user_register')}}">Sign Up</a></li>
       {% else %}
-        <li><a href="url_for('user_logout')">Log Out</a></li>
+        <li><a href="{{url_for('user_logout')}}">Log Out</a></li>
       {% endif %}
       </ul>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
 {% endblock %}
+
+{% macro flash(type='alert-success') %}
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for m in messages %}
+      <div class="alert {{type}}" role='alert'>{{m}}</div>
+    {% endfor %}
+    {% endif %}
+  {% endwith %}
+{% endmacro %}
 
