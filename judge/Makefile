@@ -1,7 +1,7 @@
 CC	= gcc
 CFLAGS	= -Wall -Wunused -g -O2 -m32
-CFILES	= main.c execute.c
-COBJS	= main.o execute.o
+CFILES	= run.c execute.c
+COBJS	= run.o execute.o
 LIBS	= -lm
 
 .SUFFIXES: .c.o
