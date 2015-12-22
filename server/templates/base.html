@@ -1,64 +1,30 @@
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-    <link rel="stylesheet" href="static/css/bootstrap.min.css">
-    <link rel="stylesheet" href="static/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="static/css/main.css">
-    {% block headers %} {% endblock %}
-  </head>
-  <body>
-    <div class="container">
-      <div class="row">
-        <div class="col">
-          <div>
-            <ul class="nav nav-pills pull-right" role="tablist">
-              {% if not 'username' in session %}
-              <li role="presentation"><a href="/login">登录</a></li>
-              <li role="presentation"><a href="/register">注册</a></li>
-              {% else %}
-              <li role="presentation"><a href="/profile/{{session['username']}}">{{session['username']}}</a></li>
-              <li role="presentation"><a href="/logout">登出</a></li>
-              {% endif %}
-            </ul>
-            <h1 class="hidden-xs">
-              <a href="http://www.algorithm.top">
-                <img style="style="width:39px; height:39px;",src="{{url_for('static',filename='image/logo.jpg')}}"/>
-              </a>
-              &nbsp; Galaxy Online Judge
-            </h1>
-          </div>
-          <nav class="navbar navbar-default">
-            <div class="container-fluid">
-              <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                  <img alt="Wiki&Algorithm" src="...">
-                </a>
-              </div>
-              <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                  <li class=""><a href="algo">Algorithms</a></li>
-                  <li><a href="">Problems</a></li>
-                  <li><a href="">Contests</a></li>
-                  <li><a href="">Tutorials</a></li>
-                  <li><a href="">Public Code</a></li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </div>
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <div class="alert alert-success"> {{ message }} </div>
-      {% endfor %}
-      {% endif %}
-      {% endwith %}
-      {% block content %}
-      {% endblock %}
+{% extends 'bootstrap/base.html' %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="/static/css/main.css" />
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{url_for('index')}}">Galaxy OJ</a>
     </div>
-    <script src="static/js/jquery-2.0.3.min.js"></script>
-    <script src="static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{{url_for('index')}}">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+{% endblock %}
 

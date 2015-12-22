@@ -3,6 +3,7 @@ from .config import config
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
+from flask_bootstrap import Bootstrap
 
 #For Redis
 from rq import Queue
@@ -16,6 +17,7 @@ app.config.from_object(config)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
+Bootstrap(app)
 
 q = Queue(connection = conn)
 
