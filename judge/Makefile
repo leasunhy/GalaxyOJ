@@ -9,16 +9,16 @@ LIBS	= -lm
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-judge: $(COBJS)
-	$(CC) $(CFLAGS) -o judge $(COBJS) $(LIBS)
+run: $(COBJS)
+	$(CC) $(CFLAGS) -o run $(COBJS) $(LIBS)
 	#$(CC) $(CFLAGS) -o run_java run_java.c
 	rm -f $(COBJS)	
 	#cp run_java /usr/bin
 
 clean:
 	rm -f $(COBJS)
-	rm -f judge
+	rm -f run
 
 exec: 
-	killall judge
-	./judge &
+	killall run
+	./run &

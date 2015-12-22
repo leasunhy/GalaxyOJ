@@ -69,7 +69,6 @@ int execute(
 	}
 //========================== execute program ==================================
 	if (pid==0){
-		printf("[child]: ready.\n");
 		if (freopen(input_file_name, "r", stdin)==NULL){
 			fprintf(stderr, "[child]: ERROR open data file %s", input_file_name);
 			perror(" ");
@@ -256,9 +255,9 @@ int execute(
 				// modify syscall for restricted function call
 				if (!syscall_used[syscall_number] && !isJava){
 					// oh no~ kill it!!!!!
-					printf("[trace]: syscall[%d]: %s : Restrict function!\n",
+					fprintf(stderr, "[trace]: syscall[%d]: %s : Restrict function!\n",
 							syscall_number, syscall_names[syscall_number]);
-					printf("[trace]: killing process %d  .\\/.\n", pid);
+					fprintf(stderr, "[trace]: killing process %d  .\\/.\n", pid);
 					exitcode = -5;
 					ptrace(PTRACE_KILL, pid, 0, 0);//
 					continue;
