@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% for errs in form.errors.values() %}
+            {% for e in errs %}
+                <div class="alert alert-danger" role='alert'>{{e}}</div>
+            {% endfor %}
+        {% endfor %}
+        <h1>Register</h1>
+        <form action="{{url_for('user_register')}}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.login_name.label}}
+                {{form.login_name(class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.password.label}}
+                {{form.password(class_="form-control",type="password")}}
+            </div>
+            <div class="form-group">
+                {{form.confirmpwd.label}}
+                {{form.confirmpwd(class_="form-control",type="password")}}
+            </div>
+            <div class="form-group">
+                {{form.email.label}}
+                {{form.email(class_="form-control",type="email")}}
+            </div>
+            <div class="form-group">
+                {{form.nickname.label}}
+                {{form.nickname(class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.real_name.label}}
+                {{form.real_name(class_="form-control")}}
+            </div>
+            <div class="form-group">
+                {{form.note.label}}
+                {{form.note(class_="form-control")}}
+            </div>
+            {{form.submit(class_="btn btn-default")}}
+        </form>
+    </div>
+{% endblock %}
