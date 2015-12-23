@@ -57,3 +57,11 @@ class Solution(Post):
     __mapper_args__ = { 'polymorphic_identity': 'solution' }
 
 
+class Tutorial(Post):
+    """Tutorial model."""
+
+    id = db.Column(db.Integer, db.ForeignKey('post.id'), primary_key=True)
+
+    __mapper_args__ = { 'polymorphic_identity': 'tutorial' }
+
+

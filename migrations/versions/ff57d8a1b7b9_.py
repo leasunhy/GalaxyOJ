@@ -1,4 +1,4 @@
-"""empty message
+"""Base models.
 
 Revision ID: ff57d8a1b7b9
 Revises: None
