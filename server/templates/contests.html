@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Contests - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+        <div class="panel-heading">Contests</div>
+        <div class="panel-body">Contests are shown below.</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Title</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Owner</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in contests %}
+                    {% set contest_url = url_for('contest', id=c.id) %}
+                    <tr>
+                        <th scope="row">{{c.id}}</th>
+                        <td><a href="{{contest_url}}">{{c.title}}</a></td>
+                        <td><a href="{{contest_url}}">{{c.start_time.strftime('%Y-%m-%d %H:%M:%S')}}</a></td>
+                        <td><a href="{{contest_url}}">{{c.end_time.strftime('%Y-%m-%d %H:%M:%S')}}</a></td>
+                        <td><a href="{{contest_url}}">{{c.owner.display_name}}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}

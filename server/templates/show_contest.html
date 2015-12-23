@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}{{c.title}} - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+        <div class="panel-heading">{{c.title}}</div>
+        <div class="panel-body">{{c.description}}</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>id</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in c.problems %}
+                    <tr>
+                        <td>TODO</td>
+                        <th scope="row">{{loop.index}}</th>
+                        <td><a href="{{url_for('contest_problem', cid=c.id, pid=loop.index)}}">{{p.title}}</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}
