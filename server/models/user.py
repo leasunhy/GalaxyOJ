@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     real_name = db.Column(db.String(32))
     note = db.Column(db.String(256))
 
-    password_hash = db.Column(db.String(32))
+    password_hash = db.Column(db.String(128))
 
     @property
     def password(self):

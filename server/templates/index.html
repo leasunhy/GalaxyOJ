@@ -1,10 +1,11 @@
-{% extends "base.html" %}
-{% block headers %}
-{% endblock %}
+{% extends 'base.html' %}
+
+{% block title %}Index - Galaxy OJ{% endblock %}
 
 {% block content %}
-
-<h1> Homepage </h1>
-
+<div class="container">
+    {% for notif in notifs %}
+        <h1>{{notif.title + " "}}{{notif.importance}}</h1>
+    {% endfor %}
+</div>
 {% endblock %}
-
