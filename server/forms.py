@@ -35,12 +35,12 @@ class UserRegisterForm(Form):
     note = TextAreaField('note')
 
     def validate_login_name(self, field):
-        u = User.query.filter_by(User.login_name==field.data).first()
+        u = User.query.filter(User.login_name==field.data).first()
         if u:
             raise ValidationError('Username already exists.')
 
     def validate_email(self, field):
-        u = User.query.filter_by(User.email==field.data).first()
+        u = User.query.filter(User.email==field.data).first()
         if u:
             raise ValidationError('Email already exists.')
 
