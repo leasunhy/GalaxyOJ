@@ -94,11 +94,12 @@ def user_logout():
 def user_register():
     form = UserRegisterForm()
     if form.validate_on_submit():
+        user = User()
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
         flash('Register successful')
-        session['username'] = request.form['username']
+        login_user(user)
         return redirect('/')
     return render_template('register.html', form=form)
 
