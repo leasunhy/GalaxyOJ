@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% for p in posts %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h1>{{p.title + " "}}</h1>
+        </div>
+        <div class="panel-content">
+            {% block metadata scoped %}{% endblock %}
+            {{p.content}}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

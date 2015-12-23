@@ -1,11 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'post_list_base.html' %}
 
 {% block title %}Index - Galaxy OJ{% endblock %}
 
-{% block content %}
-<div class="container">
-    {% for notif in notifs %}
-        <h1>{{notif.title + " "}}{{notif.importance}}</h1>
-    {% endfor %}
-</div>
+{% block metadata %}
+    <p>Importance: {{p.importance}}</p>
 {% endblock %}
