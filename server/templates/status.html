@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Status - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+        <div class="panel-heading">Status</div>
+        <div class="panel-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Problem id</th>
+                    <th>User</th>
+                    <th>Compiler</th>
+                    <th>Verdict</th>
+                    <th>Time</th>
+                    <th>Memory</th>
+                    <th>Length</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in submissions %}
+                    <tr>
+                        <th scope="row">{{s.id}}</th>
+                        <td>{{s.problem.id}}</td>
+                        <td>{{s.owner}}</td>
+                        <td>TODO</td>
+                        <td>{{s.verdict}}</td>
+                        <td>{{s.time_usage}}</td>
+                        <td>{{s.memory_usage}}</td>
+                        <td>{{s.code_length}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div></div>
+    </div>
+{% endblock %}
