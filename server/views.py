@@ -11,23 +11,65 @@ __all__ = ['index']
 
 @app.route('/')
 @app.route('/index')
-def index():
-    page = int(request.args.get('page', '1'))
+@app.route('/index/<int:page>')
+def index(page = 1):
     notifs = Notification.query.paginate(page=page, per_page=20).items
-    return render_template('index.html', notifs=notifs)
+    return render_template('index.html', posts=notifs)
+
+
+@app.route('/solutions')
+@app.route('/solutions/<int:page>')
+def solutions(page = 1):
+    solutions = Solution.query.paginate(page=page, per_page=20).items
+    return render_template('solution_list.html', posts=solutions)
+
+
+@app.route('/tutorials')
+@app.route('/tutorials/<int:page>')
+def tutorials(page = 1):
+    tutorials = Tutorial.query.paginate(page=page, per_page=20).items
+    return render_template('tutorial_list.html', posts=tutorials)
 
 
 @app.route('/problems')
 @app.route('/problems/<int:page>')
-def list_problems(page=1):
+def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
                             .paginate(page=page, per_page=20).items
     return render_template('problems.html', problems=problems)
 
 
+@app.route('/contests')
+@app.route('/contests/<int:page>')
+def list_contests(page = 1):
+    contests = Contest.query.paginate(page=page, per_page=20).items
+    return render_template('contests.html', contests=contests)
+
+
+@app.route('/status')
+@app.route('/status/<int:page>')
+def list_status(page = 1):
+    submissions = Submission.query.order_by(Submission.id.desc())\
+                                  .paginate(page=page, per_page=20).items
+    return render_template('status.html', submissions=submissions)
+
+
 @app.route('/problem/<int:id>')
 def problem(id=1):
     problem = Problem.query.get(id)
+    return render_template('show_problem.html', p=problem)
+
+
+@app.route('/contest/<int:id>')
+def contest(id=1):
+    contest = Contest.query.get(id)
+    return render_template('show_contest.html', c=contest)
+
+
+@app.route('/contest/<int:cid>/problems/<int:pid>')
+def contest_problem(cid=1, pid=1):
+    contest = Contest.query.get(cid)
+    problem = contest.problems[pid-1]
     return render_template('show_problem.html', p=problem)
 
 
