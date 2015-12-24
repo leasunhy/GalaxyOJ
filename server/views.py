@@ -1,8 +1,8 @@
+from datetime import datetime
 from flask import render_template, url_for, request, redirect, flash, jsonify, session
 from flask.ext.login import login_required, login_user, current_user, logout_user
 
-from server.models import User
-from server.forms import LoginForm, UserRegisterForm
+from server.forms import LoginForm, UserRegisterForm, EditProblemForm
 
 from . import app, db, login_manager, q
 from .models import *
@@ -35,7 +35,7 @@ def tutorials(page = 1):
 @app.route('/problems/<int:page>')
 def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
-                            .paginate(page=page, per_page=20).items
+            .order_by(Problem.id).paginate(page=page, per_page=20).items
     return render_template('problems.html', problems=problems)
 
 
@@ -102,6 +102,42 @@ def user_register():
         login_user(user)
         return redirect('/')
     return render_template('register.html', form=form)
+
+
+@app.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
+@app.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
+def edit_problem(cid = 0, pid = 0):
+    # TODO (mstczuo <mstczuo@163.com>)
+    #if current_user is None:
+    #    return render_template('fatal.html', info="Please login first")
+    #if current_user.privilege_level == 0:
+    #    return render_template('fatal.html', info="Permission denied")
+    if cid != 0:
+        contest = Contest.query.get(cid)
+        if not contest:
+            flash('Contest (cid = %d) not found.' % cid)
+            return redirect('/')
+        try:
+            prob = Problem() if pid == 0 else contest.problems[pid]
+        except IndexError:
+            flash('Contest (cid = %d) does not have %d-th problem.') % (cid, pid)
+            return redirect('/')
+        prob.visible = prob.visible or contest.end_time < datetime.now()
+    else:
+        prob = Problem() if pid == 0 else Problem.query.get(pid)
+        prob.visible = True
+    if prob is None:
+        flash('Problem (pid = %d) not found.' % pid)
+        return redirect('/')
+    form = EditProblemForm(obj = prob)
+    if form.validate_on_submit():
+        form.populate_obj(prob)
+        db.session.add(prob)
+        db.session.commit()
+        flash('Edit problem successful.')
+        return redirect('/problems')
+    return render_template('edit_problem.html', form=form, pid=pid, cid=cid)
+
 
 def hello_world(word):
     for i in range(18):
