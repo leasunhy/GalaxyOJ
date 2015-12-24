@@ -1,8 +1,8 @@
 from flask import render_template, url_for, request, redirect, flash, jsonify, session
 from flask.ext.login import login_required, login_user, current_user, logout_user
 
-from server.models import User
-from server.forms import LoginForm, UserRegisterForm
+from server.models import User, Problem
+from server.forms import LoginForm, UserRegisterForm, EditProblemForm
 
 from . import app, db, login_manager, q
 from .models import *
@@ -102,6 +102,29 @@ def user_register():
         login_user(user)
         return redirect('/')
     return render_template('register.html', form=form)
+
+@app.route('/edit_problem', methods=['GET', 'POST'])
+def edit_problem(pid = 0):
+    #TODO
+    #if current_user is None:
+    #    return render_template('fatal.html', info="Please login first")
+    #if current_user.privilege_level == 0:
+    #    return render_template('fatal.html', info="Permission denied")
+    pid = int(request.args.get('pid', 0))
+    cid = int(request.args.get('cid', 0))
+    prob = Problem() if pid == 0 else Problem.query.filter_by(id=pid).first()
+    form = EditProblemForm(obj = prob)
+    if pid != 0 and prob is None:
+        flash('Problem (pid = %s) does not found'%(pid))
+        return redirect('/')
+    if form.validate_on_submit():
+        form.populate_obj(prob)
+        prob.visible = (cid == 0)
+        db.session.add(prob)
+        db.session.commit()
+        flash('Edit problem successful')
+        return redirect('/problems')
+    return render_template('edit_problem.html', form=form)
 
 def hello_world(word):
     for i in range(18):

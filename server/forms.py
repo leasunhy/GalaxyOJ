@@ -29,10 +29,10 @@ class UserRegisterForm(Form):
             validators = [Required(), EqualTo('password', message='Passwords must match')])
     email = TextField('Email', validators = [Email()])
     # unimportant parts
-    nickname = TextField('nickname', validators = [Required()])
-    signature = TextField('signature')
-    real_name = TextField('real_name')
-    note = TextAreaField('note')
+    nickname = TextField('Nickname', validators = [Required()])
+    signature = TextField('Signature')
+    real_name = TextField('Real name')
+    note = TextAreaField('Note')
 
     submit = SubmitField('Register')
 
@@ -45,6 +45,18 @@ class UserRegisterForm(Form):
         u = User.query.filter(User.email==field.data).first()
         if u:
             raise ValidationError('Email already exists.')
+
+class EditProblemForm(Form):
+    title = TextField('Title', validators = [Required()])
+    problem_desc = TextAreaField('Description')
+    input_desc = TextAreaField('Input Format')
+    output_desc = TextAreaField('Output Format')
+    sample_input = TextAreaField('Sample Input')
+    sample_output = TextAreaField('Sample Output')
+    source = TextField('Source')
+    time_limit = TextField('Time Limit', validators = [Required()])
+    memory_limit = TextField('Memory Limit', validators = [Required()])
+    submit = SubmitField('Submit')
 
 #class CommentForm(Form):
 #    nickname = TextField('NickName')
