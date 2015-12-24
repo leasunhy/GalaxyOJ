@@ -2,7 +2,6 @@ from datetime import datetime
 from flask import render_template, url_for, request, redirect, flash, jsonify, session
 from flask.ext.login import login_required, login_user, current_user, logout_user
 
-from server.models import User, Problem
 from server.forms import LoginForm, UserRegisterForm, EditProblemForm
 
 from . import app, db, login_manager, q
