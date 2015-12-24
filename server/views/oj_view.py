@@ -93,6 +93,6 @@ def submit_code(cid = 0, pid = 1):
         db.session.commit()
         submit.filename = save_to_file(form.code.data, submit.id)
         send_to_judge(submit, problem)
-        return "haha"
-    print("Invalid")
+        return redirect('oj/status')
     return render_template('submit_code.html', form = form, cid = cid, pid = pid)
+

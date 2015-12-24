@@ -3,28 +3,30 @@ import subprocess
 import glob
 
 from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.ext.declarative import declarative_base
 from .config import DATABASE_URI
 
 from judge.config import COMPILER_LIST
 from judge.config import COMPILER_OPTION_LIST
 from judge.config import COMPILE_TIME_LIMIT
 
-db = create_engine(DATABASE_URI)
-db.echo = True
+engine = create_engine(DATABASE_URI, echo=True)
+DB_Session = sessionmaker(bind=engine)
+session = DB_Session()
+BaseModel = declarative_base()
 
-metadata = MetaData(db)
-
-Submission = Table('submission', metadata,
-        Column('id', Integer, primary_key=True),
-        Column('verdict', ENUM('Accepted', 'Wrong Answer', 'Runtime Error',\
-            'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
-            'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types')),
-        Column('time_usage', Integer),
-        Column('memory_usage', Integer),
-        )
+class Submission(BaseModel):
+    __tablename__ = 'submission'
+    id = Column(Integer, primary_key=True)
+    #verdict = Column(ENUM('Accepted', 'Wrong Answer', 'Runtime Error',\
+    #    'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
+    #    'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types'))
+    verdict = Column(String(32))
+    time_usage = Column(Integer)
+    memory_usage = Column(Integer)
 #Submission.create()
-
 
 def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
     #print(COMPILER_LIST[compiler_id])
@@ -69,7 +71,7 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
     tmp_folder = TemporaryDirectory()
     (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
     if err is not None and len(err) > 0:
-        return {"verdict":"Compile Error", "time_used": 0, "memory_used": 0, "log": err}
+        return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}
     sum_time = 0
     max_mem = 0
     for filename in glob.glob(testcase_folder + "/*.in"):
@@ -78,16 +80,19 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
         std_out = filename[:-2] + "out"
         (out, err) = execute(prog, file_in, file_out, time_limit, memory_limit, tmp_folder.name)
         if out[0] != "OK":
-            return {"verdict": out[0], "time_used": out[1], "memory_used": out[2], "log": err}
+            return {"verdict": out[0], "time_usage": out[1], "memory_usage": out[2], "log": err}
         (verdict, err) = check(file_out, std_out)
         if verdict == False:
-            return {"verdict": "Wrong Answer", "time_used": sum_time, "memory_used": max_mem, "log": err}
+            return {"verdict": "Wrong Answer", "time_usage": sum_time, "memory_usage": max_mem, "log": err}
         sum_time += int(out[1])
         max_mem = max(max_mem, int(out[2]))
-    return {"verdict": "Accepted", "time_used": sum_time, "memory_used": max_mem, "log": None}
+    return {"verdict": "Accepted", "time_usage": sum_time, "memory_usage": max_mem, "log": None}
 
 def judge(sid, *args):
     verdict = judge_program(*args)    
-    print(verdict)
-    Submission.update().where(Submission.c.id==sid).values(verdict)
+    verdict.pop('log')
+    verdict.pop('verdict')
+    print(sid,verdict)
+    session.query(Submission).filter(Submission.id==sid).update(verdict)
+    session.commit()
 
