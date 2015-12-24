@@ -21,5 +21,7 @@ Bootstrap(app)
 
 q = Queue(connection = conn)
 
-from .views import *
+from .views import views
+for view, prefix in views:
+    app.register_blueprint(view, url_prefix=prefix)
 

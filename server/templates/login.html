@@ -10,7 +10,7 @@
             {% endfor %}
         {% endfor %}
         <h1>Log In</h1>
-        <form action="{{url_for('user_login')}}" method="POST">
+        <form action="{{url_for('auth.user_login')}}" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.username.label}}
