@@ -47,6 +47,9 @@ def add_data():
     s.problem = p1
     s.compiler_id = 1
     s.verdict = 'Accepted'
+    s.time_usage = 100
+    s.memory_usage = 600
+    s.code_length = 233
 
     # add posts
     po1 = Tutorial(title='Introduction to Dynamic Programming', content='Abandon.')
