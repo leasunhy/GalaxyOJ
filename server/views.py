@@ -2,7 +2,7 @@ from flask import render_template, url_for, request, redirect, flash, jsonify, s
 from flask.ext.login import login_required, login_user, current_user, logout_user
 
 from server.models import User
-from server.forms import LoginForm, UserRegisterForm
+from server.forms import LoginForm, UserRegisterForm, SubmissionForm
 
 from . import app, db, login_manager, q
 from .models import *
@@ -102,6 +102,13 @@ def user_register():
         login_user(user)
         return redirect('/')
     return render_template('register.html', form=form)
+
+
+@app.route('/submit', methods=['GET', 'POST'])
+def submit_code():
+    form = SubmissionForm()
+    pid = request.args.get('pid', "")
+    return render_template('submit_code.html', form=form, pid=pid)
 
 def hello_world(word):
     for i in range(18):
