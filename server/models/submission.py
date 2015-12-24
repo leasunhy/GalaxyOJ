@@ -29,5 +29,5 @@ class Submission(db.Model):
         self.compiler_id = app.config['COMPILER_NAME_DICT'][value]
 
     def __repr__(self):
-        return '<Submission %s>' % filename
+        return '<Submission %d>' % self.id if self.id else '<New Submission>'
 
