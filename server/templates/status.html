@@ -25,11 +25,11 @@
                     <tr>
                         <th scope="row">{{s.id}}</th>
                         <td>{{s.problem.id}}</td>
-                        <td>{{s.owner.nickname}}</td>
+                        <td>{{s.owner.display_name}}</td>
                         <td>TODO</td>
-                        <td>{{s.verdict}}</td>
-                        <td>{{s.time_usage}}</td>
-                        <td>{{s.memory_usage}}</td>
+                        <td>{{s.verdict or 'Judging'}}</td>
+                        <td>{{s.time_usage or ''}}</td>
+                        <td>{{s.memory_usage or ''}}</td>
                         <td>{{s.code_length}}</td>
                     </tr>
                 {% endfor %}

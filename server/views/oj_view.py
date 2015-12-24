@@ -89,6 +89,7 @@ def submit_code(cid = 0, pid = 1):
         submit.owner = current_user
         submit.problem = problem
         submit.compiler_id = form.compiler.data
+        submit.code_length = len(form.code.data)
         db.session.add(submit)
         db.session.commit()
         submit.filename = save_to_file(form.code.data, submit.id)
