@@ -2,11 +2,29 @@ import os
 import subprocess
 import glob
 
-from . import worker
+from sqlalchemy import *
+from sqlalchemy.dialects.postgresql import ENUM
+from .config import DATABASE_URI
 
 from judge.config import COMPILER_LIST
 from judge.config import COMPILER_OPTION_LIST
 from judge.config import COMPILE_TIME_LIMIT
+
+db = create_engine(DATABASE_URI)
+db.echo = True
+
+metadata = MetaData(db)
+
+Submission = Table('submission', metadata,
+        Column('id', Integer, primary_key=True),
+        Column('verdict', ENUM('Accepted', 'Wrong Answer', 'Runtime Error',\
+            'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
+            'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types')),
+        Column('time_usage', Integer),
+        Column('memory_usage', Integer),
+        )
+#Submission.create()
+
 
 def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
     #print(COMPILER_LIST[compiler_id])
@@ -46,7 +64,7 @@ def check(file_out, std_out):
         return (True, "")
     return (False, out.decode('utf-8'))
 
-def judge(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
+def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
     (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
@@ -67,4 +85,9 @@ def judge(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
         sum_time += int(out[1])
         max_mem = max(max_mem, int(out[2]))
     return {"verdict": "Accepted", "time_used": sum_time, "memory_used": max_mem, "log": None}
+
+def judge(sid, *args):
+    verdict = judge_program(*args)    
+    print(verdict)
+    Submission.update().where(Submission.c.id==sid).values(verdict)
 

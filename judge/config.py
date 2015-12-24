@@ -2,6 +2,8 @@ import os
 
 CONFIG_NAME = 'judge'
 
+DATABASE_URI = os.getenv('DATABASE_URI', 'postgresql://localhost/galaxyoj_dev')
+
 # compile time limit in seconds
 COMPILE_TIME_LIMIT = 10
 

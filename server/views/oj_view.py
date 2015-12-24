@@ -59,6 +59,7 @@ def save_to_file(data, submission_id):
     return filename
 
 def send_to_judge(submit, problem):
+    sid = submit.id
     source_path = submit.filename
     testcase_folder = './testcase'
     compiler_id = submit.compiler_id
@@ -66,7 +67,7 @@ def send_to_judge(submit, problem):
     memory_limit = problem.memory_limit
     job = q.enqueue_call(
             func = judge,
-            args = (source_path, testcase_folder,
+            args = (sid, source_path, testcase_folder,
                 compiler_id, time_limit, memory_limit),
             result_ttl = 5000)
 
