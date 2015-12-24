@@ -18,7 +18,7 @@
                 {% for p in problems %}
                     <tr>
                         <th scope="row">{{p.id}}</th>
-                        <td><a href="{{url_for('problem', id=p.id)}}">{{p.title}}</a></td>
+                        <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
                     </tr>
                 {% endfor %}
             </tbody>

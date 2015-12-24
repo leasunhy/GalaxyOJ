@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 {% for c in contests %}
-                    {% set contest_url = url_for('contest', id=c.id) %}
+                    {% set contest_url = url_for('oj.contest', id=c.id) %}
                     <tr>
                         <th scope="row">{{c.id}}</th>
                         <td><a href="{{contest_url}}">{{c.title}}</a></td>
