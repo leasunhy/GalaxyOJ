@@ -29,7 +29,7 @@ class UserRegisterForm(Form):
             validators = [Required(), EqualTo('password', message='Passwords must match')])
     email = TextField('Email', validators = [Email()])
     # unimportant parts
-    nickname = TextField('Nickname', validators = [Required()])
+    nickname = TextField('Nickname')
     signature = TextField('Signature')
     real_name = TextField('Real name')
     note = TextAreaField('Note')
