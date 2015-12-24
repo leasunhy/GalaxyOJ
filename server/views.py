@@ -120,11 +120,11 @@ def edit_problem(pid = 0):
     if form.validate_on_submit():
         form.populate_obj(prob)
         prob.visible = (cid == 0)
-        db.session.add(prob)
+        if pid == 0: db.session.add(prob)
         db.session.commit()
         flash('Edit problem successful')
         return redirect('/problems')
-    return render_template('edit_problem.html', form=form)
+    return render_template('edit_problem.html', form=form,pid=pid,cid=cid)
 
 def hello_world(word):
     for i in range(18):

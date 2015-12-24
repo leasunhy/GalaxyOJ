@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Register - Galaxy OJ{% endblock %}
+{% block title %}Edit Problem - Galaxy OJ{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -10,7 +10,7 @@
             {% endfor %}
         {% endfor %}
         <h1>Edit problem</h1>
-        <form action="{{url_for('edit_problem')}}" method="POST">
+        <form action="{{url_for('edit_problem',pid=pid,cid=cid)}}" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.title.label}}
