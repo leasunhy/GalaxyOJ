@@ -9,7 +9,9 @@ from .config import DATABASE_URI
 
 from judge.config import COMPILER_LIST
 from judge.config import COMPILER_OPTION_LIST
+from judge.config import COMPILER_FILEEXT_LIST
 from judge.config import COMPILE_TIME_LIMIT
+from judge.config import JUDGE_BIN_PATH
 
 engine = create_engine(DATABASE_URI, echo=True)
 DB_Session = sessionmaker(bind=engine)
@@ -48,7 +50,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     #print("execute:")
     #print(["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path])
     proc = subprocess.Popen(
-        ["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path],
+        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
@@ -68,6 +70,11 @@ def check(file_out, std_out):
 def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
+    import shutil
+    ori_source_path = source_path
+    source_path = os.path.join(tmp_folder.name,
+            'a' + COMPILER_FILEEXT_LIST[compiler_id])
+    shutil.copyfile(ori_source_path, source_path)
     (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
     if err is not None and len(err) > 0:
         return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}

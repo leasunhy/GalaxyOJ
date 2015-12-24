@@ -1,6 +1,8 @@
 import os
 
-CONFIG_NAME = 'judge'
+basedir = os.path.abspath(os.path.dirname(__file__))
+
+JUDGE_BIN_PATH = os.path.join(basedir, 'run')
 
 DATABASE_URI = os.getenv('DATABASE_URI', 'postgresql://localhost/galaxyoj_dev')
 
@@ -16,3 +18,4 @@ COMPILER_OPTION_LIST = [
         ["-m32", "-O2", "-Wall", "-lm", "--static", "-std=c99", "-DONLINE_JUDGE"],
         ["-m32", "-O1", "-Co", "-Cr", "-Ct", "-Ci"],
         ["-m32", "-O2", "-Wall", "-lm", "-std=c++11", "--static", "-DONLINE_JUDGE"]]
+COMPILER_FILEEXT_LIST = [".cpp", ".c", ".f", ".cpp"]

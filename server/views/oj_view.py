@@ -1,8 +1,9 @@
 from . import oj
 
+import os
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import login_required, current_user
-from .. import db, q
+from .. import app, db, q
 from ..forms import SubmissionForm
 from ..models import Problem, Contest, Submission
 
@@ -52,7 +53,7 @@ def problem(cid = 0, pid = 1):
 
 def save_to_file(data, submission_id):
     #TODO
-    filename = './submission/%d.txt'%(submission_id)
+    filename = os.path.join(app.config['SUBMISSION_FOLDER'], '%d.txt' % submission_id)
     file = open(filename, 'w')
     file.write(data)
     file.close()
@@ -61,7 +62,7 @@ def save_to_file(data, submission_id):
 def send_to_judge(submit, problem):
     sid = submit.id
     source_path = submit.filename
-    testcase_folder = './testcase'
+    testcase_folder = os.path.join(app.config['TESTCASE_FOLDER'], str(problem.id))
     compiler_id = submit.compiler_id
     time_limit = problem.time_limit
     memory_limit = problem.memory_limit

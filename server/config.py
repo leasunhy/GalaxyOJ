@@ -6,6 +6,10 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 CONFIG_NAME = os.getenv('CONFIG_NAME', 'DEVELOPMENT')
 DATABASE_URI = os.getenv('DATABASE_URI', 'postgresql://localhost/galaxyoj_dev')
 SECRET_KEY = os.getenv('SECRET_KEY', 'Something you will never know:-)')
+SUBMISSION_FOLDER = os.getenv('SUBMISSION_FOLDER',
+                        os.path.join(basedir, 'data/submissions'))
+TESTCASE_FOLDER = os.getenv('TESTCASE_FOLDER',
+                        os.path.join(basedir, 'data/testcases'))
 COMPILER_LIST = {}
 
 
@@ -19,6 +23,8 @@ class ConfigBase:
     DEFAULT_MEMORY_LIMIT = 65536  # in kibibytes
     COMPILER_NAME_DICT = dict(map(lambda i, x: (x, i), enumerate(COMPILER_LIST)))
     COMPILER_INDEX_DICT = dict(enumerate(COMPILER_LIST))
+    SUBMISSION_FOLDER = SUBMISSION_FOLDER
+    TESTCASE_FOLDER = TESTCASE_FOLDER
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True
