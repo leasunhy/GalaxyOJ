@@ -4,7 +4,6 @@ import glob
 
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.ext.declarative import declarative_base
 from .config import DATABASE_URI
 
@@ -20,13 +19,13 @@ BaseModel = declarative_base()
 class Submission(BaseModel):
     __tablename__ = 'submission'
     id = Column(Integer, primary_key=True)
-    #verdict = Column(ENUM('Accepted', 'Wrong Answer', 'Runtime Error',\
-    #    'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
-    #    'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types'))
-    verdict = Column(String(32))
+    verdict = Column(Enum('Accepted', 'Wrong Answer', 'Runtime Error',\
+        'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
+        'Output Limit Exceeded', 'Presentation Error', 'Compile Error',\
+        name='oj_verdict_types'))
     time_usage = Column(Integer)
     memory_usage = Column(Integer)
-#Submission.create()
+    log = Column(String(1024))
 
 def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
     #print(COMPILER_LIST[compiler_id])
@@ -90,8 +89,6 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
 
 def judge(sid, *args):
     verdict = judge_program(*args)    
-    verdict.pop('log')
-    verdict.pop('verdict')
     print(sid,verdict)
     session.query(Submission).filter(Submission.id==sid).update(verdict)
     session.commit()
