@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import render_template, url_for, request, redirect, flash, jsonify, session
 from flask.ext.login import login_required, login_user, current_user, logout_user
 
@@ -103,28 +104,41 @@ def user_register():
         return redirect('/')
     return render_template('register.html', form=form)
 
-@app.route('/edit_problem', methods=['GET', 'POST'])
-def edit_problem(pid = 0):
-    #TODO
+
+@app.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
+@app.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
+def edit_problem(cid = 0, pid = 0):
+    # TODO (mstczuo <mstczuo@163.com>)
     #if current_user is None:
     #    return render_template('fatal.html', info="Please login first")
     #if current_user.privilege_level == 0:
     #    return render_template('fatal.html', info="Permission denied")
-    pid = int(request.args.get('pid', 0))
-    cid = int(request.args.get('cid', 0))
-    prob = Problem() if pid == 0 else Problem.query.filter_by(id=pid).first()
-    form = EditProblemForm(obj = prob)
-    if pid != 0 and prob is None:
-        flash('Problem (pid = %s) does not found'%(pid))
+    if cid != 0:
+        contest = Contest.query.get(cid)
+        if not contest:
+            flash('Contest (cid = %d) not found.' % cid)
+            return redirect('/')
+        try:
+            prob = Problem() if pid == 0 else contest.problems[pid]
+        except IndexError:
+            flash('Contest (cid = %d) does not have %d-th problem.') % (cid, pid)
+            return redirect('/')
+        prob.visible = prob.visible or contest.end_time < datetime.now()
+    else:
+        prob = Problem() if pid == 0 else Problem.query.get(pid)
+        prob.visible = True
+    if prob is None:
+        flash('Problem (pid = %d) not found.' % pid)
         return redirect('/')
+    form = EditProblemForm(obj = prob)
     if form.validate_on_submit():
         form.populate_obj(prob)
-        prob.visible = (cid == 0)
-        if pid == 0: db.session.add(prob)
+        db.session.add(prob)
         db.session.commit()
-        flash('Edit problem successful')
+        flash('Edit problem successful.')
         return redirect('/problems')
-    return render_template('edit_problem.html', form=form,pid=pid,cid=cid)
+    return render_template('edit_problem.html', form=form, pid=pid, cid=cid)
+
 
 def hello_world(word):
     for i in range(18):
