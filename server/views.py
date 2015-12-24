@@ -35,7 +35,7 @@ def tutorials(page = 1):
 @app.route('/problems/<int:page>')
 def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
-                            .paginate(page=page, per_page=20).items
+            .order_by(Problem.id).paginate(page=page, per_page=20).items
     return render_template('problems.html', problems=problems)
 
 
