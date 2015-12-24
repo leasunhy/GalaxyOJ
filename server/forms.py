@@ -20,10 +20,12 @@ class LoginForm(Form):
 
 class SubmissionForm(Form):
     problem_id = TextField('ID')
-    language = SelectField('Compiler', choices=[(0, 'Pleaes choose language'), *[(i + 1, COMPILER_NAME_LIST[i]) for i in range(COMPILER_CNT)]])
+    compiler = SelectField('Compiler', coerce=int, choices=[(-1, 'Pleaes choose language'), *enumerate(COMPILER_NAME_LIST)])
     code = TextAreaField('Code')
     submit = SubmitField('Submit')
-
+    def validate_compiler(self, field):
+        if field == -1:
+            raise ValidationError('Please select language')
 
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
