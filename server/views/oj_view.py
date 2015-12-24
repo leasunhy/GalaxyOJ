@@ -2,9 +2,11 @@ from . import oj
 
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import login_required, current_user
-from .. import db
+from .. import db, q
 from ..forms import SubmissionForm
 from ..models import Problem, Contest, Submission
+
+from .. import judge
 
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
@@ -48,10 +50,25 @@ def problem(cid = 0, pid = 1):
             abort(404)
     return render_template('show_problem.html', p=problem)
 
-def save_to_file(data, submission_id)
-    f = open(file_name, 'w')
-    f.write(data)
-    f.close()
+def save_to_file(data, submission_id):
+    #TODO
+    filename = './submission/%d.txt'%(submission_id)
+    file = open(filename, 'w')
+    file.write(data)
+    file.close()
+    return filename
+
+def send_to_judge(submit, problem):
+    source_path = submit.filename
+    testcase_folder = './testcase'
+    compiler_id = submit.compiler_id
+    time_limit = problem.time_limit
+    memory_limit = problem.memory_limit
+    job = q.enqueue_call(
+            func = judge,
+            args = (source_path, testcase_folder,
+                compiler_id, time_limit, memory_limit),
+            result_ttl = 5000)
 
 @login_required
 @oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
@@ -73,7 +90,8 @@ def submit_code(cid = 0, pid = 1):
         submit.compiler_id = form.compiler.data
         db.session.add(submit)
         db.session.commit()
-        save_to_file(form.code.data, submit.id)
+        submit.filename = save_to_file(form.code.data, submit.id)
+        send_to_judge(submit, problem)
         return "haha"
     print("Invalid")
     return render_template('submit_code.html', form = form, cid = cid, pid = pid)
