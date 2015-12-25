@@ -19,7 +19,6 @@ class LoginForm(Form):
             raise ValidationError('Username or password is invalid.')
 
 class SubmissionForm(Form):
-    problem_id = TextField('ID')
     compiler = SelectField('Compiler', coerce=int, choices=[(-1, 'Pleaes choose language'), *enumerate(COMPILER_NAME_LIST)])
     code = TextAreaField('Code')
     submit = SubmitField('Submit')
