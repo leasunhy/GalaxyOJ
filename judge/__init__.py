@@ -56,16 +56,18 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
+    returncode = proc.returncode
 
     out = out.decode('utf-8').split(',')
     
-    return (out, err)
+    return (returncode, out, err)
 
 def check(file_out, std_out):
     proc = subprocess.Popen(["diff", file_out, std_out], 
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     (out, err) = proc.communicate()
-    if out is None or len(out) == 0:
+    returncode = proc.returncode
+    if returncode == 0:
         return (True, "")
     return (False, out.decode('utf-8'))
 
@@ -73,23 +75,31 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
     (returncode, prog, err) = compile(source_path, compiler_id, tmp_folder.name)
+    print(returncode, prog, err)
     if returncode != 0:
         return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}
     sum_time = 0
     max_mem = 0
-    for filename in glob.glob(testcase_folder + "/*.in"):
+    for filename in glob.glob(os.path.join(testcase_folder, "*.in")):
         file_in = filename
-        file_out = tmp_folder.name + "/output.txt"
+        file_out = os.path.join(tmp_folder.name, "output.txt")
         std_out = filename[:-2] + "out"
-        (out, err) = execute(prog, file_in, file_out, time_limit, memory_limit, tmp_folder.name)
+        (returncode, out, err) = execute(prog, file_in, file_out,
+                                         time_limit, memory_limit,
+                                         tmp_folder.name)
+        print(returncode, out, err)
+        input()
         if out[0] != "OK":
-            return {"verdict": out[0], "time_usage": out[1], "memory_usage": out[2], "log": err}
+            return {"verdict": out[0], "time_usage": out[1],
+                    "memory_usage": out[2], "log": err}
         (verdict, err) = check(file_out, std_out)
         if verdict == False:
-            return {"verdict": "Wrong Answer", "time_usage": sum_time, "memory_usage": max_mem, "log": err}
+            return {"verdict": "Wrong Answer", "time_usage": sum_time,
+                    "memory_usage": max_mem, "log": err}
         sum_time += int(out[1])
         max_mem = max(max_mem, int(out[2]))
-    return {"verdict": "Accepted", "time_usage": sum_time, "memory_usage": max_mem, "log": None}
+    return {"verdict": "Accepted", "time_usage": sum_time,
+            "memory_usage": max_mem, "log": None}
 
 def judge(sid, *args):
     verdict = judge_program(*args)    
