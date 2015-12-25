@@ -41,10 +41,12 @@ def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
         stderr = subprocess.PIPE)
     try:
         outs, err = proc.communicate(timeout = COMPILE_TIME_LIMIT)
+        returncode = proc.returncode
     except:
         proc.kill()
         out, err = proc.communicate()
-    return (exec_path + "/a.out", err.decode('utf-8'))
+        returncode = proc.returncode
+    return (returncode, exec_path + "/a.out", err.decode('utf-8'))
 
 def execute(program, input_file, output_file, time_limit, memory_limit, exec_path):
     #print("execute:")
@@ -70,8 +72,8 @@ def check(file_out, std_out):
 def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
-    (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
-    if err is not None and len(err) > 0:
+    (returncode, prog, err) = compile(source_path, compiler_id, tmp_folder.name)
+    if returncode != 0:
         return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}
     sum_time = 0
     max_mem = 0
