@@ -74,6 +74,12 @@ def check(file_out, std_out):
 def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
+    print(source_path)
+    import shutil
+    ori_source_path = source_path
+    source_path = os.path.join(tmp_folder.name,
+            'a' + COMPILER_FILEEXT_LIST[compiler_id])
+    shutil.copyfile(ori_source_path, source_path)
     (returncode, prog, err) = compile(source_path, compiler_id, tmp_folder.name)
     print(returncode, prog, err)
     if returncode != 0:
