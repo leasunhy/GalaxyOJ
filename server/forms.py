@@ -24,7 +24,7 @@ class SubmissionForm(Form):
     code = TextAreaField('Code')
     submit = SubmitField('Submit')
     def validate_compiler(self, field):
-        if field == -1:
+        if field.data == -1:
             raise ValidationError('Please select language')
 
 class UserRegisterForm(Form):

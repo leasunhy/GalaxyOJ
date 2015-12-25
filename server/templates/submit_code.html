@@ -5,7 +5,11 @@
 {% block content %}
     <div class="container">
         <h1>Submit Code</h1>
-
+        {% for errs in form.errors.values() %}
+            {% for e in errs %}
+                <div class="alert alert-danger" role='alert'>{{e}}</div>
+            {% endfor %}
+        {% endfor %}
         {% if cid == 0 %}
         <form action="{{url_for('oj.submit_code', pid=pid)}}" method="POST">
         {% else %}
