@@ -9,6 +9,8 @@ from ..models import Problem, Contest, Submission
 
 from .. import judge
 
+from judge.config import COMPILER_FILEEXT_LIST
+
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
 def list_problems(page = 1):
@@ -51,9 +53,8 @@ def problem(cid = 0, pid = 1):
             abort(404)
     return render_template('show_problem.html', p=problem)
 
-def save_to_file(data, submission_id):
-    #TODO
-    filename = os.path.join(app.config['SUBMISSION_FOLDER'], '%d.txt' % submission_id)
+def save_to_file(data, submit):
+    filename = os.path.join(app.config['SUBMISSION_FOLDER'], str(submit.id) + COMPILER_FILEEXT_LIST[submit.compiler_id])
     file = open(filename, 'w')
     file.write(data)
     file.close()
@@ -93,7 +94,7 @@ def submit_code(cid = 0, pid = 1):
         submit.code_length = len(form.code.data)
         db.session.add(submit)
         db.session.commit()
-        submit.filename = save_to_file(form.code.data, submit.id)
+        submit.filename = save_to_file(form.code.data, submit)
         send_to_judge(submit, problem)
         return redirect('oj/status')
     return render_template('submit_code.html', form = form, cid = cid, pid = pid)
