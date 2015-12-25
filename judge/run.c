@@ -29,8 +29,8 @@ void parse_arguments(int argc, char* argv[]) {
 
 int main(int argc,char *argv[]) {
     parse_arguments(argc, argv);
-    int mem;
-    double time;
+    int mem = 0;
+    double time = 0;
     int ret = execute(in_file, out_file, codepath, time_limit, memory_limit, 30000, &mem, &time);
     fprintf(stdout, "%s,%d,%d\n", result[-ret], (int)(time * 1000), mem);
     return 0;

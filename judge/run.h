@@ -14,9 +14,9 @@ int spj;
 const char* result[] = {
     "OK",
     "Runtime Error",
-    "Time Limit Exceed",
-    "Memory Limit Exceed",
-    "Output Limit Exceed",
+    "Time Limit Exceeded",
+    "Memory Limit Exceeded",
+    "Output Limit Exceeded",
     "Restrict Function"
 };
 
