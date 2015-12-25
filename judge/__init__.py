@@ -70,11 +70,6 @@ def check(file_out, std_out):
 def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
-    import shutil
-    ori_source_path = source_path
-    source_path = os.path.join(tmp_folder.name,
-            'a' + COMPILER_FILEEXT_LIST[compiler_id])
-    shutil.copyfile(ori_source_path, source_path)
     (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
     if err is not None and len(err) > 0:
         return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}
