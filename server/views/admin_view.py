@@ -5,7 +5,9 @@ from .. import db
 from ..forms import EditProblemForm
 from ..models import Problem, Contest
 
+@admin.route('/edit_problem', methods=['GET', 'POST'])
 @admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
+@admin.route('/edit_contest/<int:cid>/problem', methods=['GET', 'POST'])
 @admin.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
 def edit_problem(cid = 0, pid = 0):
     # TODO (mstczuo <mstczuo@163.com>)

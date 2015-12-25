@@ -83,3 +83,7 @@ cheatsheet.rst
 # judge program binary
 judge/run
 
+# submissions, testcases, etc.
+/server/data
+
+

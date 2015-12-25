@@ -8,7 +8,7 @@ class Submission(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
 
-    filename = db.Column(db.String(128), nullable=False, unique=True)
+    filename = db.Column(db.String(128), unique=True)
     compiler_id = db.Column(db.Integer, nullable=False)
 
     time_usage = db.Column(db.Integer)
@@ -16,7 +16,9 @@ class Submission(db.Model):
     code_length = db.Column(db.Integer)
     verdict = db.Column(db.Enum('Accepted', 'Wrong Answer', 'Runtime Error',
         'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',
-        'Output Limit Exceeded', 'Presentation Error', name='oj_verdict_types'))
+        'Output Limit Exceeded', 'Presentation Error', 'Compile Error',
+        name='oj_verdict_types'))
+    log = db.Column(db.String(1024))
 
     @property
     def compiler(self):
@@ -27,5 +29,5 @@ class Submission(db.Model):
         self.compiler_id = app.config['COMPILER_NAME_DICT'][value]
 
     def __repr__(self):
-        return '<Submission %s>' % filename
+        return '<Submission %d>' % self.id if self.id else '<New Submission>'
 

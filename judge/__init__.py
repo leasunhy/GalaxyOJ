@@ -2,11 +2,32 @@ import os
 import subprocess
 import glob
 
-from . import worker
+from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+from .config import DATABASE_URI
 
 from judge.config import COMPILER_LIST
 from judge.config import COMPILER_OPTION_LIST
+from judge.config import COMPILER_FILEEXT_LIST
 from judge.config import COMPILE_TIME_LIMIT
+from judge.config import JUDGE_BIN_PATH
+
+engine = create_engine(DATABASE_URI, echo=True)
+DB_Session = sessionmaker(bind=engine)
+session = DB_Session()
+BaseModel = declarative_base()
+
+class Submission(BaseModel):
+    __tablename__ = 'submission'
+    id = Column(Integer, primary_key=True)
+    verdict = Column(Enum('Accepted', 'Wrong Answer', 'Runtime Error',\
+        'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
+        'Output Limit Exceeded', 'Presentation Error', 'Compile Error',\
+        name='oj_verdict_types'))
+    time_usage = Column(Integer)
+    memory_usage = Column(Integer)
+    log = Column(String(1024))
 
 def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
     #print(COMPILER_LIST[compiler_id])
@@ -29,7 +50,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     #print("execute:")
     #print(["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path])
     proc = subprocess.Popen(
-        ["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path],
+        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
@@ -46,12 +67,17 @@ def check(file_out, std_out):
         return (True, "")
     return (False, out.decode('utf-8'))
 
-def judge(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
+def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
     from tempfile import TemporaryDirectory
     tmp_folder = TemporaryDirectory()
+    import shutil
+    ori_source_path = source_path
+    source_path = os.path.join(tmp_folder.name,
+            'a' + COMPILER_FILEEXT_LIST[compiler_id])
+    shutil.copyfile(ori_source_path, source_path)
     (prog, err) = compile(source_path, compiler_id, tmp_folder.name)
     if err is not None and len(err) > 0:
-        return {"verdict":"Compile Error", "time_used": 0, "memory_used": 0, "log": err}
+        return {"verdict":"Compile Error", "time_usage": 0, "memory_usage": 0, "log": err}
     sum_time = 0
     max_mem = 0
     for filename in glob.glob(testcase_folder + "/*.in"):
@@ -60,11 +86,17 @@ def judge(source_path, testcase_folder, compiler_id, time_limit, memory_limit):
         std_out = filename[:-2] + "out"
         (out, err) = execute(prog, file_in, file_out, time_limit, memory_limit, tmp_folder.name)
         if out[0] != "OK":
-            return {"verdict": out[0], "time_used": out[1], "memory_used": out[2], "log": err}
+            return {"verdict": out[0], "time_usage": out[1], "memory_usage": out[2], "log": err}
         (verdict, err) = check(file_out, std_out)
         if verdict == False:
-            return {"verdict": "Wrong Answer", "time_used": sum_time, "memory_used": max_mem, "log": err}
+            return {"verdict": "Wrong Answer", "time_usage": sum_time, "memory_usage": max_mem, "log": err}
         sum_time += int(out[1])
         max_mem = max(max_mem, int(out[2]))
-    return {"verdict": "Accepted", "time_used": sum_time, "memory_used": max_mem, "log": None}
+    return {"verdict": "Accepted", "time_usage": sum_time, "memory_usage": max_mem, "log": None}
+
+def judge(sid, *args):
+    verdict = judge_program(*args)    
+    print(sid,verdict)
+    session.query(Submission).filter(Submission.id==sid).update(verdict)
+    session.commit()
 

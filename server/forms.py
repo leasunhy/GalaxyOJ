@@ -5,6 +5,8 @@ from wtforms.fields import TextField, TextAreaField,\
 from wtforms.validators import Required, Email, EqualTo
 
 from .models import User
+
+from judge.config import COMPILER_NAME_LIST, COMPILER_CNT
  
 class LoginForm(Form):
     username = TextField('Username', validators = [Required()])
@@ -16,11 +18,14 @@ class LoginForm(Form):
         if u is None or not u.verify_password(field.data):
             raise ValidationError('Username or password is invalid.')
 
-class SubmitCodeForm(Form):
-    probID = TextField('ID')
-    language = SelectField('Language', choices=[('p', 'Pascal'), ('cpp', 'C++'), ('c', 'C')])
-    code = TextAreaField('text')
-
+class SubmissionForm(Form):
+    problem_id = TextField('ID')
+    compiler = SelectField('Compiler', coerce=int, choices=[(-1, 'Pleaes choose language'), *enumerate(COMPILER_NAME_LIST)])
+    code = TextAreaField('Code')
+    submit = SubmitField('Submit')
+    def validate_compiler(self, field):
+        if field.data == -1:
+            raise ValidationError('Please select language')
 
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
