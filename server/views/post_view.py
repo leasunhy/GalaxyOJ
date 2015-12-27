@@ -24,3 +24,21 @@ def tutorials(page = 1):
     return render_template('tutorial_list.html', posts=tutorials)
 
 
+@post.route('/notification/<int:id>')
+def notification(id):
+    p = Notification.query.get_or_404(id)
+    return render_template('show_post_base.html', post = p)
+
+
+@post.route('/solution/<int:id>')
+def solution(id):
+    p = Solution.query.get_or_404(id)
+    return render_template('show_post_base.html', post = p)
+
+
+@post.route('/tutorial/<int:id>')
+def tutorial(id):
+    p = tutorial.query.get_or_404(id)
+    return render_template('show_post_base.html', post = p)
+
+
