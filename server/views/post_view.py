@@ -38,7 +38,7 @@ def solution(id):
 
 @post.route('/tutorial/<int:id>')
 def tutorial(id):
-    p = tutorial.query.get_or_404(id)
+    p = Tutorial.query.get_or_404(id)
     return render_template('show_post_base.html', post = p)
 
 
