@@ -2,3 +2,23 @@ body {
     padding-top: 60px;
 }
 
+#status-table th {
+    text-align: center;
+}
+
+#status-table td {
+    text-align: center;
+}
+
+.status-verdict.status-verdict-Accepted {
+    color: green;
+    font-weight: bold;
+}
+
+.status-verdict.status-verdict-None {
+    color: black;
+}
+
+.status-verdict {
+    color: red;
+}
