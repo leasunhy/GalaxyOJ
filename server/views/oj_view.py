@@ -51,7 +51,7 @@ def problem(cid = 0, pid = 1):
             problem = contest.problems[pid-1]
         except IndexError:
             abort(404)
-    return render_template('show_problem.html', p=problem)
+    return render_template('show_problem.html', p=problem, cid=cid, pid=pid)
 
 def save_to_file(data, submit):
     filename = os.path.join(app.config['SUBMISSION_FOLDER'], str(submit.id) + COMPILER_FILEEXT_LIST[submit.compiler_id])
