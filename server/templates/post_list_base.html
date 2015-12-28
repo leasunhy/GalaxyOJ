@@ -20,7 +20,7 @@
                 <th scope="row"><a href="{{post_url}}">{{p.title}}</a></th>
                 <td>by <a><strong>{{p.owner.display_name}}</strong></a></td>
                 {% block meta_data scoped %} {% endblock %}
-                <td>{{p.create_time.strftime('%Y-%m-%d %H-%M-%S')}}</td>
+                <td>{{p.create_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
             </tr>
             {% endfor %}
         </tbody>
