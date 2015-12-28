@@ -1,9 +1,16 @@
 {% extends 'post_list_base.html' %}
 
 {% set current_view = 'Home' %}
+{% set post_view = 'post.notification' %}
 
 {% block title %}Index - Galaxy OJ{% endblock %}
 
-{% block metadata %}
-    <p>Importance: {{p.importance}}</p>
+{% block heading %}Notifications{% endblock %}
+
+{% block meta %}
+    <th>Importance</th>
+{% endblock %}
+
+{% block meta_data %}
+    <td><strong>{{p.importance}}</strong></td>
 {% endblock %}

@@ -1,9 +1,16 @@
 {% extends 'post_list_base.html' %}
 
 {% set current_view = 'Solutions' %}
+{% set post_view = 'post.solution' %}
 
 {% block title %}Solutions - Galaxy OJ{% endblock %}
 
-{% block metadata %}
-    <p>Problem: {{p.problem.id}} - {{p.problem.title}}</p>
+{% block heading %}Solutions{% endblock %}
+
+{% block meta %}
+    <th>Problem</th>
+{% endblock %}
+
+{% block meta_data %}
+    <td><a href="{{url_for('oj.problem', pid=p.problem.id)}}">{{p.problem.title}}</a></td>
 {% endblock %}
