@@ -1,7 +1,11 @@
-from flask import render_template, url_for, request, redirect, flash, jsonify, session
-
 from . import post
+
+from .. import db
 from ..models import Post, Notification, Solution, Tutorial
+from ..forms import EditNotificationForm, EditTutorialForm, EditSolutionForm
+
+from flask import render_template, url_for, request, redirect, flash, jsonify, session
+from flask.ext.login import current_user, login_required
 
 @post.route('/notifications')
 @post.route('/notifications/<int:page>')
@@ -40,5 +44,53 @@ def solution(id):
 def tutorial(id):
     p = Tutorial.query.get_or_404(id)
     return render_template('show_post_base.html', post = p)
+
+
+@post.route('/new_notification', methods=['GET', 'POST'])
+@post.route('/edit_notification/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_notification(id=0):
+    p = Notification() if id == 0 else Notification.query.get_or_404(id)
+    form = EditNotificationForm(obj = p)
+    if form.validate_on_submit():
+        form.populate_obj(p)
+        if not p.owner:
+            p.owner = current_user
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('post.notifications'))
+    return render_template('edit_notification.html', form=form, pid=id)
+
+
+@post.route('/new_tutorial', methods=['GET', 'POST'])
+@post.route('/edit_tutorial/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_tutorial(id=0):
+    p = Tutorial() if id == 0 else Tutorial.query.get_or_404(id)
+    form = EditTutorialForm(obj = p)
+    if form.validate_on_submit():
+        form.populate_obj(p)
+        if not p.owner:
+            p.owner = current_user
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('post.tutorials'))
+    return render_template('edit_tutorial.html', form=form, pid=id)
+
+
+@post.route('/new_solution', methods=['GET', 'POST'])
+@post.route('/edit_solution/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_solution(id=0):
+    p = Solution() if id == 0 else Solution.query.get_or_404(id)
+    form = EditSolutionForm(obj = p)
+    if form.validate_on_submit():
+        form.populate_obj(p)
+        if not p.owner:
+            p.owner = current_user
+        db.session.add(p)
+        db.session.commit()
+        return redirect(url_for('post.solutions'))
+    return render_template('edit_solution.html', form=form, pid=id)
 
 

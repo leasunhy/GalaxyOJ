@@ -1,3 +1,4 @@
+from datetime import datetime
 from .. import db
 
 class Post(db.Model):
@@ -7,7 +8,7 @@ class Post(db.Model):
 
     title = db.Column(db.String(128), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    create_time = db.Column(db.DateTime, nullable=False)
+    create_time = db.Column(db.DateTime, nullable=False, default=datetime.now)
     type = db.Column(db.String(64))
 
     def __repr__(self):
