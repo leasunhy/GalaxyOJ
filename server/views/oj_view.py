@@ -18,7 +18,6 @@ def list_problems(page = 1):
                     .order_by(Problem.id).paginate(page=page, per_page=20).items
     return render_template('problems.html', problems=problems, admin=True)
 
-
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):

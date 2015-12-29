@@ -6,6 +6,8 @@ from .. import db
 from ..forms import EditProblemForm, EditContestForm
 from ..models import Problem, Contest, User
 
+from datetime import datetime
+
 @admin.route('/edit_problem', methods=['GET', 'POST'])
 @admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
 @admin.route('/edit_contest/<int:cid>/problem', methods=['GET', 'POST'])
@@ -39,7 +41,11 @@ def edit_problem(cid = 0, pid = 0):
         db.session.add(prob)
         db.session.commit()
         flash('Edit problem successful.')
-        return redirect(url_for('oj.list_problems'))
+        if cid == 0:
+            return redirect(url_for('oj.list_problems'))
+        else:
+            contest.problems.append(prob)
+            return redirect(url_for('admin.edit_contest', cid=cid))
     return render_template('edit_problem.html', form=form, pid=pid, cid=cid)
 
 @admin.route('/delete_problem/<int:pid>')
@@ -66,6 +72,7 @@ def edit_contest(cid = 0):
         if not contest:
             flash('Contest (cid = %d) not found.' % cid)
             return redirect('/')
+        problist = contest.problems
     else:
         contest = Contest()
     form = EditContestForm(obj = contest)
@@ -76,7 +83,8 @@ def edit_contest(cid = 0):
         db.session.commit()
         flash('Edit contest successful.')
         return redirect(url_for('oj.list_contests'))
-    return render_template('edit_contest.html', form=form, cid=cid)
+    return render_template('edit_contest.html', form=form, cid=cid, \
+            problems=None if cid == 0 else problist)
 
 @admin.route('/delete_contest/<int:cid>')
 def delete_contest(cid = 0):

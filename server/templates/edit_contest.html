@@ -69,7 +69,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <button class="btn btn-primary"  type="input"> New problem </button>
+            <button class="btn btn-primary" type="input" onclick="window.open('{{url_for('admin.edit_problem', cid=cid)}}')"> New problem </button>
         </div>
 
         <script>
