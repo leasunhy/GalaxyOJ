@@ -12,6 +12,7 @@
                 <tr>
                     <th>id</th>
                     <th>Title</th>
+                    <th>Modify</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,6 +20,11 @@
                     <tr>
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
+                        <td>
+                            <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
+                            /
+                            <a href="{{url_for('admin.delete_problem', pid=p.id)}}">Delete</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

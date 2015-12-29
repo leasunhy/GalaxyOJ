@@ -16,14 +16,14 @@ from judge.config import COMPILER_FILEEXT_LIST
 def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
                     .order_by(Problem.id).paginate(page=page, per_page=20).items
-    return render_template('problems.html', problems=problems)
+    return render_template('problems.html', problems=problems, admin=True)
 
 
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
     contests = Contest.query.paginate(page=page, per_page=20).items
-    return render_template('contests.html', contests=contests)
+    return render_template('contests.html', contests=contests, admin=True)
 
 
 @oj.route('/status')
