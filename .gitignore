@@ -86,4 +86,10 @@ judge/run
 # submissions, testcases, etc.
 /server/data
 
+# node modules
+node_modules
+
+# bower components
+bower_components
+
 

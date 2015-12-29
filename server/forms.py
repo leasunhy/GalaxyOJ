@@ -1,13 +1,13 @@
 from flask.ext.wtf import Form
 from wtforms import ValidationError
 from wtforms.fields import TextField, TextAreaField,\
-        BooleanField, SelectField, SubmitField, PasswordField
+        BooleanField, SelectField, SubmitField, PasswordField, IntegerField
 from wtforms.validators import Required, Email, EqualTo
 
-from .models import User
+from .models import User, Problem
 
 from judge.config import COMPILER_NAME_LIST, COMPILER_CNT
- 
+
 class LoginForm(Form):
     username = TextField('Username', validators = [Required()])
     password = PasswordField('Password', validators = [Required()])
@@ -69,3 +69,37 @@ class EditContestForm(Form):
     end_time = TextField('End time')
     password = TextField('Password')
     submit = SubmitField('Submit')
+
+class EditPostForm(Form):
+    title = TextField('Title', validators = [Required()])
+    content = TextAreaField('Content', validators=[Required()])
+    submit = SubmitField('Submit')
+
+
+class EditNotificationForm(EditPostForm):
+    importance = IntegerField('Importance')
+
+
+class EditTutorialForm(EditPostForm):
+    pass
+
+
+class EditSolutionForm(EditPostForm):
+    problem_id = IntegerField('Problem ID')
+
+    def validate_problem_id(self, field):
+        if not Problem.query.get(field.data):
+            raise ValidationError('No such problem.')
+
+
+#class CommentForm(Form):
+#    nickname = TextField('NickName')
+#    email = TextField('email')
+#    text = TextAreaField('text')
+#
+#class PostForm(Form):
+#    title = TextField('title', validators = [Required()])
+#    shortcut = TextField('shortcut', validators = [Required()])
+#    tag = SelectField('tag', choices=[('d', 'Default'),('a', 'ACM'),('r','Research')])
+#    text = TextAreaField('text', id="editor_code")
+

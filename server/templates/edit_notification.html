@@ -1,0 +1,11 @@
+{% extends 'edit_post.html' %}
+
+{% set edit_view = 'post.edit_notification' %}
+{% set post_type = 'Notification' %}
+
+{% block other_fields %}
+    <div class="form-group">
+        {{form.importance.label}}
+        {{form.importance(class_='form-control')}}
+    </div>
+{% endblock %}

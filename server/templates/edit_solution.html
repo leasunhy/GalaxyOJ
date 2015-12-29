@@ -1,0 +1,11 @@
+{% extends 'edit_post.html' %}
+
+{% set edit_view = 'post.edit_solution' %}
+{% set post_type = 'Solution' %}
+
+{% block other_fields %}
+    <div class="form-group">
+        {{form.problem_id.label}}
+        {{form.problem_id(class_='form-control')}}
+    </div>
+{% endblock %}

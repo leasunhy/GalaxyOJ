@@ -31,6 +31,7 @@ class DevelopmentConfig(ConfigBase):
     DEBUG = True
     SQLALCHEMY_RECORD_QUERIES = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    BOOTSTRAP_SERVE_LOCAL = True
 
 
 class ProductionConfig(ConfigBase):

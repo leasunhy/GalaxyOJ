@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{post.title}} - Galaxy OJ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{post.title + " "}}</h2>
+    {% block metadata scoped %}
+        <p>{{post.create_time.strftime('%Y-%m-%d %H:%M:%S')}} <em>By</em> <a><strong>{{post.owner.display_name}}</strong></a></p>
+        <p><span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+        {% if post.tags %}
+            {% for tag in post.tags %}
+                <a>tag.name</a>
+            {% endfor %}
+        {% else %}
+            <em>No tags currently avaliable.</em>
+        {% endif %}
+        </p>
+    {% endblock %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{post.content}}
+        </div>
+        <div class="panel-footer text-right">Something here...</div>
+    </div>
+</div>
+{% endblock %}

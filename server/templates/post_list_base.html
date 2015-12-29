@@ -2,16 +2,29 @@
 
 {% block content %}
 <div class="container">
-    {% for p in posts %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h1>{{p.title + " "}}</h1>
-        </div>
-        <div class="panel-content">
-            {% block metadata scoped %}{% endblock %}
-            {{p.content}}
-        </div>
-    </div>
-    {% endfor %}
+    <h2>{% block heading %}{% endblock %}</h2>
+    {% block list %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                {% block meta %}{% endblock %}
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in posts %}
+            {% set post_url = url_for(post_view, id=p.id) %}
+            <tr>
+                <th scope="row"><a href="{{post_url}}">{{p.title}}</a></th>
+                <td>by <a><strong>{{p.owner.display_name}}</strong></a></td>
+                {% block meta_data scoped %} {% endblock %}
+                <td>{{p.create_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
 </div>
 {% endblock %}
