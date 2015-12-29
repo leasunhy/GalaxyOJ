@@ -62,14 +62,10 @@ class EditProblemForm(Form):
     memory_limit = TextField('Memory Limit', validators = [Required()])
     submit = SubmitField('Submit')
 
-#class CommentForm(Form):
-#    nickname = TextField('NickName')
-#    email = TextField('email')
-#    text = TextAreaField('text')
-#
-#class PostForm(Form):
-#    title = TextField('title', validators = [Required()])
-#    shortcut = TextField('shortcut', validators = [Required()])
-#    tag = SelectField('tag', choices=[('d', 'Default'),('a', 'ACM'),('r','Research')])
-#    text = TextAreaField('text', id="editor_code")
-
+class EditContestForm(Form):
+    title = TextField('Title', validators = [Required()])
+    description = TextAreaField('Description')
+    start_time = TextField('Start time')
+    end_time = TextField('End time')
+    password = TextField('Password')
+    submit = SubmitField('Submit')

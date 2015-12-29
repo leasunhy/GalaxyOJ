@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Users - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="panel panel-default">
+        <div class="panel-heading">Users</div>
+        <div class="panel-body">Users are listed below.</div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>User Id</th>
+                    <th>Login Name</th>
+                    <th>nickname</th>
+                    <th>real_name</th>
+                    <th>Email</th>
+                    <th>Modify</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                    <tr>
+                        <th scope="row">{{u.id}}</th>
+                        <th>{{u.login_name}}</th>
+                        <th>{{u.nickname or ""}}</th>
+                        <th>{{u.real_name}}</th>
+                        <th>{{u.email}}</th>
+                        {% set delete_url = url_for('admin.delete_user', uid = u.id) %}
+                        <th><a href="{{delete_url}}">Delete</a></th>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+{% endblock %}
