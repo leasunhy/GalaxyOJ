@@ -72,9 +72,9 @@ def send_to_judge(submit, problem):
                 compiler_id, time_limit, memory_limit),
             result_ttl = 5000)
 
-@login_required
 @oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
 @oj.route('/contest/<int:cid>/submit/<int:pid>', methods = ['GET', 'POST'])
+@login_required
 def submit_code(cid = 0, pid = 1):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)

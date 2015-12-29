@@ -1,7 +1,7 @@
 from . import admin
 
 from flask import render_template, url_for, request, redirect, flash
-from flask.ext.login import current_user
+from flask.ext.login import current_user, login_required
 from .. import db
 from ..forms import EditProblemForm, EditContestForm
 from ..models import Problem, Contest, User
@@ -112,5 +112,5 @@ def delete_user(uid):
     db.session.delete(user)
     db.session.commit()
     flash('Edit problem successful')
-    return redirect(url_for(admin.users))
+    return redirect(url_for('admin.users'))
 
