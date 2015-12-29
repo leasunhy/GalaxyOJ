@@ -84,19 +84,19 @@ int execute(
 		limit.rlim_cur=time_limit;
 		limit.rlim_max=time_limit+1;
 		if (setrlimit(RLIMIT_CPU, &limit)){
-			perror("[child]: setting time limit: ");
+			//perror("[child]: setting time limit: ");
 			_exit(1);
 		}
 		limit.rlim_cur=output_limit-1;
 		limit.rlim_max=output_limit;
 		if (setrlimit(RLIMIT_FSIZE, &limit)){
-			perror("[child]: setting output limit: ");
+			//perror("[child]: setting output limit: ");
 			_exit(1);
 		}
 		limit.rlim_cur=0;
 		limit.rlim_max=0;
 		if (setrlimit(RLIMIT_CORE, &limit)){
-			perror("[child]: setting core limit: ");
+			//perror("[child]: setting core limit: ");
 			_exit(1);
 		}
 
@@ -112,7 +112,7 @@ int execute(
 	}
 //==============================  timer  ======================================
 	fprintf(stderr, "[Judge]: child process id:%d\n", pid);
-	fprintf(stderr, "[Judge]: creating it's brother as timer\n");
+	//fprintf(stderr, "[Judge]: creating it's brother as timer\n");
 	timer_pid=fork();
 	if (timer_pid<0){
 		perror("[Judge]: ERROR creating timer");
@@ -120,8 +120,8 @@ int execute(
 		_exit(1);
 	} else if (timer_pid==0){
 		//==== timer
-		fprintf(stderr, "[timer]: ready!\n");
-		sleep(3*time_limit);// should be enough time....
+		//fprintf(stderr, "[timer]: ready!\n");
+		sleep(3*time_limit);    // should be enough time....
 		fprintf(stderr, "[timer]: time up! exiting!\n");
 		_exit(1);
 	}
@@ -170,8 +170,8 @@ int execute(
 	//syscall_used[175] = 1;
 	//syscall_used[20] = 1;
 
-	sprintf(procmaps, "/proc/%d/maps", pid);
-	fprintf(stderr, "[Judge]: maps: %s\n", procmaps);
+	//sprintf(procmaps, "/proc/%d/maps", pid);
+	//fprintf(stderr, "[Judge]: maps: %s\n", procmaps);
 
 
 	wait3(&status, 0, &ru);// wait for pid STOP after execve(), hopefully it won't be the timer
