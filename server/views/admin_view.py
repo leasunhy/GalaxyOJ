@@ -84,7 +84,7 @@ def edit_contest(cid = 0):
         flash('Edit contest successful.')
         return redirect(url_for('oj.list_contests'))
     return render_template('edit_contest.html', form=form, cid=cid, \
-            problems=None if cid == 0 else problist)
+            problems=[] if cid == 0 else problist)
 
 @admin.route('/delete_contest/<int:cid>')
 def delete_contest(cid = 0):
