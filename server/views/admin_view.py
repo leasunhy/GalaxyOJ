@@ -7,11 +7,13 @@ from ..forms import EditProblemForm, EditContestForm
 from ..models import Problem, Contest, User
 
 from datetime import datetime
+from ..tools import privilege_required
 
 @admin.route('/edit_problem', methods=['GET', 'POST'])
 @admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
 @admin.route('/edit_contest/<int:cid>/problem', methods=['GET', 'POST'])
 @admin.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
+@privilege_required(1)
 def edit_problem(cid = 0, pid = 0):
     # TODO (mstczuo <mstczuo@163.com>)
     #if current_user is None:
@@ -49,6 +51,7 @@ def edit_problem(cid = 0, pid = 0):
     return render_template('edit_problem.html', form=form, pid=pid, cid=cid)
 
 @admin.route('/delete_problem/<int:pid>')
+@privilege_required(1)
 def delete_problem(pid = 0):
     problem = Problem.query.get(pid)
     if not problem:
@@ -61,6 +64,7 @@ def delete_problem(pid = 0):
 
 @admin.route('/edit_contest', methods=['GET', 'POST'])
 @admin.route('/edit_contest/<int:cid>', methods=['GET', 'POST'])
+@privilege_required(1)
 def edit_contest(cid = 0):
     # TODO (mstczuo <mstczuo@163.com>)
     #if current_user is None:
@@ -87,6 +91,7 @@ def edit_contest(cid = 0):
             problems=[] if cid == 0 else problist)
 
 @admin.route('/delete_contest/<int:cid>')
+@privilege_required(1)
 def delete_contest(cid = 0):
     contest = Contest.query.get(cid)
     if not contest:
@@ -99,11 +104,13 @@ def delete_contest(cid = 0):
 
 @admin.route('/users')
 @admin.route('/users/<int:page>', methods=['GET', 'POST'])
+@privilege_required(1)
 def list_users(page=1):
     users = User.query.paginate(page=page, per_page=20).items
     return render_template('users.html', users=users)
 
 @admin.route('/delete_user/<int:uid>')
+@privilege_required(1)
 def delete_user(uid):
     user = User.query.filter(User.id == uid).first()
     if not user:
