@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Enter Contest - Galaxy OJ{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Enter Contest</h1>
+        {% for errs in form.errors.values() %}
+            {% for e in errs %}
+                <div class="alert alert-danger" role='alert'>{{e}}</div>
+            {% endfor %}
+        {% endfor %}
+        <h2>Contest: {{contest.id}}. {{contest.title}}</h2>
+
+        {% if contest.description %}
+            <p>{{contest.description}}</p>
+        {% endif %}
+
+        <form action="{{url_for('oj.enter_contest', cid=contest.id)}}" method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{form.passcode.label}}
+                {{form.passcode(class_="form-control")}}
+            </div>
+            {{form.submit(class_="btn btn-primary")}}
+        </form>
+    </div>
+{% endblock %}
+

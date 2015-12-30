@@ -106,6 +106,11 @@ class EditSolutionForm(EditPostForm):
             raise ValidationError('No such problem.')
 
 
+class EnterContestForm(Form):
+    passcode = PasswordField('Contest Password', validators=[Required()])
+    submit = SubmitField('Submit')
+
+
 #class CommentForm(Form):
 #    nickname = TextField('NickName')
 #    email = TextField('email')

@@ -19,6 +19,7 @@ def user_login():
 
 @auth.route('/logout')
 def user_logout():
+    session.clear()
     logout_user()
     return redirect('/')
 
