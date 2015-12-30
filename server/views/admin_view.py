@@ -7,6 +7,7 @@ from ..forms import EditProblemForm, EditContestForm
 from ..models import Problem, Contest, User
 
 from werkzeug import secure_filename
+from werkzeug.security import safe_join
 
 from datetime import datetime
 from ..tools import privilege_required
@@ -148,7 +149,7 @@ def manage_data(pid):
     outfiles = glob.glob(os.path.join(datadir, "*.out"))
     outfiles.sort()
     fun = lambda st : st[len(datadir) + 1 :]
-    return render_template('upload_data.html', pid = pid, 
+    return render_template('upload_data.html', pid = pid,
             infiles = map(fun, infiles),
             outfiles = map(fun, outfiles))
 
@@ -156,7 +157,7 @@ def manage_data(pid):
 @privilege_required(1)
 def delete_testcase(pid, fname):
     datadir = os.path.join(app.config['TESTCASE_FOLDER'], str(pid))
-    filename = os.path.join(datadir, fname)
+    filename = safe_join(datadir, fname)
     if os.path.exists(filename): os.remove(filename)
     return redirect(url_for('admin.manage_data', pid=pid))
 
