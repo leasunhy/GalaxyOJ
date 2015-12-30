@@ -1,6 +1,8 @@
 alembic==0.8.4
 click==6.2
+dominate==2.1.16
 Flask==0.10.1
+Flask-Bootstrap==3.3.5.7
 Flask-Login==0.3.2
 Flask-Migrate==1.6.0
 Flask-Script==2.0.5
@@ -15,6 +17,7 @@ python-editor==0.5
 redis==2.10.5
 rq==0.5.6
 SQLAlchemy==1.0.10
+visitor==0.1.2
 Werkzeug==0.11.2
 wheel==0.24.0
 WTForms==2.1
