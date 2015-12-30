@@ -18,7 +18,6 @@ def list_problems(page = 1):
                     .order_by(Problem.id).paginate(page=page, per_page=20).items
     return render_template('problems.html', problems=problems, admin=True)
 
-
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
@@ -73,9 +72,9 @@ def send_to_judge(submit, problem):
                 compiler_id, time_limit, memory_limit),
             result_ttl = 5000)
 
-@login_required
 @oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
 @oj.route('/contest/<int:cid>/submit/<int:pid>', methods = ['GET', 'POST'])
+@login_required
 def submit_code(cid = 0, pid = 1):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
