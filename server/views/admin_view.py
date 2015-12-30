@@ -2,12 +2,17 @@ from . import admin
 
 from flask import render_template, url_for, request, redirect, flash
 from flask.ext.login import current_user, login_required
-from .. import db
+from .. import app, db
 from ..forms import EditProblemForm, EditContestForm
 from ..models import Problem, Contest, User
 
+from werkzeug import secure_filename
+from werkzeug.security import safe_join
+
 from datetime import datetime
 from ..tools import privilege_required
+
+import os
 
 @admin.route('/edit_problem', methods=['GET', 'POST'])
 @admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
@@ -120,4 +125,39 @@ def delete_user(uid):
     db.session.commit()
     flash('Edit problem successful')
     return redirect(url_for('admin.users'))
+
+def is_valid_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in set(['in', 'out'])
+
+@admin.route('/manage_data/<int:pid>', methods=['GET', 'POST'])
+@privilege_required(1)
+def manage_data(pid):
+    datadir = os.path.join(app.config['TESTCASE_FOLDER'], str(pid))
+    print(request.method)
+    if request.method == 'POST':
+        files = request.files.getlist("file[]")
+        for file in files:
+            if is_valid_file(file.filename):
+                filename = secure_filename(file.filename)
+                if not os.path.exists(datadir): os.makedirs(datadir)
+                file.save(os.path.join(datadir, filename))
+        return redirect(url_for('admin.manage_data', pid=pid))
+    import glob
+    infiles = glob.glob(os.path.join(datadir, "*.in"))
+    infiles.sort()
+    outfiles = glob.glob(os.path.join(datadir, "*.out"))
+    outfiles.sort()
+    fun = lambda st : st[len(datadir) + 1 :]
+    return render_template('upload_data.html', pid = pid,
+            infiles = map(fun, infiles),
+            outfiles = map(fun, outfiles))
+
+@admin.route('/delete_testcase/<int:pid>/<fname>')
+@privilege_required(1)
+def delete_testcase(pid, fname):
+    datadir = os.path.join(app.config['TESTCASE_FOLDER'], str(pid))
+    filename = safe_join(datadir, fname)
+    if os.path.exists(filename): os.remove(filename)
+    return redirect(url_for('admin.manage_data', pid=pid))
 
