@@ -7,6 +7,7 @@ class Submission(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     problem_id = db.Column(db.Integer, db.ForeignKey('problem.id'))
+    contest_id = db.Column(db.Integer, db.ForeignKey('contest.id'))
 
     filename = db.Column(db.String(128), unique=True)
     compiler_id = db.Column(db.Integer, nullable=False)
