@@ -32,12 +32,29 @@ def list_status(page = 1):
                                   .paginate(page=page, per_page=20).items
     return render_template('status.html', submissions=submissions)
 
+def sum_up_verdicts(verdicts):
+    if verdicts is None or verdicts == []:
+        return ''
+    if 'Accepted' in verdicts:
+        return 'Accepted'
+    return 'Stucked%d'%len(verdicts)
+
+def count_ac(summary):
+    return sum([verdict == 'Accepted' for verdict in summary])
 
 @oj.route('/contest/<int:id>')
 def contest(id = 1):
     contest = Contest.query.get_or_404(id)
+    users = db.session.query(distinct(User.name)).filter(Submission.contest==contest)
+    for u in users:
+        verdict_list = []
+        q = db.session.query(sum_up_verdicts(Submission.verdict))\
+                .filter(Submission.contest==contest and User.id == u.id)\
+                .group_by(Problem)
+        res = list(q)
+        verdict_list.append(res)
+        all_ac.append(count_ac(res))
     return render_template('show_contest.html', c=contest)
-
 
 @oj.route('/problem/<int:pid>')
 @oj.route('/contest/<int:cid>/problems/<int:pid>')

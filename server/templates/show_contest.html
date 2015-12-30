@@ -8,11 +8,12 @@
 <div class="container">
     <h2>{{c.title}}</h2>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <ul id="show_contest_tabs" class="nav nav-justified nav-pills">
                 <li class="active"><a href="#basic" data-toggle="tab"> Basic Info </a></li>
                 <li><a href="#problems" data-toggle="tab"> Problems </a></li>
                 <li><a href="#standing" data-toggle="tab"> Standing </a></li>
+                <li><a href="#practice" data-toggle="tab"> Practice </a></li>
             </ul>
         </div>
     </div>
@@ -41,8 +42,31 @@
             </table>
         </div>
         <div class="tab-pane fade" id="standing">
-            Standing
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>problems</th>
+                        {% for p in c.problems %}
+                        <th>{{p.title}}</th>
+                        {% endfor %}
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> mstczuo </td>
+                        <td> 3 </td>
+                        <td> 123 </td>
+                        <td> - </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="practice">
+            Practice
         </div>
     </div>
 </div>
 {% endblock %}
+
