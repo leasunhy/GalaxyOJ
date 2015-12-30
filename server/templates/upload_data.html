@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% set verb = 'Add' if pid == 0 else 'Edit' %}
+
+{% block title %}{{ verb }} Test Data Management - Galaxy OJ{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Test Data Management</h1>
+    <div class="row">
+        <div class="col col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Problem #{{pid}}</div>
+                <div class="panel-body">
+                    <p>Upload files (*.in,*.out) </p>
+                    <form action="{{url_for('admin.manage_data', pid=pid)}}" method=post enctype=multipart/form-data>
+                        <span class="btn btn-default btn-file">
+                            Browse <input type=file multiple="" name="file[]">
+                        </span>
+                        <input class="btn btn-default" type=submit value=Upload>
+                    </form>
+                </div>
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th> Filename </th>
+                            <th> Management </th>
+                        </tr>
+                        {% for file in infiles %}
+                        <tr>
+                            <td>{{file}}</td>
+                            <td><a href={{url_for('admin.delete_testcase',pid=pid,fname=file)}}>Delete</a></td>
+                        </tr>
+                        {% endfor %}
+
+                        {% for file in outfiles %}
+                        <tr>
+                            <td>{{file}}</td>
+                            <td><a href={{url_for('admin.delete_testcase',pid=pid,fname=file)}}>Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on('change', '.btn-file :file', function() {
+        var input = $(this),
+            numFiles = input.get(0).files ? input.get(0).files.length : 1,
+            label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+        input.trigger('fileselect', [numFiles, label]);
+    });
+    $(document).ready( function() {
+        $('.btn-file :file').on('fileselect', function(event, numFiles, label) {
+            console.log(numFiles);
+            console.log(label);
+        });
+    });
+</script>
+{% endblock %}
+

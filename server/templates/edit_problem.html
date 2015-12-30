@@ -51,7 +51,10 @@
                 {{form.memory_limit(class_="form-control",type="number")}}
             </div>
             {{form.submit(class_="btn btn-default")}}
-
+            <button class="btn btn-default" type="input" 
+                onclick="window.open('{{url_for('admin.manage_data', pid=pid)}}')"> 
+                Test Cases 
+            </button>
         </form>
     </div>
 {% endblock %}

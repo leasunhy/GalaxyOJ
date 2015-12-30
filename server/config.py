@@ -12,6 +12,7 @@ SUBMISSION_FOLDER = os.getenv('SUBMISSION_FOLDER',
                         os.path.join(basedir, 'data/submissions'))
 TESTCASE_FOLDER = os.getenv('TESTCASE_FOLDER',
                         os.path.join(basedir, 'data/testcases'))
+MAX_CONTENT_LENGTH = 16*1024*1024
 
 
 class ConfigBase:
