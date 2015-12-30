@@ -1,15 +1,22 @@
 from . import oj
 
 import os
-from flask import render_template, url_for, request, redirect, flash, abort
+from flask import render_template, url_for, request, redirect, flash, abort, session
 from flask.ext.login import login_required, current_user
 from .. import app, db, q
-from ..forms import SubmissionForm
+from ..forms import SubmissionForm, EnterContestForm
 from ..models import Problem, Contest, Submission
 
 from .. import judge
 
 from judge.config import COMPILER_FILEEXT_LIST
+
+def check_enterable(contest):
+    if contest.passcode_hash and\
+            (contest.id not in session.setdefault('contests', [])):
+        return False
+    return True
+
 
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
@@ -34,9 +41,26 @@ def list_status(page = 1):
     return render_template('status.html', submissions=submissions)
 
 
+@oj.route('/enter_contest/<int:cid>', methods=['GET', 'POST'])
+def enter_contest(cid):
+    contest = Contest.query.get_or_404(cid)
+    if not contest.passcode_hash:
+        return redirect(url_for('oj.contest', id = cid))
+    form = EnterContestForm()
+    if form.validate_on_submit():
+        if contest.verify_passcode(form.passcode.data):
+            session.setdefault('contests', []).append(contest.id)
+            return redirect(url_for('oj.contest', id=contest.id))
+        else:
+            form.errors.setdefault('passcode', []).append('Passcode incorrect.')
+    return render_template('enter_contest.html', form = form, contest = contest)
+
+
 @oj.route('/contest/<int:id>')
 def contest(id = 1):
     contest = Contest.query.get_or_404(id)
+    if not check_enterable(contest):
+        return redirect(url_for('oj.enter_contest', cid=contest.id))
     return render_template('show_contest.html', c=contest)
 
 
@@ -47,6 +71,8 @@ def problem(cid = 0, pid = 1):
         problem = Problem.query.get_or_404(pid)
     else:
         contest = Contest.query.get_or_404(cid)
+        if not check_enterable(contest):
+            return redirect(url_for('oj.enter_contest', cid=contest.id))
         try:
             problem = contest.problems[pid-1]
         except IndexError:
@@ -81,6 +107,8 @@ def submit_code(cid = 0, pid = 1):
         problem = Problem.query.get_or_404(pid)
     else:
         contest = Contest.query.get_or_404(cid)
+        if not check_enterable(contest):
+            return redirect(url_for('oj.enter_contest', cid=contest.id))
         try:
             problem = contest.problems[pid-1]
         except IndexError:

@@ -29,9 +29,9 @@ class Contest(db.Model):
     def passcode(self, value):
         self.passcode_hash = generate_password_hash(value)
 
-    def verify_password(self, password):
+    def verify_passcode(self, passcode):
         return self.passcode_hash is None or\
-               check_password_hash(self.passcode_hash, password)
+               check_password_hash(self.passcode_hash, passcode)
 
     # relationships
     problems = db.relationship('Problem', secondary='contest_problem_rel',
