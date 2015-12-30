@@ -4,7 +4,7 @@ from flask import render_template, url_for, request, redirect, flash, jsonify, s
 from flask.ext.login import login_required, login_user, current_user, logout_user
 from .. import app, db, login_manager
 from ..models import User
-from ..forms import LoginForm, UserRegisterForm
+from ..forms import LoginForm, UserRegisterForm, UpdateProfileForm
 
 @auth.route('/login', methods=['GET', 'POST'])
 def user_login():
@@ -36,4 +36,14 @@ def user_register():
         return redirect('/')
     return render_template('register.html', form=form)
 
+@auth.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = UpdateProfileForm(obj = current_user)
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        db.session.commit()
+        flash('Register successful')
+        return redirect('/')
+    return render_template('edit_profile.html', form=form)
 

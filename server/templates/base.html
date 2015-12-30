@@ -1,6 +1,8 @@
 {% extends 'bootstrap/base.html' %}
 
 {% set logged_in = current_user.is_authenticated %}
+<!-- TODO ####################################### --!>
+{% set is_admin = current_user.is_authenticated %}
 
 {% block styles %}
   {{ super() }}
@@ -47,8 +49,13 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-          <li><a href="TODO">Settings</a></li>
+        <li><a href="{{url_for('auth.edit_profile')}}">Profile</a></li>
           <li class="divider" role="separater"></li>
+          {% if is_admin %}
+            <li><a href="{{url_for('admin.edit_problem')}}">Add Problem</a></li>
+            <li><a href="{{url_for('admin.edit_contest')}}">Add Contest</a></li>
+            <li class="divider" role="separater"></li>
+          {% endif %}
           <li><a href="{{url_for('auth.user_logout')}}">Log Out</a></li>
         </ul>
       </li>

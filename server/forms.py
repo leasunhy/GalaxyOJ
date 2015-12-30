@@ -26,6 +26,20 @@ class SubmissionForm(Form):
         if field.data == -1:
             raise ValidationError('Please select language')
 
+class UpdateProfileForm(Form):
+    login_name = TextField('Username', validators = [Required()])
+    password = PasswordField('Password', validators = [Required()])
+    confirmpwd = PasswordField('Confirm password',
+            validators = [Required(), EqualTo('password', message='Passwords must match')])
+    email = TextField('Email', validators = [Email()])
+    # unimportant parts
+    nickname = TextField('Nickname')
+    signature = TextField('Signature')
+    real_name = TextField('Real name')
+    note = TextAreaField('Note')
+
+    submit = SubmitField('Register')
+
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
     password = PasswordField('Password', validators = [Required()])
