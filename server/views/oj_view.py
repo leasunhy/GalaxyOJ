@@ -5,7 +5,7 @@ from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import login_required, current_user
 from .. import app, db, q
 from ..forms import SubmissionForm
-from ..models import Problem, Contest, Submission, User
+from ..models import Problem, Contest, Submission, User, Standing
 
 from .. import judge
 
@@ -82,7 +82,22 @@ def save_to_file(data, submit):
 def save_to_database(job_id):
     job = q.fetch_job(job_id)
     (sid, verdict) = job.result
-    db.session.query(Submission).filter(Submission.id==sid).update(verdict)
+    s = Submission.query.get(sid).update(verdict)
+    if s.contest_id != 0:
+        contest = Contest.query.get(s.contest_id)
+        rc = Standing.query\
+                .filter(Standing.contest_id==s.contest_id)\
+                .filter(Standing.problem_id==s.problem_id)\
+                .filter(Standing.user_id==s.user_id)\
+                .first()
+        if rc is None: 
+            rc = Standing(
+                    contest_id = s.contest_id,
+                    problem_id = s.problem_id,
+                    user_id = s.user_id,
+                )
+        _delta = datetime.now() - contest.start_time
+        rc.add_record(verdict, _delta)
     db.session.commit()
 
 def send_to_judge(submit, problem):
