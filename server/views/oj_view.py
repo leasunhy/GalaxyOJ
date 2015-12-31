@@ -82,8 +82,10 @@ def save_to_file(data, submit):
 def save_to_database(job_id):
     job = q.fetch_job(job_id)
     (sid, verdict) = job.result
-    s = Submission.query.get(sid).update(verdict)
-    if s.contest_id != 0:
+    db.session.query(Submission).filter(Submission.id==sid).update(verdict)
+    db.session.commit()
+    s = Submission.query.get(sid)
+    if s.contest_id:
         contest = Contest.query.get(s.contest_id)
         rc = Standing.query\
                 .filter(Standing.contest_id==s.contest_id)\
@@ -98,6 +100,7 @@ def save_to_database(job_id):
                 )
         _delta = datetime.now() - contest.start_time
         rc.add_record(verdict, _delta)
+        db.session.add(rc)
     db.session.commit()
 
 def send_to_judge(submit, problem):
@@ -135,7 +138,7 @@ def submit_code(cid = 0, pid = 1):
         submit = Submission()
         submit.owner = current_user
         submit.problem = problem
-        submit.contest_id = cid
+        if cid != 0: submit.contest_id = cid
         submit.compiler_id = form.compiler.data
         submit.code_length = len(form.code.data)
         db.session.add(submit)
