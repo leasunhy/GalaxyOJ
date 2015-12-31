@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <h2>Contests</h2>
+        <h2>Contests {% if is_admin %}<a href="{{url_for('admin.new_contest')}}" class="btn btn-success btn-sm">New</a>{% endif %}</h2></h2>
         <table class="table">
             <thead>
                 <tr>
