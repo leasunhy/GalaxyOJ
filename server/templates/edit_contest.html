@@ -64,7 +64,7 @@
                             {% if cid == 0 %}
                             <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
                             {% else %}
-                            <a href="{{url_for('admin.edit_problem', cid=cid, pid=p.id)}}">Edit</a>
+                            <a href="{{url_for('admin.edit_problem', cid=cid, pid=loop.index)}}">Edit</a>
                             {% endif %}
                             /
                             <a href="{{url_for('admin.delete_problem', pid=p.id)}}">Delete</a>
