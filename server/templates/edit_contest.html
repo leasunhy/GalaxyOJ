@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import ckeditor, ckeditor_script_tag %}
 
 {% set verb = 'Add' if cid == 0 else 'Edit' %}
 
@@ -73,8 +74,18 @@
         </div>
 
         <script>
-$(function () {
-    $('#edit_contest_tabs li:eq(1) a').tab('show');
-});
+            $(function () {
+                $('#edit_contest_tabs li:eq(1) a').tab('show');
+            });
         </script>
-        {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+    {{super()}}
+    {{ckeditor_script_tag()}}
+{% endblock %}
+
+{% block body %}
+    {{super()}}
+    {{ckeditor(form.description.name)}}
+{% endblock %}

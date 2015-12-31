@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import ckeditor, ckeditor_script_tag %}
 
 {% set verb = 'Add' if pid == 0 else 'Edit' %}
 
@@ -12,7 +13,7 @@
             {% endfor %}
         {% endfor %}
         <h1>{{ verb }} {{post_type}}</h1>
-        <form action="{{url_for(edit_view, pid=pid)}}" method="POST">
+        <form action="{{url_for(edit_view, id=pid)}}" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.title.label}}
@@ -26,4 +27,14 @@
             {{form.submit(class_="btn btn-default")}}
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{super()}}
+    {{ckeditor_script_tag()}}
+{% endblock %}
+
+{% block body %}
+    {{super()}}
+    {{ckeditor(form.content.name)}}
 {% endblock %}

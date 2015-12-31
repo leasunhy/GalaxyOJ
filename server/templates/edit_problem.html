@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import ckeditor, ckeditor_script_tag %}
 
 {% set verb = 'Add' if pid == 0 else 'Edit' %}
 
@@ -51,10 +52,24 @@
                 {{form.memory_limit(class_="form-control",type="number")}}
             </div>
             {{form.submit(class_="btn btn-default")}}
-            <button class="btn btn-default" type="input" 
-                onclick="window.open('{{url_for('admin.manage_data', pid=pid)}}')"> 
-                Test Cases 
+            <button class="btn btn-default" type="input"
+                onclick="window.open('{{url_for('admin.manage_data', pid=pid)}}')">
+                Test Cases
             </button>
         </form>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    {{super()}}
+    {{ckeditor_script_tag()}}
+{% endblock %}
+
+{% block body %}
+    {{super()}}
+    {{ckeditor(form.problem_desc.name)}}
+    {{ckeditor(form.input_desc.name)}}
+    {{ckeditor(form.output_desc.name)}}
+    {{ckeditor(form.sample_input.name)}}
+    {{ckeditor(form.sample_output.name)}}
 {% endblock %}

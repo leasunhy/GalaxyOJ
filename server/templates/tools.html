@@ -1,0 +1,13 @@
+{% macro ckeditor(name) %}
+    <script type="text/javascript">
+        $(function() {
+            CKEDITOR.replace( '{{name}}', {
+                customConfig: '/static/js/ckeditor_config.js'
+            } );
+        });
+    </script>
+{% endmacro %}
+
+{% macro ckeditor_script_tag() %}
+    <script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
+{% endmacro %}
