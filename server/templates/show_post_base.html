@@ -19,7 +19,7 @@
     {% endblock %}
     <div class="panel panel-default">
         <div class="panel-body">
-            {{post.content}}
+            {{post.content | safe}}
         </div>
         <div class="panel-footer text-right">Something here...</div>
     </div>

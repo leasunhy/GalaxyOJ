@@ -11,26 +11,26 @@
         <div class="col-md-12 col-lg-9">
             <div class="panel panel-default">
                 <div class="panel-heading">Problem Description</div>
-                <div class="panel-body">{{p.problem_desc}}</div>
+                <div class="panel-body">{{p.problem_desc | safe}}</div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Input</div>
-                <div class="panel-body">{{p.input_desc}}</div>
+                <div class="panel-body">{{p.input_desc | safe}}</div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Output</div>
-                <div class="panel-body">{{p.output_desc}}</div>
+                <div class="panel-body">{{p.output_desc | safe}}</div>
             </div>
             {% if p.sample_input %}
             <div class="panel panel-default">
                 <div class="panel-heading">Sample Input</div>
-                <div class="panel-body">{{p.sample_input}}</div>
+                <div class="panel-body">{{p.sample_input | safe}}</div>
             </div>
             {% endif %}
             {% if p.sample_output %}
             <div class="panel panel-default">
                 <div class="panel-heading">Sample Output</div>
-                <div class="panel-body">{{p.sample_output}}</div>
+                <div class="panel-body">{{p.sample_output | safe}}</div>
             </div>
             {% endif %}
             {% if p.source %}
