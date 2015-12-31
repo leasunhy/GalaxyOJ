@@ -18,17 +18,6 @@ DB_Session = sessionmaker(bind=engine)
 session = DB_Session()
 BaseModel = declarative_base()
 
-class Submission(BaseModel):
-    __tablename__ = 'submission'
-    id = Column(Integer, primary_key=True)
-    verdict = Column(Enum('Accepted', 'Wrong Answer', 'Runtime Error',\
-        'Time Limit Exceeded', 'Memory Limit Exceeded', 'Restrict Function',\
-        'Output Limit Exceeded', 'Presentation Error', 'Compile Error',\
-        name='oj_verdict_types'))
-    time_usage = Column(Integer)
-    memory_usage = Column(Integer)
-    log = Column(String(1024))
-
 def compile(source_path, compiler_id, exec_path): #print("[log] compile:")
     #print(COMPILER_LIST[compiler_id])
     #print(source_path)
@@ -108,7 +97,4 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
 
 def judge(sid, *args):
     verdict = judge_program(*args)
-    print(sid,verdict)
-    session.query(Submission).filter(Submission.id==sid).update(verdict)
-    session.commit()
-
+    return (sid,verdict)

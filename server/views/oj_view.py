@@ -79,6 +79,12 @@ def save_to_file(data, submit):
     file.close()
     return filename
 
+def save_to_database(job_id):
+    job = q.fetch_job(job_id)
+    (sid, verdict) = job.result
+    db.session.query(Submission).filter(Submission.id==sid).update(verdict)
+    db.session.commit()
+
 def send_to_judge(submit, problem):
     sid = submit.id
     source_path = submit.filename
@@ -86,11 +92,16 @@ def send_to_judge(submit, problem):
     compiler_id = submit.compiler_id
     time_limit = problem.time_limit
     memory_limit = problem.memory_limit
-    job = q.enqueue_call(
+    judge_job = q.enqueue_call(
             func = judge,
             args = (sid, source_path, testcase_folder,
                 compiler_id, time_limit, memory_limit),
             result_ttl = 5000)
+    upd_job = q.enqueue_call(
+            func = save_to_database,
+            depends_on = judge_job,
+            args = (judge_job.id,),
+            )
 
 @oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
 @oj.route('/contest/<int:cid>/submit/<int:pid>', methods = ['GET', 'POST'])
@@ -118,5 +129,6 @@ def submit_code(cid = 0, pid = 1):
         send_to_judge(submit, problem)
         return redirect('oj/status')
     return render_template('submit_code.html', form = form, cid = cid, pid = pid,
+            contest = contest if cid else None,
             problem = problem)
 
