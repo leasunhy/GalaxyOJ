@@ -1,8 +1,7 @@
 {% extends 'bootstrap/base.html' %}
 
 {% set logged_in = current_user.is_authenticated %}
-<!-- TODO ####################################### -->
-{% set is_admin = current_user.is_authenticated %}
+{% set is_admin = logged_in and current_user.privilege_level >= 1 %}
 
 {% block styles %}
   {{ super() }}
