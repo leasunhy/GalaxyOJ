@@ -5,7 +5,7 @@ from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import login_required, current_user
 from .. import app, db, q
 from ..forms import SubmissionForm
-from ..models import Problem, Contest, Submission
+from ..models import Problem, Contest, Submission, User
 
 from .. import judge
 
@@ -33,28 +33,31 @@ def list_status(page = 1):
     return render_template('status.html', submissions=submissions)
 
 def sum_up_verdicts(verdicts):
-    if verdicts is None or verdicts == []:
-        return ''
-    if 'Accepted' in verdicts:
-        return 'Accepted'
-    return 'Stucked%d'%len(verdicts)
+    if verdicts is None: return (False, 0)
+    isAC = 'Accepted' in map(lambda u:u[1], verdicts)
+    return (isAC, len(verdicts))
 
-def count_ac(summary):
-    return sum([verdict == 'Accepted' for verdict in summary])
-
+from sqlalchemy import distinct
 @oj.route('/contest/<int:id>')
 def contest(id = 1):
     contest = Contest.query.get_or_404(id)
-    users = db.session.query(distinct(User.name)).filter(Submission.contest==contest)
+    users = list(db.session.query(distinct(User.id))\
+            .filter(Submission.contest_id==contest.id))
+    standing = []
     for u in users:
-        verdict_list = []
-        q = db.session.query(sum_up_verdicts(Submission.verdict))\
-                .filter(Submission.contest==contest and User.id == u.id)\
-                .group_by(Problem)
-        res = list(q)
-        verdict_list.append(res)
-        all_ac.append(count_ac(res))
-    return render_template('show_contest.html', c=contest)
+        verdicts = []
+        for p in contest.problems:
+            q = db.session.query(Submission.problem_id,Submission.verdict)\
+                    .filter(Submission.contest_id==contest.id)\
+                    .filter(Submission.problem_id==p.id)\
+                    .filter(Submission.user_id == u[0])
+            result = sum_up_verdicts(list(q))
+            verdicts.append(result)
+        ac_num = sum(u[0] for u in verdicts)
+        standing.append((User.query.get(u[0]), ac_num, verdicts))
+    standing.sort(key = lambda u:u[1], reverse=True)
+    print(standing)
+    return render_template('show_contest.html', c=contest, standing=standing)
 
 @oj.route('/problem/<int:pid>')
 @oj.route('/contest/<int:cid>/problems/<int:pid>')
@@ -106,6 +109,7 @@ def submit_code(cid = 0, pid = 1):
         submit = Submission()
         submit.owner = current_user
         submit.problem = problem
+        submit.contest_id = cid
         submit.compiler_id = form.compiler.data
         submit.code_length = len(form.code.data)
         db.session.add(submit)

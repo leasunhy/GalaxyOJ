@@ -46,7 +46,7 @@
                 <thead>
                     <tr>
                         <th>User</th>
-                        <th>problems</th>
+                        <th>Mark</th>
                         {% for p in c.problems %}
                         <th>{{p.title}}</th>
                         {% endfor %}
@@ -54,12 +54,16 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {%for item in standing %}
                     <tr>
-                        <td> mstczuo </td>
-                        <td> 3 </td>
-                        <td> 123 </td>
-                        <td> - </td>
+                        <td> {{ item[0].display_name }} </td>
+                        <td> {{ item[1] * 100 }} </td>
+                        {% for (ac, num) in item[2] %}
+                            <td> {{ ac,num }} </td>
+                        {% endfor %}
+                        <td> {{ item[1] }} </td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
