@@ -44,11 +44,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Actions</div>
                 <div class="panel-body">
-                    <a href="{{url_for('oj.submit_code', cid=cid, pid=pid) if cid else url_for('oj.submit_code', pid=pid)}}" class="btn btn-success" role="button">
+                    <a href="{{url_for('oj.contest_submit_code', cid=cid, pid=pid) if cid else url_for('oj.submit_code', pid=pid)}}" class="btn btn-success" role="button">
                         Submit
                     </a>
                     {% if is_admin %}
-                        <a href="{{url_for('admin.edit_problem', pid=p.id)}}" class="btn btn-primary" role="button">Edit</a>
+                        {% if cid == 0 %}
+                            <a href="{{url_for('admin.edit_problem', pid=p.id)}}" class="btn btn-primary" role="button">Edit</a>
+                        {% else %}
+                            <a href="{{url_for('admin.edit_contest_problem', pid=pid, cid=cid)}}" class="btn btn-primary" role="button">Edit</a>
+                        {% endif %}
                         <a href="{{url_for('admin.delete_problem', pid=p.id)}}" class="btn btn-danger" role="button">Delete</a>
                     {% endif %}
                 </div>

@@ -1,6 +1,6 @@
 from . import admin
 
-from flask import render_template, url_for, request, redirect, flash
+from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import current_user, login_required
 from .. import app, db
 from ..forms import EditProblemForm, EditContestForm
@@ -14,50 +14,61 @@ from ..tools import privilege_required
 
 import os
 
-@admin.route('/edit_problem', methods=['GET', 'POST'])
-@admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
-@admin.route('/edit_contest/<int:cid>/problem', methods=['GET', 'POST'])
+
+@admin.route('/new_problem', methods=['GET', 'POST'])
+@privilege_required(1)
+def new_problem():
+    return edit_problem(pid=0)
+
+
+@admin.route('/new_contest_problem/<int:cid>', methods=['GET', 'POST'])
+@privilege_required(1)
+def new_contest_problem(cid):
+    return edit_contest_problem(cid=cid, pid=0)
+
+
 @admin.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
 @privilege_required(1)
-def edit_problem(cid = 0, pid = 0):
-    # TODO (mstczuo <mstczuo@163.com>)
-    #if current_user is None:
-    #    return render_template('fatal.html', info="Please login first")
-    #if current_user.privilege_level == 0:
-    #    return render_template('fatal.html', info="Permission denied")
-    if cid != 0:
-        contest = Contest.query.get(cid)
-        if not contest:
-            flash('Contest (cid = %d) not found.' % cid)
-            return redirect('/')
-        try:
-            prob = Problem() if pid == 0 else contest.problems[pid]
-        except IndexError:
-            flash('Contest (cid = %d) does not have %d-th problem.') % (cid, pid)
-            return redirect('/')
+def edit_contest_problem(cid, pid):
+    contest = Contest.query.get_or_404(cid)
+    try:
+        prob = Problem() if pid == 0 else contest.problems[pid-1]
+    except IndexError:
+        abort(404)
+    form = EditProblemForm(obj=prob)
+    if form.validate_on_submit():
+        form.populate_obj(prob)
         prob.visible = prob.visible or contest.end_time < datetime.now()
-    else:
-        prob = Problem() if pid == 0 else Problem.query.get(pid)
-        prob.visible = True
-    if prob is None:
-        flash('Problem (pid = %d) not found.' % pid)
-        return redirect('/')
-    form = EditProblemForm(obj = prob)
+        contest.problems.append(prob)
+        db.session.add(prob)
+        db.session.add(contest)
+        db.session.commit()
+        flash('Edit problem successful.')
+        return redirect(url_for('admin.edit_contest', cid=cid))
+    if form.errors:
+        for f, e in form.errors.items():
+            flash("%s: %s" % (f, e))
+    return render_template('edit_problem.html', form=form, pid=pid)
+
+
+@admin.route('/edit_problem/<int:pid>', methods=['GET', 'POST'])
+@privilege_required(1)
+def edit_problem(pid=0):
+    prob = Problem() if pid == 0 else Problem.query.get_or_404(pid)
+    prob.visible = True
+    form = EditProblemForm(obj=prob)
     if form.validate_on_submit():
         form.populate_obj(prob)
         db.session.add(prob)
         db.session.commit()
         flash('Edit problem successful.')
-        if cid == 0:
-            return redirect(url_for('oj.list_problems'))
-        else:
-            contest.problems.append(prob)
-            return redirect(url_for('admin.edit_contest', cid=cid))
-    return render_template('edit_problem.html', form=form, pid=pid, cid=cid)
+        return redirect(url_for('oj.list_problems'))
+    return render_template('edit_problem.html', form=form, pid=pid)
+
 
 @admin.route('/delete_problem/<int:pid>')
 @privilege_required(1)
-def delete_problem(pid = 0):
+def delete_problem(pid=0):
     problem = Problem.query.get(pid)
     if not problem:
         flash('Contest (pid = %d) not found.' % pid)
@@ -67,15 +78,16 @@ def delete_problem(pid = 0):
     flash('Edit delete successful.')
     return redirect(url_for('oj.list_problems'))
 
-@admin.route('/edit_contest', methods=['GET', 'POST'])
+
+@admin.route('/new_contest', methods=['GET', 'POST'])
+@privilege_required(1)
+def new_contest():
+    return edit_contest(cid=0)
+
+
 @admin.route('/edit_contest/<int:cid>', methods=['GET', 'POST'])
 @privilege_required(1)
-def edit_contest(cid = 0):
-    # TODO (mstczuo <mstczuo@163.com>)
-    #if current_user is None:
-    #    return render_template('fatal.html', info="Please login first")
-    #if current_user.privilege_level == 0:
-    #    return render_template('fatal.html', info="Permission denied")
+def edit_contest(cid=0):
     if cid != 0:
         contest = Contest.query.get(cid)
         if not contest:
@@ -92,12 +104,13 @@ def edit_contest(cid = 0):
         db.session.commit()
         flash('Edit contest successful.')
         return redirect(url_for('oj.list_contests'))
-    return render_template('edit_contest.html', form=form, cid=cid, \
-            problems=[] if cid == 0 else problist)
+    return render_template('edit_contest.html', form=form, cid=cid,
+                           problems=[] if cid == 0 else problist)
+
 
 @admin.route('/delete_contest/<int:cid>')
 @privilege_required(1)
-def delete_contest(cid = 0):
+def delete_contest(cid=0):
     contest = Contest.query.get(cid)
     if not contest:
         flash('Contest (cid = %d) not found.' % cid)
@@ -107,12 +120,14 @@ def delete_contest(cid = 0):
     flash('Edit delete successful.')
     return redirect(url_for('oj.list_contests'))
 
+
 @admin.route('/users')
 @admin.route('/users/<int:page>', methods=['GET', 'POST'])
 @privilege_required(1)
 def list_users(page=1):
     users = User.query.paginate(page=page, per_page=20).items
     return render_template('users.html', users=users)
+
 
 @admin.route('/delete_user/<int:uid>')
 @privilege_required(1)
@@ -126,9 +141,11 @@ def delete_user(uid):
     flash('Edit problem successful')
     return redirect(url_for('admin.users'))
 
+
 def is_valid_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in set(['in', 'out'])
+
 
 @admin.route('/manage_data/<int:pid>', methods=['GET', 'POST'])
 @privilege_required(1)
@@ -149,15 +166,17 @@ def manage_data(pid):
     outfiles = glob.glob(os.path.join(datadir, "*.out"))
     outfiles.sort()
     fun = lambda st : st[len(datadir) + 1 :]
-    return render_template('upload_data.html', pid = pid,
-            infiles = map(fun, infiles),
-            outfiles = map(fun, outfiles))
+    return render_template('upload_data.html', pid=pid,
+                           infiles=map(fun, infiles),
+                           outfiles=map(fun, outfiles))
+
 
 @admin.route('/delete_testcase/<int:pid>/<fname>')
 @privilege_required(1)
 def delete_testcase(pid, fname):
     datadir = os.path.join(app.config['TESTCASE_FOLDER'], str(pid))
     filename = safe_join(datadir, fname)
-    if os.path.exists(filename): os.remove(filename)
+    if os.path.exists(filename):
+        os.remove(filename)
     return redirect(url_for('admin.manage_data', pid=pid))
 

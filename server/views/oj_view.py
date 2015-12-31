@@ -98,10 +98,16 @@ def send_to_judge(submit, problem):
                 compiler_id, time_limit, memory_limit),
             result_ttl = 5000)
 
-@oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
+
 @oj.route('/contest/<int:cid>/submit/<int:pid>', methods = ['GET', 'POST'])
 @login_required
-def submit_code(cid = 0, pid = 1):
+def contest_submit_code(cid, pid):
+    return submit_code(cid=cid, pid=pid)
+
+
+@oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
+@login_required
+def submit_code(pid, cid=0):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
     else:
@@ -123,7 +129,7 @@ def submit_code(cid = 0, pid = 1):
         db.session.commit()
         submit.filename = save_to_file(form.code.data, submit)
         send_to_judge(submit, problem)
-        return redirect('oj/status')
+        return redirect(url_for('oj.list_status'))
     return render_template('submit_code.html', form = form, cid = cid, pid = pid,
-            problem = problem)
+                           problem = problem)
 

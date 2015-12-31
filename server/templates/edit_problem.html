@@ -13,7 +13,7 @@
             {% endfor %}
         {% endfor %}
         <h1>{{ verb }} problem</h1>
-        <form action="{{url_for('admin.edit_problem',pid=pid,cid=cid)}}" method="POST">
+        <form method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.title.label}}

@@ -62,15 +62,15 @@
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
                         <td>
-                            <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
+                            <a href="{{url_for('admin.edit_contest_problem', pid=p.id, cid=cid)}}">Edit</a>
                             /
-                            <a href="{{url_for('admin.delete_problem', pid=p.id)}}">Delete</a>
+                            <a href="{{url_for('admin.delete_problem', pid=p.id, cid=cid)}}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button class="btn btn-primary" type="input" onclick="window.open('{{url_for('admin.edit_problem', cid=cid)}}')"> New problem </button>
+            <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
         </div>
 
         <script>
