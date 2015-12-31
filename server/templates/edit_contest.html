@@ -48,6 +48,7 @@
             </form>
         </div>
         <div class="tab-pane fade" id="problems">
+            {% if cid != 0 %}
             <table class="table">
                 <thead>
                     <tr>
@@ -71,6 +72,9 @@
                 </tbody>
             </table>
             <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
+            {% else %}
+                <p>Please create the contest before adding problems to it.</p>
+            {% endif %}
         </div>
 
         <script>
