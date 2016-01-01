@@ -51,9 +51,9 @@ body {
 
 /* custom pills color */
 .nav-pills > li.active > a,
-.nav-pills > li.active > a:focus, 
+.nav-pills > li.active > a:focus,
 .nav-pills > li.active > a:hover {
-    background-color: goldenrod;
+    background-color: golden;
 }
 
 .td-ac {
@@ -70,6 +70,3 @@ body {
     text-align: center;
 }
 
-span.label-hint {
-    color: gray;
-}
