@@ -63,7 +63,7 @@ class ManageUserProfile(EditUserProfile):
             choices=[(0, 'Normal'), (1, 'Administrator')])
     def validate_privilege_level(self, field):
         if not field.data in {0, 1}:
-            raise ValidationError('Privilege lever invalid')
+            raise ValidationError('Privilege level invalid')
 
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
