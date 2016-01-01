@@ -3,14 +3,14 @@ from . import admin
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import current_user, login_required
 from .. import app, db
-from ..forms import EditProblemForm, EditContestForm, EditUserProfile
+from ..forms import EditProblemForm, EditContestForm, EditUserProfile, ManageUserProfile
 from ..models import Problem, Contest, User
 
 from werkzeug import secure_filename
 from werkzeug.security import safe_join
 
 from datetime import datetime
-from ..tools import privilege_required
+from ..tools import privilege_required, root_required
 
 import os
 
@@ -129,6 +129,23 @@ def list_users(page=1):
     return render_template('users.html', users=users)
 
 
+@admin.route('/manage_user/<int:uid>', methods=['GET', 'POST'])
+@root_required()
+def manage_user(uid):
+    user = User.query.get(uid)
+    if user is None:
+        flash('User <%d> not found' % (uid))
+        redirect('/')
+    form = ManageUserProfile(obj = user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        flash('Update successful')
+        return redirect('/')
+    return render_template('manage_user.html', form=form, uid=uid)
+
+
 @admin.route('/delete_user/<int:uid>')
 @privilege_required(1)
 def delete_user(uid):
@@ -189,9 +206,10 @@ def edit_user(uid):
         redirect('/')
     form = EditUserProfile(obj = user)
     if form.validate_on_submit():
-        form.populate_obj(current_user)
+        form.populate_obj(user)
+        db.session.add(user)
         db.session.commit()
-        flash('Register successful')
+        flash('Update successful')
         return redirect('/')
     return render_template('edit_user.html', form=form, uid=uid)
 

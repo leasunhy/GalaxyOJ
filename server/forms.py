@@ -57,6 +57,14 @@ class EditUserProfile(Form):
     note = TextAreaField('Note')
     submit = SubmitField('Edit')
 
+class ManageUserProfile(EditUserProfile):
+    privilege_level = SelectField('Set privilege level', 
+            coerce=int, 
+            choices=[(0, 'Normal'), (1, 'Administrator')])
+    def validate_privilege_level(self, field):
+        if not field.data in {0, 1}:
+            raise ValidationError('Privilege lever invalid')
+
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
     password = PasswordField('Password', validators = [Required()])
