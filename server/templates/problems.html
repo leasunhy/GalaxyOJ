@@ -12,7 +12,7 @@
                 <tr>
                     <th>id</th>
                     <th>Title</th>
-                    {% if admin %}
+                    {% if is_admin %}
                     <th>Modify</th>
                     {% endif %}
                 </tr>
@@ -22,7 +22,7 @@
                     <tr>
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
-                        {% if admin %}
+                        {% if is_admin %}
                         <td>
                             <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
                             /
