@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import pagination %}
 
 {% set current_view = 'Problems' %}
 
 {% block title %}Problems - Galaxy OJ{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
         <h2>Problems {% if is_admin %}<a href="{{url_for('admin.new_problem')}}" class="btn btn-success btn-sm">New</a>{% endif %}</h2></h2>
         <table class="table">
@@ -33,5 +34,6 @@
                 {% endfor %}
             </tbody>
         </table>
+        {{ pagination(page, all_page, 'oj.list_problems') }}
     </div>
 {% endblock %}

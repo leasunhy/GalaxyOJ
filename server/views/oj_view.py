@@ -26,14 +26,16 @@ def check_enterable(contest):
 def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
                     .order_by(Problem.id).paginate(page=page, per_page=20).items
-    return render_template('problems.html', problems=problems, admin=True)
+    all_page = (Problem.query.count() + 19) // 20
+    return render_template('problems.html', problems=problems, page=page, all_page = all_page)
 
 
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
     contests = Contest.query.paginate(page=page, per_page=20).items
-    return render_template('contests.html', contests=contests, admin=True)
+    all_page = (Contest.query.count() + 19) // 20
+    return render_template('contests.html', contests=contests, page=page, all_page = all_page)
 
 
 @oj.route('/status')
@@ -41,7 +43,8 @@ def list_contests(page = 1):
 def list_status(page = 1):
     submissions = Submission.query.order_by(Submission.id.desc())\
                                   .paginate(page=page, per_page=20).items
-    return render_template('status.html', submissions=submissions)
+    all_page = (Submission.query.count() + 19) // 20
+    return render_template('status.html', submissions=submissions, page=page, all_page = all_page)
 
 
 @oj.route('/enter_contest/<int:cid>', methods=['GET', 'POST'])
@@ -81,8 +84,15 @@ def contest(id = 1):
         penalty = sum(u[1] for u in verdicts)
         standing.append((User.query.get(u[0]), ac_num, penalty, verdicts))
     standing.sort(key = lambda u:(u[1],u[2]), reverse=True)
-    print(standing)
-    return render_template('show_contest.html', c=contest, standing=standing)
+    accepted_problems = set()
+    if current_user.is_authenticated:
+        q = db.session.query(Standing.problem_id)\
+                .filter(Standing.user_id == u[0])\
+                .filter(Standing.contest_id == contest.id)\
+                .filter(Standing.actime > 0)
+        accepted_problems = set(list(q))
+    return render_template('show_contest.html', c=contest, 
+            standing=standing, acs = accepted_problems)
 
 
 @oj.route('/problem/<int:pid>')
@@ -131,7 +141,7 @@ def save_to_database(job_id):
         _delta = datetime.datetime.now() - contest.start_time
         rc.add_record(verdict['verdict'], _delta)
         db.session.add(rc)
-    db.session.commit()
+        db.session.commit()
 
 
 def send_to_judge(submit, problem):

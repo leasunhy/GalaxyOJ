@@ -3,7 +3,7 @@ from . import admin
 from flask import render_template, url_for, request, redirect, flash, abort
 from flask.ext.login import current_user, login_required
 from .. import app, db
-from ..forms import EditProblemForm, EditContestForm
+from ..forms import EditProblemForm, EditContestForm, EditUserProfile
 from ..models import Problem, Contest, User
 
 from werkzeug import secure_filename
@@ -179,4 +179,19 @@ def delete_testcase(pid, fname):
     if os.path.exists(filename):
         os.remove(filename)
     return redirect(url_for('admin.manage_data', pid=pid))
+
+
+@admin.route('/edit_user/<int:uid>', methods=['GET', 'POST'])
+def edit_user(uid):
+    user = User.query.get(uid)
+    if user is None:
+        flash('User <%d> not found' % (uid))
+        redirect('/')
+    form = EditUserProfile(obj = user)
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        db.session.commit()
+        flash('Register successful')
+        return redirect('/')
+    return render_template('edit_user.html', form=form, uid=uid)
 

@@ -65,6 +65,19 @@
 </nav>
 {% endblock %}
 
+{% block content %}
+{% block page_content %} {% endblock %}
+<div id="footer">
+    <hr></hr>
+    <p>Galaxy Online Judge System</p>
+    <p id="about">
+        Powered by 
+        <a href="mailto:mstczuo@gmail.com" class="black">mstczuo</a> and
+        <a href="mailto:leasunhy@gmail.com" class="black">leasunhy</a>
+    </p>
+</div>
+{% endblock %}
+
 {% macro flash(type='alert-success') %}
   {% with messages = get_flashed_messages() %}
     {% if messages %}

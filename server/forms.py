@@ -29,9 +29,10 @@ class SubmissionForm(Form):
 
 class UpdateProfileForm(Form):
     login_name = TextField('Username', validators = [Required()])
-    password = PasswordField('Password', validators = [Required()])
-    confirmpwd = PasswordField('Confirm password',
-            validators = [Required(), EqualTo('password', message='Passwords must match')])
+    old_password = PasswordField('Old Password', validators = [Required()])
+    new_password = PasswordField('New Password')
+    confirm_newpwd = PasswordField('Confirm password',
+            validators = [EqualTo('new_password', message='Passwords must match')])
     email = TextField('Email', validators = [Email()])
     # unimportant parts
     nickname = TextField('Nickname')
@@ -39,7 +40,22 @@ class UpdateProfileForm(Form):
     real_name = TextField('Real name')
     note = TextAreaField('Note')
 
-    submit = SubmitField('Register')
+    submit = SubmitField('Update')
+
+    def validate_old_password(self, field):
+        u = User.query.filter_by(login_name=self.login_name.data).first()
+        if u is None or not u.verify_password(field.data):
+            raise ValidationError('Password is invalid.')
+
+class EditUserProfile(Form):
+    login_name = TextField('Username', validators = [Required()])
+    password = PasswordField('Password')
+    email = TextField('Email', validators = [Email()])
+    nickname = TextField('Nickname')
+    signature = TextField('Signature')
+    real_name = TextField('Real name')
+    note = TextAreaField('Note')
+    submit = SubmitField('Edit')
 
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
@@ -100,26 +116,14 @@ class EditTutorialForm(EditPostForm):
 
 
 class EditSolutionForm(EditPostForm):
-    problem_id = IntegerField('Problem ID')
+    problem_id = IntegerField('Problem ID', validators=[Required()])
 
     def validate_problem_id(self, field):
-        if not Problem.query.get(field.data):
+        if not field.data or not Problem.query.get(field.data):
             raise ValidationError('No such problem.')
 
 
 class EnterContestForm(Form):
     passcode = PasswordField('Contest Password', validators=[Required()])
     submit = SubmitField('Submit')
-
-
-#class CommentForm(Form):
-#    nickname = TextField('NickName')
-#    email = TextField('email')
-#    text = TextAreaField('text')
-#
-#class PostForm(Form):
-#    title = TextField('title', validators = [Required()])
-#    shortcut = TextField('shortcut', validators = [Required()])
-#    tag = SelectField('tag', choices=[('d', 'Default'),('a', 'ACM'),('r','Research')])
-#    text = TextAreaField('text', id="editor_code")
 

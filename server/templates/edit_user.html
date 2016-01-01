@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Edit Profile - Galaxy OJ{% endblock %}
+{% block title %}User Management - Galaxy OJ{% endblock %}
 
 {% block page_content %}
     <div class="container">
@@ -9,25 +9,17 @@
                 <div class="alert alert-danger" role='alert'>{{e}}</div>
             {% endfor %}
         {% endfor %}
-        <h1>Edit Profile</h1>
-        <p>If you don't want to change your password, please leave the "password" field empty. </p>
-        <form action="{{url_for('auth.edit_profile')}}" method="POST">
+        <h1>User Management</h1>
+        <form action="{{url_for('admin.edit_user', uid=uid)}}" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.login_name.label}}
                 {{form.login_name(class_="form-control")}}
             </div>
             <div class="form-group">
-                {{form.old_password.label}}
-                {{form.old_password(class_="form-control",type="password")}}
-            </div>
-            <div class="form-group">
-                {{form.new_password.label}}
-                {{form.new_password(class_="form-control",type="password")}}
-            </div>
-            <div class="form-group">
-                {{form.confirm_newpwd.label}}
-                {{form.confirm_newpwd(class_="form-control",type="password")}}
+                {{form.password.label}}
+            <span>(Hint: If you don't want to change the password, please leave it empty.)</span>
+                {{form.password(class_="form-control",type="password")}}
             </div>
             <div class="form-group">
                 {{form.email.label}}
@@ -49,3 +41,4 @@
         </form>
     </div>
 {% endblock %}
+

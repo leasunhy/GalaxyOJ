@@ -4,7 +4,7 @@
 
 {% block title %}{{c.title}} - Galaxy OJ{% endblock %}
 
-{% block content %}
+{% block page_content %}
 <div class="container">
     <h2>{{c.title}}</h2>
     <div class="row">
@@ -33,7 +33,11 @@
                 <tbody>
                     {% for p in c.problems %}
                     <tr>
-                        <td>TODO</td>
+                        {% if p.id in acs %}
+                        <td>AC</td>
+                        {% else %}
+                        <td>--</td>
+                        {% endif %}
                         <th scope="row">{{loop.index}}</th>
                         <td><a href="{{url_for('oj.problem', cid=c.id, pid=loop.index)}}">{{p.title}}</a></td>
                     </tr>
@@ -49,7 +53,7 @@
                         <th>Solved</th>
                         <th>penalty</th>
                         {% for p in c.problems %}
-                        <th>{{p.title}}</th>
+                        <th>{{loop.index}}</th>
                         {% endfor %}
                     </tr>
                 </thead>

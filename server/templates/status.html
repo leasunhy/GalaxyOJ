@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import pagination %}
 
 {% set current_view = 'Status' %}
 
 {% block title %}Status - Galaxy OJ{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
         <h2>Status</h2>
         <table class="table table-striped" id="status-table">
@@ -35,5 +36,6 @@
                 {% endfor %}
             </tbody>
         </table>
+        {{ pagination(page, all_page, 'oj.list_status') }}
     </div>
 {% endblock %}

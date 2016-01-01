@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block page_content %}
 <div class="container">
     <h2>{% block heading %}{% endblock %} {% if is_admin %}<a href="{{url_for(post_new_view)}}" class="btn btn-success btn-sm">New</a>{% endif %}</h2>
     {% block list %}

@@ -2,7 +2,7 @@
 
 {% block title %}Submit - Galaxy OJ{% endblock %}
 
-{% block content %}
+{% block page_content %}
     <div class="container">
         <h1>Submit Code</h1>
         {% for errs in form.errors.values() %}
@@ -17,7 +17,7 @@
         {% if cid == 0 %}
         <form action="{{url_for('oj.submit_code', pid=pid)}}" method="POST">
         {% else %}
-        <form action="{{url_for('oj.submit_code', cid=cid, pid=pid)}}" method="POST">
+        <form action="{{url_for('oj.contest_submit_code', cid=cid, pid=pid)}}" method="POST">
         {% endif %}
             {{ form.hidden_tag() }}
             <div class="form-group">

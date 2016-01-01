@@ -37,14 +37,16 @@ def user_register():
         return redirect('/')
     return render_template('register.html', form=form)
 
+
 @auth.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
     form = UpdateProfileForm(obj = current_user)
     if form.validate_on_submit():
         form.populate_obj(current_user)
+        current_user.password = form.new_password.data
         db.session.commit()
-        flash('Register successful')
+        flash('Update successful')
         return redirect('/')
     return render_template('edit_profile.html', form=form)
 
