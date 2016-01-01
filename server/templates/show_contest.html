@@ -19,7 +19,7 @@
     </div>
     <div id="edit_contest_tabsContent" class="tab-content">
         <div class="tab-pane fade in active" id="basic">
-            {{c.description}}
+            {{c.description | safe}}
         </div>
         <div class="tab-pane fade" id="problems">
             <table class="table">
