@@ -1,7 +1,8 @@
 from flask.ext.wtf import Form
 from wtforms import ValidationError
 from wtforms.fields import TextField, TextAreaField,\
-        BooleanField, SelectField, SubmitField, PasswordField, IntegerField
+        BooleanField, SelectField, SubmitField,\
+        PasswordField, IntegerField, DateTimeField
 from wtforms.validators import Required, Email, EqualTo
 
 from .models import User, Problem
@@ -94,11 +95,11 @@ class EditProblemForm(Form):
     submit = SubmitField('Submit')
 
 class EditContestForm(Form):
-    title = TextField('Title', validators = [Required()])
+    title = TextField('Title', validators=[Required()])
     description = TextAreaField('Description')
-    start_time = TextField('Start time', validators=[Required()])
-    end_time = TextField('End time', validators = [Required()])
-    password = TextField('Password')
+    start_time = DateTimeField('Start time', validators=[Required()])
+    end_time = DateTimeField('End time', validators=[Required()])
+    passcode = TextField('Password')
     submit = SubmitField('Submit')
 
     def validate_end_time(self, field):
