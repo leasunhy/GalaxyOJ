@@ -15,7 +15,7 @@ def upload_image():
         return '.' in filename and \
                filename.rsplit('.', 1)[1].lower() in ['jpg', 'png']
 
-    file = request.files['image']
+    file = request.files['upload']
     error = ''
     if not file:
         return jsonify(uploaded=0, error={'message': 'Please select a file.'})
@@ -24,13 +24,13 @@ def upload_image():
     else:
         filename = file.filename
         extension = '.' + filename.rsplit('.', 1)[1]
-        filename = hashlib.md5(filename + str(datetime.utcnow())).hexdigest() + extension
+        filename = hashlib.md5((filename + str(datetime.utcnow())).encode('utf-8')).hexdigest() + extension
         filepath = safe_join(current_app.config['IMAGE_UPLOAD_FOLDER'], filename)
         if not filepath:
             return jsonify(uploaded=0, error={'message': 'Filename illegal.'})
         file.save(filepath)
         callback = request.args.get('CKEditorFuncNum')
-        url = url_for('upload.fetch', filename=filename, _external=True)
+        url = url_for('upload.fetch', filename=filename)
         res = """
             <script type="text/javascript">window.parent.CKEDITOR.tools.callFunction(%s, '%s', '%s')</script>
         """ % (callback, url, error)
