@@ -23,7 +23,7 @@
                 <th scope="row"><a href="{{post_url}}">{{p.title}}</a></th>
                 <td>by <a><strong>{{p.owner.display_name}}</strong></a></td>
                 {% block meta_data scoped %} {% endblock %}
-                <td>{{p.create_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                <td>{{p.create_time | dtformat}}</td>
                 {% if is_admin %}
                 <td><a href="{{url_for(post_edit_view, id=p.id)}}">Edit</a> / <a href="{{url_for('post.delete_post', id=p.id)}}">Delete</a></td>
                 {% endif %}

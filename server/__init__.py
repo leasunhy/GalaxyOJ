@@ -25,3 +25,7 @@ from .views import views
 for view, prefix in views:
     app.register_blueprint(view, url_prefix=prefix)
 
+# custom jinja2 filters
+from .tools import datetime_format
+app.jinja_env.filters['dtformat'] = datetime_format
+

@@ -5,6 +5,7 @@ from wtforms.fields import TextField, TextAreaField,\
 from wtforms.validators import Required, Email, EqualTo
 
 from .models import User, Problem
+from .tools import sanitize
 
 from judge.config import COMPILER_NAME_LIST, COMPILER_CNT
 
@@ -66,11 +67,11 @@ class UserRegisterForm(Form):
 
 class EditProblemForm(Form):
     title = TextField('Title', validators = [Required()])
-    problem_desc = TextAreaField('Description')
-    input_desc = TextAreaField('Input Format')
-    output_desc = TextAreaField('Output Format')
-    sample_input = TextAreaField('Sample Input')
-    sample_output = TextAreaField('Sample Output')
+    problem_desc = TextAreaField('Description', filters=[sanitize])
+    input_desc = TextAreaField('Input Format', filters=[sanitize])
+    output_desc = TextAreaField('Output Format', filters=[sanitize])
+    sample_input = TextAreaField('Sample Input', filters=[sanitize])
+    sample_output = TextAreaField('Sample Output', filters=[sanitize])
     source = TextField('Source')
     time_limit = TextField('Time Limit', validators = [Required()])
     memory_limit = TextField('Memory Limit', validators = [Required()])
@@ -86,7 +87,7 @@ class EditContestForm(Form):
 
 class EditPostForm(Form):
     title = TextField('Title', validators = [Required()])
-    content = TextAreaField('Content', validators=[Required()])
+    content = TextAreaField('Content', validators=[Required()], filters=[sanitize])
     submit = SubmitField('Submit')
 
 
