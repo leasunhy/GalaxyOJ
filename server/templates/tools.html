@@ -1,3 +1,7 @@
+{% macro ckeditor_script_tag() %}
+    <script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
+{% endmacro %}
+
 {% macro ckeditor(name) %}
     <script type="text/javascript">
         $(function() {
@@ -8,10 +12,28 @@
     </script>
 {% endmacro %}
 
-{% macro ckeditor_script_tag() %}
-    <script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
+{% macro momentjs_script_tag() %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 {% endmacro %}
 
+{% macro datetimepicker_script_tag() %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+{% endmacro %}
+
+{% macro datetimepicker_css_tag() %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+{% endmacro %}
+
+{% macro datetimepicker(eid) %}
+    <script type="text/javascript">
+        $(function() {
+            $('#{{eid}}').datetimepicker({
+                format: "YYYY-MM-DD HH:mm:ss",
+                sideBySide: true
+            });
+        });
+    </script>
+{% endmacro %}
 
 {% macro pagination(page, max_page, base_url) %}
 <nav style="text-align:center">

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from 'tools.html' import ckeditor, ckeditor_script_tag %}
+{% import 'tools.html' as tools %}
 
 {% set verb = 'Add' if cid == 0 else 'Edit' %}
 
@@ -34,11 +34,17 @@
                 </div>
                 <div class="form-group">
                     {{form.start_time.label}}
-                    {{form.start_time(class_="form-control", type="data")}}
+                    <div class="input-group date" id="datetime-start-time">
+                        {{form.start_time(class_="form-control", type="text")}}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     {{form.end_time.label}}
-                    {{form.end_time(class_="form-control", type="data")}}
+                    <div class="input-group date" id="datetime-end-time">
+                        {{form.end_time(class_="form-control", type="text")}}
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     {{form.password.label}}
@@ -86,10 +92,19 @@
 
 {% block scripts %}
     {{super()}}
-    {{ckeditor_script_tag()}}
+    {{tools.ckeditor_script_tag()}}
+    {{tools.momentjs_script_tag()}}
+    {{tools.datetimepicker_script_tag()}}
+{% endblock %}
+
+{% block styles %}
+    {{super()}}
+    {{tools.datetimepicker_css_tag()}}
 {% endblock %}
 
 {% block body %}
     {{super()}}
-    {{ckeditor(form.description.name)}}
+    {{tools.ckeditor(form.description.name)}}
+    {{tools.datetimepicker('datetime-start-time')}}
+    {{tools.datetimepicker('datetime-end-time')}}
 {% endblock %}
