@@ -44,3 +44,23 @@ body {
     display: block;
 }
 
+.nav-pills > li > a {
+    padding: 8px;
+    margin: 8px;
+}
+
+/* custom pills color */
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus, 
+.nav-pills > li.active > a:hover {
+    background-color: goldenrod;
+}
+
+.td-ac {
+    color: blue;
+    font-weight: bold;
+}
+
+.td-no-ac {
+	color: gray;
+}

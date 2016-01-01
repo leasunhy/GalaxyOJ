@@ -5,28 +5,80 @@
 {% block title %}{{c.title}} - Galaxy OJ{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="panel panel-default">
-        <div class="panel-heading">{{c.title}}</div>
-        <div class="panel-body">{{c.description}}</div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>id</th>
-                    <th>Title</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for p in c.problems %}
+<div class="container">
+    <h2>{{c.title}}</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <ul id="show_contest_tabs" class="nav nav-justified nav-pills">
+                <li class="active"><a href="#basic" data-toggle="tab"> Basic Info </a></li>
+                <li><a href="#problems" data-toggle="tab"> Problems </a></li>
+                <li><a href="#standing" data-toggle="tab"> Standing </a></li>
+                <li><a href="#practice" data-toggle="tab"> Practice </a></li>
+            </ul>
+        </div>
+    </div>
+    <div id="edit_contest_tabsContent" class="tab-content">
+        <div class="tab-pane fade in active" id="basic">
+            {{c.description}}
+        </div>
+        <div class="tab-pane fade" id="problems">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>id</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in c.problems %}
                     <tr>
                         <td>TODO</td>
                         <th scope="row">{{loop.index}}</th>
                         <td><a href="{{url_for('oj.problem', cid=c.id, pid=loop.index)}}">{{p.title}}</a></td>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="standing">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Solved</th>
+                        <th>penalty</th>
+                        {% for p in c.problems %}
+                        <th>{{p.title}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {%for item in standing %}
+                    <tr>
+                        <td> {{ item[0].display_name }} </td>
+                        <td> {{ item[1] }} </td>
+                        <td> {{ item[2] }} </td>
+                        {% for (actime, penalty, tries) in item[3] %}
+                        {% if actime %}
+                        <td class="td-ac"> {{actime}}({{tries}})</td>
+                        {% else %}
+                            <td class="td-no-ac">
+                                {% if tries %}
+                                ({{tries}})
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="practice">
+            Practice
         </div>
     </div>
+</div>
 {% endblock %}
+

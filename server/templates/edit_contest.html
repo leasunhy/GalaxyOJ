@@ -61,7 +61,11 @@
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
                         <td>
+                            {% if cid == 0 %}
                             <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
+                            {% else %}
+                            <a href="{{url_for('admin.edit_problem', cid=cid, pid=loop.index)}}">Edit</a>
+                            {% endif %}
                             /
                             <a href="{{url_for('admin.delete_problem', pid=p.id)}}">Delete</a>
                         </td>

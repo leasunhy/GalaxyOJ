@@ -10,7 +10,10 @@
                 <div class="alert alert-danger" role='alert'>{{e}}</div>
             {% endfor %}
         {% endfor %}
-        <h2>Problem: {{pid}}. {{problem.title}}</h2>
+        <h4>Problem {{pid}}. {{problem.title}}</h4>
+        {% if contest %}
+        <h4>Contest {{cid}}. {{contest.title}}</h4>
+        {% endif %}
         {% if cid == 0 %}
         <form action="{{url_for('oj.submit_code', pid=pid)}}" method="POST">
         {% else %}

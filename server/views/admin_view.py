@@ -33,7 +33,7 @@ def edit_problem(cid = 0, pid = 0):
         try:
             prob = Problem() if pid == 0 else contest.problems[pid]
         except IndexError:
-            flash('Contest (cid = %d) does not have %d-th problem.') % (cid, pid)
+            flash('Contest (cid = %d) does not have %d-th problem.' % (cid, pid))
             return redirect('/')
         prob.visible = prob.visible or contest.end_time < datetime.now()
     else:
