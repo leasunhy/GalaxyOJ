@@ -2,7 +2,7 @@ from functools import wraps
 from flask import abort
 from flask.ext.login import current_user, login_required
 
-from . import app
+from .. import app
 
 def privilege_required(priv):
     def decorate(func, *args, **kwargs):
