@@ -4,6 +4,11 @@ from flask.ext.login import current_user, login_required
 
 from .. import app
 
+ROOT_PRIVILEGE = 10
+
+def root_required():
+    return privilege_required(ROOT_PRIVILEGE)
+
 def privilege_required(priv):
     def decorate(func, *args, **kwargs):
         @wraps(func)
