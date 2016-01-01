@@ -44,7 +44,7 @@ def edit_profile():
     if form.validate_on_submit():
         form.populate_obj(current_user)
         db.session.commit()
-        flash('Register successful')
+        flash('Update successful')
         return redirect('/')
     return render_template('edit_profile.html', form=form)
 
