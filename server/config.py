@@ -12,6 +12,8 @@ SUBMISSION_FOLDER = os.getenv('SUBMISSION_FOLDER',
                         os.path.join(basedir, 'data/submissions'))
 TESTCASE_FOLDER = os.getenv('TESTCASE_FOLDER',
                         os.path.join(basedir, 'data/testcases'))
+IMAGE_UPLOAD_FOLDER = os.getenv('IMAGE_UPLOAD_FOLDER',
+                                os.path.join(basedir, 'data/uploaded_images'))
 MAX_CONTENT_LENGTH = 16*1024*1024
 
 
@@ -27,6 +29,9 @@ class ConfigBase:
     COMPILER_INDEX_DICT = dict(enumerate(COMPILER_LIST))
     SUBMISSION_FOLDER = SUBMISSION_FOLDER
     TESTCASE_FOLDER = TESTCASE_FOLDER
+    IMAGE_UPLOAD_FOLDER = IMAGE_UPLOAD_FOLDER
+    MAX_CONTENT_LENGTH = MAX_CONTENT_LENGTH
+
 
 class DevelopmentConfig(ConfigBase):
     DEBUG = True
