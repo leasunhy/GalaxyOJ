@@ -17,8 +17,8 @@ from judge.config import COMPILER_FILEEXT_LIST
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
 def list_problems(page = 1):
-    problems = Problem.query.filter(Problem.visible==True)\
-                    .order_by(Problem.id).paginate(page=page, per_page=20).items
+    problems = Problem.query.order_by(Problem.id)\
+            .paginate(page=page, per_page=20).items
     all_page = (Problem.query.count() + 19) // 20
     return render_template('problems.html', problems=problems, page=page, all_page = all_page)
 
