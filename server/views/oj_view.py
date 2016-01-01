@@ -81,8 +81,15 @@ def contest(id = 1):
         penalty = sum(u[1] for u in verdicts)
         standing.append((User.query.get(u[0]), ac_num, penalty, verdicts))
     standing.sort(key = lambda u:(u[1],u[2]), reverse=True)
-    print(standing)
-    return render_template('show_contest.html', c=contest, standing=standing)
+    accepted_problems = set()
+    if current_user.is_authenticated:
+        q = db.session.query(Standing.problem_id)\
+                .filter(Standing.user_id == u[0])\
+                .filter(Standing.contest_id == contest.id)\
+                .filter(Standing.actime > 0)
+        accepted_problems = set(list(q))
+    return render_template('show_contest.html', c=contest, 
+            standing=standing, acs = accepted_problems)
 
 
 @oj.route('/problem/<int:pid>')
