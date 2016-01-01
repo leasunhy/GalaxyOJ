@@ -64,3 +64,7 @@ body {
 .td-no-ac {
 	color: gray;
 }
+
+#footer {
+    margin-top:80px;
+}
