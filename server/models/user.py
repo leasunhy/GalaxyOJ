@@ -26,6 +26,7 @@ class User(UserMixin, db.Model):
 
     @password.setter
     def password(self, value):
+        if bool(value) == False: return
         self.password_hash = generate_password_hash(value)
 
     @property
