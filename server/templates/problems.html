@@ -14,16 +14,22 @@
                     <th>id</th>
                     <th>Title</th>
                     {% if is_admin %}
+                    <th>Visible</th>
                     <th>Modify</th>
                     {% endif %}
                 </tr>
             </thead>
             <tbody>
                 {% for p in problems %}
+                {% if is_admin or p.visible %}
                     <tr>
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
                         {% if is_admin %}
+                        <td id="visible-{{p.id}}">
+                            {% if p.visible %} Public {% else %} Hidden {% endif %}
+                            <a onclick="toggle_visible({{p.id}})">(toggle)</a>
+                        </td>
                         <td>
                             <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
                             /
@@ -31,9 +37,25 @@
                         </td>
                         {% endif %}
                     </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
         {{ pagination(page, all_page, 'oj.list_problems') }}
+        <script>
+function toggle_visible(pid) {
+	obj = document.getElementById('visible-' + pid);
+	if (obj.innerHTML.search("Public") != -1) {
+        $.ajax({url:'/admin/toggle_problem_state/' + pid, type:'POST', success:function(){
+		    obj.innerHTML = obj.innerHTML.replace('Public', 'Hidden');
+        }});
+    } else {
+        $.ajax({url:'/admin/toggle_problem_state/' + pid, type:'POST', success:function(){
+		    obj.innerHTML = obj.innerHTML.replace('Hidden', 'Public');
+        }});
+	}
+}
+        </script>
     </div>
 {% endblock %}
+
