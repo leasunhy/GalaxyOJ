@@ -18,8 +18,6 @@ class Problem(db.Model):
     sample_output = db.Column(db.Text)
     source = db.Column(db.Text)
 
-    public_time = db.Column(db.DateTime)
-
     visible = db.Column(db.Boolean, nullable=False, default=True)
 
     time_limit = db.Column(db.Integer, nullable=False,

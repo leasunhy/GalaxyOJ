@@ -100,9 +100,6 @@ def edit_contest(cid=0):
     if form.validate_on_submit():
         form.populate_obj(contest)
         contest.owner = current_user
-        for p in contest.problems:
-            p.public_time = contest.end_time
-            db.session.add(p)
         db.session.add(contest)
         db.session.commit()
         flash('Edit contest successful.')
