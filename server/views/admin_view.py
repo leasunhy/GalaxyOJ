@@ -97,6 +97,7 @@ def edit_contest(cid=0):
     else:
         contest = Contest()
     form = EditContestForm(obj = contest)
+    form.passcode.data = ''
     if form.validate_on_submit():
         form.populate_obj(contest)
         contest.owner = current_user
