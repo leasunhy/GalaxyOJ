@@ -180,3 +180,18 @@ def delete_testcase(pid, fname):
         os.remove(filename)
     return redirect(url_for('admin.manage_data', pid=pid))
 
+
+@admin.route('/edit_user/<int:id>', methods=['GET', 'POST'])
+def user_register(id):
+    user = User.query.get(id)
+    if user is None:
+        flash('User <%d> not found' % (id))
+        redirect('/')
+    form = UpdateProfileForm(obj = user)
+    if form.validate_on_submit():
+        form.populate_obj(current_user)
+        db.session.commit()
+        flash('Register successful')
+        return redirect('/')
+    return render_template('edit_user.html', form=form)
+

@@ -26,8 +26,13 @@
                         <th>{{u.nickname or ""}}</th>
                         <th>{{u.real_name}}</th>
                         <th>{{u.email}}</th>
+                        {% set edit_url = url_for('admin.edit_user', uid = u.id) %}
                         {% set delete_url = url_for('admin.delete_user', uid = u.id) %}
-                        <th><a href="{{delete_url}}">Delete</a></th>
+                        <th>
+                            <a href="{{edit_url}}">Edit</a>
+                            /
+                            <a href="{{delete_url}}">Delete</a>
+                        </th>
                     </tr>
                 {% endfor %}
             </tbody>
