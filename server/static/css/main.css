@@ -35,3 +35,11 @@ body {
     background-color: goldenrod;
 }
 
+.td-ac {
+    color: blue;
+    font-weight: bold;
+}
+
+.td-no-ac {
+	color: gray;
+}

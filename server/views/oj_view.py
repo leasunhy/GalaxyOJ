@@ -11,6 +11,8 @@ from .. import judge
 
 from judge.config import COMPILER_FILEEXT_LIST
 
+import datetime
+
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
 def list_problems(page = 1):
@@ -32,30 +34,31 @@ def list_status(page = 1):
                                   .paginate(page=page, per_page=20).items
     return render_template('status.html', submissions=submissions)
 
-def sum_up_verdicts(verdicts):
-    if verdicts is None: return (False, 0)
-    isAC = 'Accepted' in map(lambda u:u[1], verdicts)
-    return (isAC, len(verdicts))
+#def sum_up_verdicts(verdicts):
+#    if verdicts is None: return (False, 0)
+#    isAC = 'Accepted' in map(lambda u:u[1], verdicts)
+#    return (isAC, len(verdicts))
 
 from sqlalchemy import distinct
 @oj.route('/contest/<int:id>')
 def contest(id = 1):
     contest = Contest.query.get_or_404(id)
-    users = list(db.session.query(distinct(User.id))\
-            .filter(Submission.contest_id==contest.id))
+    users = list(db.session.query(distinct(Standing.user_id))\
+            .filter(Standing.contest_id==contest.id))
     standing = []
     for u in users:
         verdicts = []
         for p in contest.problems:
-            q = db.session.query(Submission.problem_id,Submission.verdict)\
-                    .filter(Submission.contest_id==contest.id)\
-                    .filter(Submission.problem_id==p.id)\
-                    .filter(Submission.user_id == u[0])
-            result = sum_up_verdicts(list(q))
-            verdicts.append(result)
-        ac_num = sum(u[0] for u in verdicts)
-        standing.append((User.query.get(u[0]), ac_num, verdicts))
-    standing.sort(key = lambda u:u[1], reverse=True)
+            q = db.session.query(Standing.actime, Standing.penalty, Standing.submissions)\
+                    .filter(Standing.contest_id==contest.id)\
+                    .filter(Standing.problem_id==p.id)\
+                    .filter(Standing.user_id == u[0])
+            result = list(q)
+            verdicts.extend(result)
+        ac_num = sum(bool(u[0]) for u in verdicts)
+        penalty = sum(u[1] for u in verdicts)
+        standing.append((User.query.get(u[0]), ac_num, penalty, verdicts))
+    standing.sort(key = lambda u:(u[1],u[2]), reverse=True)
     print(standing)
     return render_template('show_contest.html', c=contest, standing=standing)
 
@@ -98,8 +101,8 @@ def save_to_database(job_id):
                     problem_id = s.problem_id,
                     user_id = s.user_id,
                 )
-        _delta = datetime.now() - contest.start_time
-        rc.add_record(verdict, _delta)
+        _delta = datetime.datetime.now() - contest.start_time
+        rc.add_record(verdict['verdict'], _delta)
         db.session.add(rc)
     db.session.commit()
 
