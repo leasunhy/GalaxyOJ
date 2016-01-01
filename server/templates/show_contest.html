@@ -49,7 +49,7 @@
                         <th>Solved</th>
                         <th>penalty</th>
                         {% for p in c.problems %}
-                        <th>{{p.title}}</th>
+                        <th>{{loop.index}}</th>
                         {% endfor %}
                     </tr>
                 </thead>

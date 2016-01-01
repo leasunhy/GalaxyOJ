@@ -131,7 +131,7 @@ def save_to_database(job_id):
         _delta = datetime.datetime.now() - contest.start_time
         rc.add_record(verdict['verdict'], _delta)
         db.session.add(rc)
-    db.session.commit()
+        db.session.commit()
 
 
 def send_to_judge(submit, problem):
