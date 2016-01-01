@@ -14,13 +14,6 @@ from .. import judge
 from judge.config import COMPILER_FILEEXT_LIST
 
 
-def check_enterable(contest):
-    if contest.passcode_hash and\
-            (contest.id not in session.setdefault('contests', [])):
-        return False
-    return True
-
-
 @oj.route('/problems')
 @oj.route('/problems/<int:page>')
 def list_problems(page = 1):
@@ -45,6 +38,18 @@ def list_status(page = 1):
                                   .paginate(page=page, per_page=20).items
     all_page = (Submission.query.count() + 19) // 20
     return render_template('status.html', submissions=submissions, page=page, all_page = all_page)
+
+
+def check_enterable(contest):
+    # admins are automatically accepted
+    if current_user.is_authenticated() and current_user.privilege_level > 0:
+        flash('You are granted access to this contest because you are an admin.')
+        return True
+    # check session
+    if contest.passcode_hash and\
+            (contest.id not in session.setdefault('contests', [])):
+        return False
+    return contest.start_time >= datetime.datetime.now()
 
 
 @oj.route('/enter_contest/<int:cid>', methods=['GET', 'POST'])
@@ -91,7 +96,7 @@ def contest(id = 1):
                 .filter(Standing.contest_id == contest.id)\
                 .filter(Standing.actime > 0)
         accepted_problems = set(list(q))
-    return render_template('show_contest.html', c=contest, 
+    return render_template('show_contest.html', c=contest,
             standing=standing, acs = accepted_problems)
 
 
@@ -133,7 +138,7 @@ def save_to_database(job_id):
                     .filter(Standing.problem_id==s.problem_id)\
                     .filter(Standing.user_id==s.user_id)\
                     .first()
-            if rc is None: 
+            if rc is None:
                 rc = Standing(
                         contest_id = s.contest_id,
                         problem_id = s.problem_id,
