@@ -26,8 +26,8 @@
                     <tr>
                         <th scope="row">{{c.id}}</th>
                         <td><a href="{{contest_url}}">{{c.title}}</a></td>
-                        <td>{{c.start_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
-                        <td>{{c.end_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                        <td>{{c.start_time | dtformat}}</td>
+                        <td>{{c.end_time | dtformat}}</td>
                         <td><a>{{c.owner.display_name}}</a></td>
                         {% if is_admin %}
                         {% set edit_url = url_for('admin.edit_contest', cid=c.id) %}
