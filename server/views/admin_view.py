@@ -26,6 +26,14 @@ def new_problem():
 def new_contest_problem(cid):
     return edit_contest_problem(cid=cid, pid=0)
 
+@admin.route('/add_contest_problem/<int:cid>/<int:pid>')
+def add_contest_problem(cid, pid):
+    contest = Contest.query.get_or_404(cid)
+    problem = Problem.query.get_or_404(pid)
+    contest.problems.append(problem)
+    db.session.add(contest)
+    db.session.commit()
+    return redirect(url_for('admin.edit_contest', cid = cid))
 
 @admin.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
 @privilege_required(1)
