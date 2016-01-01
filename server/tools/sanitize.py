@@ -13,5 +13,8 @@ cleaner = Cleaner()
 
 
 def sanitize(html_input):
-    return cleaner.clean_html(html_input)
+    if html_input:
+        return cleaner.clean_html(html_input)
+    else:
+        return ''
 
