@@ -10,6 +10,7 @@ from .tools import sanitize
 
 from judge.config import COMPILER_NAME_LIST, COMPILER_CNT
 
+
 class LoginForm(Form):
     username = TextField('Username', validators = [Required()])
     password = PasswordField('Password', validators = [Required()])
@@ -103,8 +104,8 @@ class EditContestForm(Form):
     submit = SubmitField('Submit')
 
     def validate_end_time(self, field):
-        if start_time > end_time:
-            raise ValidationError('End time should after start_time')
+        if self.start_time.data > field.data:
+            raise ValidationError('End time should be after start time')
 
 class EditPostForm(Form):
     title = TextField('Title', validators = [Required()])
