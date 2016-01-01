@@ -9,6 +9,8 @@ from .tools import sanitize
 
 from judge.config import COMPILER_NAME_LIST, COMPILER_CNT
 
+import datetime
+
 class LoginForm(Form):
     username = TextField('Username', validators = [Required()])
     password = PasswordField('Password', validators = [Required()])

@@ -127,21 +127,22 @@ def save_to_database(job_id):
     s = Submission.query.get(sid)
     if s.contest_id:
         contest = Contest.query.get(s.contest_id)
-        rc = Standing.query\
-                .filter(Standing.contest_id==s.contest_id)\
-                .filter(Standing.problem_id==s.problem_id)\
-                .filter(Standing.user_id==s.user_id)\
-                .first()
-        if rc is None: 
-            rc = Standing(
-                    contest_id = s.contest_id,
-                    problem_id = s.problem_id,
-                    user_id = s.user_id,
-                )
-        _delta = datetime.datetime.now() - contest.start_time
-        rc.add_record(verdict['verdict'], _delta)
-        db.session.add(rc)
-        db.session.commit()
+        if datetime.datetime.now() < contest.end_time:
+            rc = Standing.query\
+                    .filter(Standing.contest_id==s.contest_id)\
+                    .filter(Standing.problem_id==s.problem_id)\
+                    .filter(Standing.user_id==s.user_id)\
+                    .first()
+            if rc is None: 
+                rc = Standing(
+                        contest_id = s.contest_id,
+                        problem_id = s.problem_id,
+                        user_id = s.user_id,
+                    )
+            _delta = datetime.datetime.now() - contest.start_time
+            rc.add_record(verdict['verdict'], _delta)
+            db.session.add(rc)
+            db.session.commit()
 
 
 def send_to_judge(submit, problem):
