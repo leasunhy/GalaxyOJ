@@ -87,7 +87,7 @@ def contest(id = 1):
     accepted_problems = set()
     if current_user.is_authenticated:
         q = db.session.query(Standing.problem_id)\
-                .filter(Standing.user_id == u[0])\
+                .filter(Standing.user_id == current_user.id)\
                 .filter(Standing.contest_id == contest.id)\
                 .filter(Standing.actime > 0)
         accepted_problems = set(list(q))

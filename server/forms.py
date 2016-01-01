@@ -103,8 +103,10 @@ class EditContestForm(Form):
     password = TextField('Password')
     submit = SubmitField('Submit')
 
+    def str_to_time(self, string):
+        return datetime.datetime.strptime(string, '%Y-%m-%d %H:%M')
     def validate_end_time(self, field):
-        if start_time > end_time:
+        if self.str_to_time(self.start_time.data) > self.str_to_time(field.data):
             raise ValidationError('End time should after start_time')
 
 class EditPostForm(Form):

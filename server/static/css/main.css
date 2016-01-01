@@ -70,3 +70,6 @@ body {
     text-align: center;
 }
 
+span.label-hint {
+    color: gray;
+}
