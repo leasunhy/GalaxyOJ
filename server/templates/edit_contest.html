@@ -35,20 +35,20 @@
                 <div class="form-group">
                     {{form.start_time.label}}
                     <div class="input-group date" id="datetime-start-time">
-                        {{form.start_time(class_="form-control", type="text")}}
+                        {{form.start_time(class_="form-control")}}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
                 <div class="form-group">
                     {{form.end_time.label}}
                     <div class="input-group date" id="datetime-end-time">
-                        {{form.end_time(class_="form-control", type="text")}}
+                        {{form.end_time(class_="form-control")}}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>
                 </div>
                 <div class="form-group">
-                    {{form.password.label}}
-                    {{form.password(class_="form-control", type="password")}}
+                    {{form.passcode.label}}
+                    {{form.passcode(class_="form-control", type="password")}}
                 </div>
                 {{form.submit(class_="btn btn-default")}}
             </form>
