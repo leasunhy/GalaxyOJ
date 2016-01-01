@@ -47,7 +47,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     (out, err) = proc.communicate()
     returncode = proc.returncode
 
-    out = out.decode('utf-8').split(',')
+    out = out.decode('utf-8').rstrip().split(',')
 
     return (returncode, out, err)
 
