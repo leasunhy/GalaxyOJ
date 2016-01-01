@@ -96,10 +96,14 @@ class EditProblemForm(Form):
 class EditContestForm(Form):
     title = TextField('Title', validators = [Required()])
     description = TextAreaField('Description')
-    start_time = TextField('Start time')
-    end_time = TextField('End time')
+    start_time = TextField('Start time', validators=[Required()])
+    end_time = TextField('End time', validators = [Required()])
     password = TextField('Password')
     submit = SubmitField('Submit')
+
+    def validate_end_time(self, field):
+        if start_time > end_time:
+            raise ValidationError('End time should after start_time')
 
 class EditPostForm(Form):
     title = TextField('Title', validators = [Required()])
