@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import pagination %}
 
 {% set current_view = 'Status' %}
 
@@ -35,5 +36,6 @@
                 {% endfor %}
             </tbody>
         </table>
+        {{ pagination(page, all_page, 'oj.list_status') }}
     </div>
 {% endblock %}

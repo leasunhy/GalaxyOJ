@@ -26,14 +26,16 @@ def check_enterable(contest):
 def list_problems(page = 1):
     problems = Problem.query.filter(Problem.visible==True)\
                     .order_by(Problem.id).paginate(page=page, per_page=20).items
-    return render_template('problems.html', problems=problems, admin=True)
+    all_page = (Problem.query.count() + 19) // 20
+    return render_template('problems.html', problems=problems, page=page, all_page = all_page)
 
 
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
     contests = Contest.query.paginate(page=page, per_page=20).items
-    return render_template('contests.html', contests=contests, admin=True)
+    all_page = (Contest.query.count() + 19) // 20
+    return render_template('contests.html', contests=contests, page=page, all_page = all_page)
 
 
 @oj.route('/status')
@@ -41,7 +43,8 @@ def list_contests(page = 1):
 def list_status(page = 1):
     submissions = Submission.query.order_by(Submission.id.desc())\
                                   .paginate(page=page, per_page=20).items
-    return render_template('status.html', submissions=submissions)
+    all_page = (Submission.query.count() + 19) // 20
+    return render_template('status.html', submissions=submissions, page=page, all_page = all_page)
 
 
 @oj.route('/enter_contest/<int:cid>', methods=['GET', 'POST'])

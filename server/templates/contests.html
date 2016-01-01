@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import pagination %}
 
 {% set current_view = 'Contests' %}
 
@@ -38,5 +39,6 @@
                 {% endfor %}
             </tbody>
         </table>
+        {{ pagination(page, all_page, 'oj.list_contests') }}
     </div>
 {% endblock %}
