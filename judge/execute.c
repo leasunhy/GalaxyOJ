@@ -240,7 +240,7 @@ int execute(
 			}
 			// SIGTRAP
 			ptrace(PTRACE_GETREGS, pid, 0, &regs);
-			syscall_number = regs.rax;
+			syscall_number = regs.orig_rax;
 			if (syscall_enter){
 				syscall_cnt++;
 
