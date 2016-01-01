@@ -10,7 +10,7 @@
             {% endfor %}
         {% endfor %}
         <h1>User Management</h1>
-        <form action="{{url_for('admin.edit_user')}}" method="POST">
+        <form action="{{url_for('admin.edit_user', uid=uid)}}" method="POST">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{form.login_name.label}}
@@ -18,11 +18,8 @@
             </div>
             <div class="form-group">
                 {{form.password.label}}
+            <span>(Hint: If you don't want to change the password, please leave it empty.)</span>
                 {{form.password(class_="form-control",type="password")}}
-            </div>
-            <div class="form-group">
-                {{form.confirmpwd.label}}
-                {{form.confirmpwd(class_="form-control",type="password")}}
             </div>
             <div class="form-group">
                 {{form.email.label}}
@@ -44,3 +41,4 @@
         </form>
     </div>
 {% endblock %}
+

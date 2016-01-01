@@ -44,8 +44,17 @@ class UpdateProfileForm(Form):
     def validate_old_password(self, field):
         u = User.query.filter_by(login_name=self.login_name.data).first()
         if u is None or not u.verify_password(field.data):
-            raise ValidationError('Username or password is invalid.')
+            raise ValidationError('Password is invalid.')
 
+class EditUserProfile(Form):
+    login_name = TextField('Username', validators = [Required()])
+    password = PasswordField('Password')
+    email = TextField('Email', validators = [Email()])
+    nickname = TextField('Nickname')
+    signature = TextField('Signature')
+    real_name = TextField('Real name')
+    note = TextAreaField('Note')
+    submit = SubmitField('Edit')
 
 class UserRegisterForm(Form):
     login_name = TextField('Username', validators = [Required()])
