@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    <h2>{% block heading %}{% endblock %}</h2>
+    <h2>{% block heading %}{% endblock %} {% if is_admin %}<a href="{{url_for(post_new_view)}}" class="btn btn-success btn-sm">New</a>{% endif %}</h2>
     {% block list %}
     <table class="table">
         <thead>
@@ -11,6 +11,9 @@
                 <th>Author</th>
                 {% block meta %}{% endblock %}
                 <th>Time</th>
+                {% if is_admin %}
+                <th>Actions</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -21,6 +24,9 @@
                 <td>by <a><strong>{{p.owner.display_name}}</strong></a></td>
                 {% block meta_data scoped %} {% endblock %}
                 <td>{{p.create_time.strftime('%Y-%m-%d %H:%M:%S')}}</td>
+                {% if is_admin %}
+                <td><a href="{{url_for(post_edit_view, id=p.id)}}">Edit</a> / <a href="{{url_for('post.delete_post', id=p.id)}}">Delete</a></td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

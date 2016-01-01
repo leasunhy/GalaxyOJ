@@ -11,26 +11,26 @@
         <div class="col-md-12 col-lg-9">
             <div class="panel panel-default">
                 <div class="panel-heading">Problem Description</div>
-                <div class="panel-body">{{p.problem_desc}}</div>
+                <div class="panel-body">{{p.problem_desc | safe}}</div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Input</div>
-                <div class="panel-body">{{p.input_desc}}</div>
+                <div class="panel-body">{{p.input_desc | safe}}</div>
             </div>
             <div class="panel panel-default">
                 <div class="panel-heading">Output</div>
-                <div class="panel-body">{{p.output_desc}}</div>
+                <div class="panel-body">{{p.output_desc | safe}}</div>
             </div>
             {% if p.sample_input %}
             <div class="panel panel-default">
                 <div class="panel-heading">Sample Input</div>
-                <div class="panel-body">{{p.sample_input}}</div>
+                <div class="panel-body">{{p.sample_input | safe}}</div>
             </div>
             {% endif %}
             {% if p.sample_output %}
             <div class="panel panel-default">
                 <div class="panel-heading">Sample Output</div>
-                <div class="panel-body">{{p.sample_output}}</div>
+                <div class="panel-body">{{p.sample_output | safe}}</div>
             </div>
             {% endif %}
             {% if p.source %}
@@ -43,7 +43,19 @@
         <div class="col-md-4 col-lg-3">
             <div class="panel panel-default">
                 <div class="panel-heading">Actions</div>
-                <div class="panel-body"><a href="{{url_for('oj.submit_code', cid=cid, pid=pid) if cid else url_for('oj.submit_code', pid=pid)}}"><button class="btn btn-success">Submit</button></a></div>
+                <div class="panel-body">
+                    <a href="{{url_for('oj.contest_submit_code', cid=cid, pid=pid) if cid else url_for('oj.submit_code', pid=pid)}}" class="btn btn-success" role="button">
+                        Submit
+                    </a>
+                    {% if is_admin %}
+                        {% if cid == 0 %}
+                            <a href="{{url_for('admin.edit_problem', pid=p.id)}}" class="btn btn-primary" role="button">Edit</a>
+                        {% else %}
+                            <a href="{{url_for('admin.edit_contest_problem', pid=pid, cid=cid)}}" class="btn btn-primary" role="button">Edit</a>
+                        {% endif %}
+                        <a href="{{url_for('admin.delete_problem', pid=p.id)}}" class="btn btn-danger" role="button">Delete</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

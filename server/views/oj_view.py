@@ -64,12 +64,6 @@ def contest(id = 1):
     contest = Contest.query.get_or_404(id)
     if not check_enterable(contest):
         return redirect(url_for('oj.enter_contest', cid=contest.id))
-    return render_template('show_contest.html', c=contest)
-
-
-@oj.route('/contest/<int:id>')
-def contest(id = 1):
-    contest = Contest.query.get_or_404(id)
     from sqlalchemy import distinct
     users = list(db.session.query(distinct(Standing.user_id))\
             .filter(Standing.contest_id==contest.id))
@@ -159,10 +153,16 @@ def send_to_judge(submit, problem):
             )
 
 
-@oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
+
 @oj.route('/contest/<int:cid>/submit/<int:pid>', methods = ['GET', 'POST'])
 @login_required
-def submit_code(cid = 0, pid = 1):
+def contest_submit_code(cid, pid):
+    return submit_code(cid=cid, pid=pid)
+
+
+@oj.route('/submit/<int:pid>', methods = ['GET', 'POST'])
+@login_required
+def submit_code(pid, cid=0):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
     else:
@@ -185,7 +185,7 @@ def submit_code(cid = 0, pid = 1):
         db.session.commit()
         submit.filename = save_to_file(form.code.data, submit)
         send_to_judge(submit, problem)
-        return redirect('oj/status')
+        return redirect(url_for('oj.list_status'))
     return render_template('submit_code.html', form = form, cid = cid, pid = pid,
             contest = contest if cid else None,
             problem = problem)

@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <h2>Contests</h2>
+        <h2>Contests {% if is_admin %}<a href="{{url_for('admin.new_contest')}}" class="btn btn-success btn-sm">New</a>{% endif %}</h2></h2>
         <table class="table">
             <thead>
                 <tr>
@@ -32,7 +32,7 @@
                         {% if admin %}
                         {% set edit_url = url_for('admin.edit_contest', cid=c.id) %}
                         {% set delete_url = url_for('admin.delete_contest', cid = c.id) %}
-                        <td><a href="{{edit_url}}">Edit</a>/<a href="{{delete_url}}">Delete</a></td>
+                        <td><a href="{{edit_url}}">Edit</a> / <a href="{{delete_url}}">Delete</a></td>
                         {% endif %}
                     </tr>
                 {% endfor %}

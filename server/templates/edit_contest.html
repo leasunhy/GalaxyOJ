@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'tools.html' import ckeditor, ckeditor_script_tag %}
 
 {% set verb = 'Add' if cid == 0 else 'Edit' %}
 
@@ -47,6 +48,7 @@
             </form>
         </div>
         <div class="tab-pane fade" id="problems">
+            {% if cid != 0 %}
             <table class="table">
                 <thead>
                     <tr>
@@ -61,24 +63,33 @@
                         <th scope="row">{{p.id}}</th>
                         <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
                         <td>
-                            {% if cid == 0 %}
-                            <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
-                            {% else %}
-                            <a href="{{url_for('admin.edit_problem', cid=cid, pid=loop.index)}}">Edit</a>
-                            {% endif %}
+                            <a href="{{url_for('admin.edit_contest_problem', pid=loop.index, cid=cid)}}">Edit</a>
                             /
-                            <a href="{{url_for('admin.delete_problem', pid=p.id)}}">Delete</a>
+                            <a href="{{url_for('admin.delete_problem', pid=p.id, cid=cid)}}">Delete</a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <button class="btn btn-primary" type="input" onclick="window.open('{{url_for('admin.edit_problem', cid=cid)}}')"> New problem </button>
+            <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
+            {% else %}
+                <p>Please create the contest before adding problems to it.</p>
+            {% endif %}
         </div>
 
         <script>
-$(function () {
-    $('#edit_contest_tabs li:eq(1) a').tab('show');
-});
+            $(function () {
+                $('#edit_contest_tabs li:eq(1) a').tab('show');
+            });
         </script>
-        {% endblock %}
+{% endblock %}
+
+{% block scripts %}
+    {{super()}}
+    {{ckeditor_script_tag()}}
+{% endblock %}
+
+{% block body %}
+    {{super()}}
+    {{ckeditor(form.description.name)}}
+{% endblock %}
