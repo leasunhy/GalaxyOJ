@@ -98,7 +98,7 @@ class EditContestForm(Form):
     description = TextAreaField('Description')
     start_time = TextField('Start time')
     end_time = TextField('End time')
-    password = TextField('Password')
+    passcode = TextField('Password')
     submit = SubmitField('Submit')
 
 class EditPostForm(Form):
