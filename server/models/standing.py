@@ -16,8 +16,8 @@ class Standing(db.Model):
     def add_record(self, verdict, _time):
         if self.actime: return
         if verdict == 'Accepted':
-            self.actime = _time.seconds
-            self.penalty = self.actime/60 + self.submissions * 20
+            self.actime = _time.seconds / 60
+            self.penalty = self.actime + self.submissions * 20
         else:
             if self.submissions is None:
                 self.submissions = 0
