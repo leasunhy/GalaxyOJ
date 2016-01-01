@@ -27,7 +27,10 @@ class Contest(db.Model):
 
     @passcode.setter
     def passcode(self, value):
-        self.passcode_hash = generate_password_hash(value)
+        if not value:
+            self.passcode_hash = None
+        else:
+            self.passcode_hash = generate_password_hash(value)
 
     def verify_passcode(self, passcode):
         return self.passcode_hash is None or\
