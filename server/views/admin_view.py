@@ -66,6 +66,16 @@ def edit_problem(pid=0):
     return render_template('edit_problem.html', form=form, pid=pid)
 
 
+@admin.route('/toggle_problem_state/<int:pid>', methods=['POST'])
+@privilege_required(1)
+def toggle_problem_state(pid):
+    prob = Problem.query.get_or_404(pid)
+    prob.visible = not prob.visible
+    db.session.add(prob)
+    db.session.commit()
+    return 'success'
+
+
 @admin.route('/delete_problem/<int:pid>')
 @privilege_required(1)
 def delete_problem(pid=0):
