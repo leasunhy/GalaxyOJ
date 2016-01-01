@@ -41,7 +41,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     #print("execute:")
     #print(["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path])
     proc = subprocess.Popen(
-        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path],
+        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit // 1000), "-d", exec_path],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
