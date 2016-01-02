@@ -45,19 +45,22 @@ def check_enterable(contest):
     # admins are automatically accepted
     if current_user.is_authenticated and current_user.privilege_level > 0:
         flash('You are granted access to this contest because you are an admin.')
-        return True
+        return True, None
+    # check start time
+    if contest.start_time >= datetime.datetime.now():
+        flash('This contest is yet to start.')
+        return False, redirect(url_for('oj.list_contests'))
     # check session
     if contest.passcode_hash and\
             (contest.id not in session.setdefault('contests', [])):
-        return False
-    return contest.start_time >= datetime.datetime.now()
+        flash('This contest is protected by a password.')
+        return False, redirect(url_for('oj.enter_contest', cid=contest.id))
+    return True, None
 
 
 @oj.route('/enter_contest/<int:cid>', methods=['GET', 'POST'])
 def enter_contest(cid):
     contest = Contest.query.get_or_404(cid)
-    if not contest.passcode_hash:
-        return redirect(url_for('oj.contest', id = cid))
     form = EnterContestForm()
     if form.validate_on_submit():
         if contest.verify_passcode(form.passcode.data):
@@ -71,8 +74,9 @@ def enter_contest(cid):
 @oj.route('/contest/<int:id>')
 def contest(id = 1):
     contest = Contest.query.get_or_404(id)
-    if not check_enterable(contest):
-        return redirect(url_for('oj.enter_contest', cid=contest.id))
+    enterable, response = check_enterable(contest)
+    if not enterable:
+        return response
     from sqlalchemy import distinct
     users = list(db.session.query(distinct(Standing.user_id))\
             .filter(Standing.contest_id==contest.id))
@@ -108,8 +112,9 @@ def problem(cid = 0, pid = 1):
         problem = Problem.query.get_or_404(pid)
     else:
         contest = Contest.query.get_or_404(cid)
-        if not check_enterable(contest):
-            return redirect(url_for('oj.enter_contest', cid=contest.id))
+        enterable, response = check_enterable(contest)
+        if not enterable:
+            return response
         try:
             problem = contest.problems[pid-1]
         except IndexError:
@@ -184,8 +189,9 @@ def submit_code(pid, cid=0):
         problem = Problem.query.get_or_404(pid)
     else:
         contest = Contest.query.get_or_404(cid)
-        if not check_enterable(contest):
-            return redirect(url_for('oj.enter_contest', cid=contest.id))
+        enterable, response = check_enterable(contest)
+        if not enterable:
+            return response
         try:
             problem = contest.problems[pid-1]
         except IndexError:
