@@ -130,7 +130,7 @@ int execute(
 
 	init_syscall_table();
 
-	//sprintf(procmaps, "/proc/%d/maps", pid);
+	sprintf(procmaps, "/proc/%d/maps", pid);
 	//fprintf(stderr, "[Judge]: maps: %s\n", procmaps);
 
 
