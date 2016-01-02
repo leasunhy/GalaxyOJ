@@ -77,7 +77,22 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
+            <div class="row">
+            <div class="col-md-2" style="text-align:center">
+                <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
+            </div>
+            <div class="col-md-2" style="text-align:center">
+                <a class="btn btn-success" onclick="" >Add origin problem</a>
+            </div>
+            <div class="col-md-3" style="text-align:center">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="input-pid" placeholder="input problem ID">
+                    <span class="input-group-btn">
+                        <button onclick =add_prob() class="btn btn-default">Add</button>
+                    </span>
+                </div><!-- /input-group -->
+            </div>
+            </div>
             {% else %}
                 <p>Please create the contest before adding problems to it.</p>
             {% endif %}
@@ -87,6 +102,12 @@
             $(function () {
                 $('#edit_contest_tabs li:eq(1) a').tab('show');
             });
+        </script>
+        <script>
+            function add_prob() {
+                pid = document.getElementById('input-pid').value;
+                window.location.href = '/admin/add_contest_problem/' + {{cid}} + '/' + pid;
+            }
         </script>
 {% endblock %}
 
