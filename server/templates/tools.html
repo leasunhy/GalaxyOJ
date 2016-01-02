@@ -36,25 +36,42 @@
 {% endmacro %}
 
 {% macro pagination(page, max_page, base_url) %}
-<nav style="text-align:center">
+<nav class="text-center">
   <ul class="pagination">
-    <li>
-      <a href="#" aria-label="Previous">
+    <li {{'class=disabled' if page <= 1}}>
+      <a "{{'href=' + url_for(base_url, page=page-1) if page > 1}}" aria-label="Next">
         <span aria-hidden="true">&laquo;</span>
       </a>
     </li>
-    {% for i in range(max_page) %}
-        {% if loop.index == page %}
-        <li class="active"><a href="{{url_for(base_url, page = loop.index)}}">{{loop.index}}</a></li>
-        {% else %}
-        <li><a href="{{url_for(base_url, page = loop.index)}}">{{loop.index}}</a></li>
-        {% endif %}
+
+    {% for i in range(1 if page <= 5 else page - 5, page) %}
+        <li><a href="{{url_for(base_url, page = i)}}">{{i}}</a></li>
     {% endfor %}
-    <li>
-      <a href="#" aria-label="Next">
+
+    <li class="active"><a href="{{url_for(base_url, page = page)}}">{{page}}</a></li>
+
+    {% for i in range(page + 1, page + 5 if page + 5 < max_page + 1 else max_page + 1) %}
+        <li><a href="{{url_for(base_url, page = i)}}">{{i}}</a></li>
+    {% endfor %}
+
+    <li {{'class=disabled' if page >= max_page}}>
+      <a "{{'href=' + url_for(base_url, page=page+1) if page < max_page}}" aria-label="Next">
         <span aria-hidden="true">&raquo;</span>
       </a>
     </li>
   </ul>
 </nav>
+{% endmacro %}
+
+{% macro render_flashed_messages(message_categories, alert_type) %}
+    {% with messages = get_flashed_messages(category_filter=message_categories) %}
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert {{alert_type}}" role="alert">
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 {% endmacro %}

@@ -29,11 +29,14 @@ def new_contest_problem(cid):
 @admin.route('/add_contest_problem/<int:cid>/<int:pid>')
 def add_contest_problem(cid, pid):
     contest = Contest.query.get_or_404(cid)
-    problem = Problem.query.get_or_404(pid)
+    problem = Problem.query.get(pid)
+    if not problem:
+        flash('No such problem.', 'error')
+        return redirect(url_for('admin.edit_contest', cid=cid))
     contest.problems.append(problem)
     db.session.add(contest)
     db.session.commit()
-    return redirect(url_for('admin.edit_contest', cid = cid))
+    return redirect(url_for('admin.edit_contest', cid=cid))
 
 @admin.route('/edit_contest/<int:cid>/problem/<int:pid>', methods=['GET', 'POST'])
 @privilege_required(1)
@@ -55,7 +58,7 @@ def edit_contest_problem(cid, pid):
         return redirect(url_for('admin.edit_contest', cid=cid))
     if form.errors:
         for f, e in form.errors.items():
-            flash("%s: %s" % (f, e))
+            flash("%s: %s" % (f, e), 'error')
     return render_template('edit_problem.html', form=form, pid=pid)
 
 
@@ -89,11 +92,11 @@ def toggle_problem_state(pid):
 def delete_problem(pid=0):
     problem = Problem.query.get(pid)
     if not problem:
-        flash('Contest (pid = %d) not found.' % pid)
+        flash('Contest (pid = %d) not found.' % pid, 'error')
         return redirect('/')
     db.session.delete(problem)
     db.session.commit()
-    flash('Edit delete successful.')
+    flash('Problem deleted.')
     return redirect(url_for('oj.list_problems'))
 
 
@@ -107,10 +110,7 @@ def new_contest():
 @privilege_required(1)
 def edit_contest(cid=0):
     if cid != 0:
-        contest = Contest.query.get(cid)
-        if not contest:
-            flash('Contest (cid = %d) not found.' % cid)
-            return redirect('/')
+        contest = Contest.query.get_or_404(cid)
         problist = contest.problems
     else:
         contest = Contest()
@@ -121,7 +121,7 @@ def edit_contest(cid=0):
         contest.owner = current_user
         db.session.add(contest)
         db.session.commit()
-        flash('Edit contest successful.')
+        flash('Contest saved.')
         return redirect(url_for('oj.list_contests'))
     return render_template('edit_contest.html', form=form, cid=cid,
                            problems=[] if cid == 0 else problist)
@@ -130,13 +130,10 @@ def edit_contest(cid=0):
 @admin.route('/delete_contest/<int:cid>')
 @privilege_required(1)
 def delete_contest(cid=0):
-    contest = Contest.query.get(cid)
-    if not contest:
-        flash('Contest (cid = %d) not found.' % cid)
-        return redirect('/')
+    contest = Contest.query.get_or_404(cid)
     db.session.delete(contest)
     db.session.commit()
-    flash('Edit delete successful.')
+    flash('Contest deleted.')
     return redirect(url_for('oj.list_contests'))
 
 
@@ -152,10 +149,7 @@ def list_users(page=1):
 @admin.route('/manage_user/<int:uid>', methods=['GET', 'POST'])
 @root_required()
 def manage_user(uid):
-    user = User.query.get(uid)
-    if user is None:
-        flash('User <%d> not found' % (uid))
-        redirect('/')
+    user = User.query.get_or_404(uid)
     form = ManageUserProfile(obj = user)
     if form.validate_on_submit():
         form.populate_obj(user)
@@ -169,10 +163,7 @@ def manage_user(uid):
 @admin.route('/delete_user/<int:uid>')
 @privilege_required(1)
 def delete_user(uid):
-    user = User.query.filter(User.id == uid).first()
-    if not user:
-        flash('User (uid = %d) not found.' % uid)
-        return redirect('/')
+    user = User.query.get_or_404(uid)
     db.session.delete(user)
     db.session.commit()
     flash('Edit problem successful')
@@ -220,10 +211,7 @@ def delete_testcase(pid, fname):
 
 @admin.route('/edit_user/<int:uid>', methods=['GET', 'POST'])
 def edit_user(uid):
-    user = User.query.get(uid)
-    if user is None:
-        flash('User <%d> not found' % (uid))
-        redirect('/')
+    user = User.query.get_or_404(uid)
     form = EditUserProfile(obj = user)
     if form.validate_on_submit():
         form.populate_obj(user)

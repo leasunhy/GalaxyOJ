@@ -78,18 +78,15 @@
                 </tbody>
             </table>
             <div class="row">
-            <div class="col-md-2" style="text-align:center">
-                <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">New problem</a>
+            <div class="col-md-offset-2 col-md-3">
+                <a class="btn btn-primary" href="{{url_for('admin.new_contest_problem', cid=cid)}}">Add New problem</a>
             </div>
-            <div class="col-md-2" style="text-align:center">
-                <a class="btn btn-success" onclick="" >Add origin problem</a>
-            </div>
-            <div class="col-md-3" style="text-align:center">
+            <div class="col-md-5">
                 <div class="input-group">
-                    <input type="text" class="form-control" id="input-pid" placeholder="input problem ID">
                     <span class="input-group-btn">
-                        <button onclick =add_prob() class="btn btn-default">Add</button>
+                        <button onclick="add_prob()" class="btn btn-primary">Add Existing Problem</button>
                     </span>
+                    <input type="text" class="form-control" id="input-pid" placeholder="input problem ID">
                 </div><!-- /input-group -->
             </div>
             </div>
@@ -98,17 +95,6 @@
             {% endif %}
         </div>
 
-        <script>
-            $(function () {
-                $('#edit_contest_tabs li:eq(1) a').tab('show');
-            });
-        </script>
-        <script>
-            function add_prob() {
-                pid = document.getElementById('input-pid').value;
-                window.location.href = '/admin/add_contest_problem/' + {{cid}} + '/' + pid;
-            }
-        </script>
 {% endblock %}
 
 {% block scripts %}
@@ -116,6 +102,12 @@
     {{tools.ckeditor_script_tag()}}
     {{tools.momentjs_script_tag()}}
     {{tools.datetimepicker_script_tag()}}
+    <script>
+        function add_prob() {
+            pid = document.getElementById('input-pid').value;
+            window.location.href = '/admin/add_contest_problem/' + {{cid}} + '/' + pid;
+        }
+    </script>
 {% endblock %}
 
 {% block styles %}

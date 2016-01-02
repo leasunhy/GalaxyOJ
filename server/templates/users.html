@@ -13,25 +13,23 @@
                 <tr>
                     <th>User Id</th>
                     <th>Login Name</th>
-                    <th>nickname</th>
-                    <th>real_name</th>
+                    <th>Nickname</th>
+                    <th>Real Name</th>
                     <th>Email</th>
-                    <th>Modify</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 {% for u in users %}
+                    {% set edit_url = url_for('admin.manage_user', uid = u.id) if is_root else url_for('admin.edit_user', uid = u.id) %}
+                    {% set delete_url = url_for('admin.delete_user', uid = u.id) %}
                     <tr>
                         <th scope="row">{{u.id}}</th>
-                        <th>{{u.login_name}}</th>
-                        <th>{{u.nickname or ""}}</th>
-                        <th>{{u.real_name}}</th>
-                        <th>{{u.email}}</th>
-                        {% set edit_url = url_for('admin.manage_user', uid = u.id) if is_root else url_for('admin.edit_user', uid = u.id) %}
-                        {% set delete_url = url_for('admin.delete_user', uid = u.id) %}
+                        <td><a href="{{edit_url}}"><strong>{{u.login_name}}</strong></a></td>
+                        <td>{{u.nickname or ""}}</td>
+                        <td>{{u.real_name or ""}}</td>
+                        <td><a href="mailto:{{u.email}}">{{u.email}}</a></td>
                         <th>
-                            <a href="{{edit_url}}">Edit</a>
-                            /
                             <a href="{{delete_url}}">Delete</a>
                         </th>
                     </tr>

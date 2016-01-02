@@ -8,6 +8,7 @@ from .. import app, db, q
 
 from ..forms import SubmissionForm, EnterContestForm
 from ..models import Problem, Contest, Submission, User, Standing
+from ..tools import count_page
 
 from .. import judge
 
@@ -20,16 +21,17 @@ from ..tools import ROOT_PRIVILEGE
 def list_problems(page = 1):
     problems = Problem.query.order_by(Problem.id)\
             .paginate(page=page, per_page=20).items
-    all_page = (Problem.query.count() + 19) // 20
-    return render_template('problems.html', problems=problems, page=page, all_page = all_page)
+    return render_template('problems.html', problems=problems, page=page,
+                           all_page = count_page(Problem, 20))
 
 
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
-    contests = Contest.query.paginate(page=page, per_page=20).items
-    all_page = (Contest.query.count() + 19) // 20
-    return render_template('contests.html', contests=contests, page=page, all_page = all_page)
+    contests = Contest.query.order_by(Contest.end_time.desc())\
+                      .paginate(page=page, per_page=20).items
+    return render_template('contests.html', contests=contests, page=page,
+                           all_page = count_page(Contest, 20))
 
 
 @oj.route('/status')
@@ -37,8 +39,8 @@ def list_contests(page = 1):
 def list_status(page = 1):
     submissions = Submission.query.order_by(Submission.id.desc())\
                                   .paginate(page=page, per_page=20).items
-    all_page = (Submission.query.count() + 19) // 20
-    return render_template('status.html', submissions=submissions, page=page, all_page = all_page)
+    return render_template('status.html', submissions=submissions, page=page,
+                           all_page = count_page(Submission, 20))
 
 
 def check_enterable(contest):
@@ -48,12 +50,12 @@ def check_enterable(contest):
         return True, None
     # check start time
     if contest.start_time >= datetime.datetime.now():
-        flash('This contest is yet to start.')
+        flash('This contest is yet to start.', 'error')
         return False, redirect(url_for('oj.list_contests'))
     # check session
     if contest.passcode_hash and\
             (contest.id not in session.setdefault('contests', [])):
-        flash('This contest is protected by a password.')
+        flash('This contest is protected by a password.', 'warning')
         return False, redirect(url_for('oj.enter_contest', cid=contest.id))
     return True, None
 
@@ -110,6 +112,9 @@ def contest(id = 1):
 def problem(cid = 0, pid = 1):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
+        if not problem.visible and not\
+                (current_user.is_authenticated and current_user.privilege_level > 0):
+            abort(404)
     else:
         contest = Contest.query.get_or_404(cid)
         enterable, response = check_enterable(contest)
