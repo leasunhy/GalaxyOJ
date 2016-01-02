@@ -30,7 +30,7 @@
                         <td>{{s.compiler}}</td>
                         <td class="status-verdict status-verdict-{{s.verdict}}">{{s.verdict or 'Judging'}}</td>
                         <td>{{'' if s.time_usage == None else s.time_usage}}</td>
-                        <td>{{s.memory_usage or ''}}</td>
+                        <td>{{'' if s.memory_usage == None else s.memory_usage}}</td>
                         <td>{{s.code_length}}</td>
                     </tr>
                 {% endfor %}
