@@ -8,6 +8,7 @@ from .. import app, db, q
 
 from ..forms import SubmissionForm, EnterContestForm
 from ..models import Problem, Contest, Submission, User, Standing
+from ..tools import count_page
 
 from .. import judge
 
@@ -20,16 +21,16 @@ from ..tools import ROOT_PRIVILEGE
 def list_problems(page = 1):
     problems = Problem.query.order_by(Problem.id)\
             .paginate(page=page, per_page=20).items
-    all_page = (Problem.query.count() + 19) // 20
-    return render_template('problems.html', problems=problems, page=page, all_page = all_page)
+    return render_template('problems.html', problems=problems, page=page,
+                           all_page = count_page(Problem, 20))
 
 
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
     contests = Contest.query.paginate(page=page, per_page=20).items
-    all_page = (Contest.query.count() + 19) // 20
-    return render_template('contests.html', contests=contests, page=page, all_page = all_page)
+    return render_template('contests.html', contests=contests, page=page,
+                           all_page = count_page(Contest, 20))
 
 
 @oj.route('/status')
@@ -37,8 +38,8 @@ def list_contests(page = 1):
 def list_status(page = 1):
     submissions = Submission.query.order_by(Submission.id.desc())\
                                   .paginate(page=page, per_page=20).items
-    all_page = (Submission.query.count() + 19) // 20
-    return render_template('status.html', submissions=submissions, page=page, all_page = all_page)
+    return render_template('status.html', submissions=submissions, page=page,
+                           all_page = count_page(Submission, 20))
 
 
 def check_enterable(contest):
