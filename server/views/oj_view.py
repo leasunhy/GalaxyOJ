@@ -110,7 +110,8 @@ def contest(id = 1):
 def problem(cid = 0, pid = 1):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
-        if not problem.visible:
+        if not problem.visible and not\
+                (current_user.is_authenticated and current_user.privilege_level > 0):
             abort(404)
     else:
         contest = Contest.query.get_or_404(cid)
