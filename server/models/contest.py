@@ -1,4 +1,5 @@
 from werkzeug import generate_password_hash, check_password_hash
+from datetime import datetime
 
 from .problem import Problem
 from .. import db
@@ -35,6 +36,15 @@ class Contest(db.Model):
     def verify_passcode(self, passcode):
         return self.passcode_hash is None or\
                check_password_hash(self.passcode_hash, passcode)
+
+    def is_started(self):
+        return self.start_time < datetime.now()
+
+    def is_ended(self):
+        return self.end_time < datetime.now()
+
+    def is_running(self):
+        return self.is_started() and not self.is_ended()
 
     # relationships
     problems = db.relationship('Problem', secondary='contest_problem_rel',
