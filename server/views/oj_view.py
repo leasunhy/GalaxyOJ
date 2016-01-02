@@ -43,7 +43,7 @@ def list_status(page = 1):
 
 def check_enterable(contest):
     # admins are automatically accepted
-    if current_user.is_authenticated() and current_user.privilege_level > 0:
+    if current_user.is_authenticated and current_user.privilege_level > 0:
         flash('You are granted access to this contest because you are an admin.')
         return True
     # check session
