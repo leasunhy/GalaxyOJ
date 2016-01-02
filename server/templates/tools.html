@@ -50,7 +50,7 @@
 
     <li class="active"><a href="{{url_for(base_url, page = page)}}">{{page}}</a></li>
 
-    {% for i in range(page + 1, page + 5 if page + 5 < max_page else max_page) %}
+    {% for i in range(page + 1, page + 5 if page + 5 < max_page + 1 else max_page + 1) %}
         <li><a href="{{url_for(base_url, page = i)}}">{{i}}</a></li>
     {% endfor %}
 
