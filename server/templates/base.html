@@ -72,8 +72,9 @@
 {% block content %}
 {% block flashed_messages %}
   <div class="container">
-    {{ render_flashed_messages(['error'], 'alert-danger') }}
     {{ render_flashed_messages(['message'], 'alert-success') }}
+    {{ render_flashed_messages(['warning'], 'alert-warning') }}
+    {{ render_flashed_messages(['error'], 'alert-danger') }}
   </div>
 {% endblock %}
 {% block page_content %} {% endblock %}

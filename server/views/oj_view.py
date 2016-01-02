@@ -49,12 +49,12 @@ def check_enterable(contest):
         return True, None
     # check start time
     if contest.start_time >= datetime.datetime.now():
-        flash('This contest is yet to start.')
+        flash('This contest is yet to start.', 'error')
         return False, redirect(url_for('oj.list_contests'))
     # check session
     if contest.passcode_hash and\
             (contest.id not in session.setdefault('contests', [])):
-        flash('This contest is protected by a password.')
+        flash('This contest is protected by a password.', 'warning')
         return False, redirect(url_for('oj.enter_contest', cid=contest.id))
     return True, None
 
