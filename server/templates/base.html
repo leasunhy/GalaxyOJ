@@ -48,15 +48,16 @@
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-        <li><a href="{{url_for('auth.edit_profile')}}">Profile</a></li>
-          <li class="divider" role="separater"></li>
           {% if is_admin %}
+            <li class="dropdown-header">Admin Zone</li>
             <li><a href="{{url_for('admin.new_problem')}}">Add Problem</a></li>
             <li><a href="{{url_for('admin.new_contest')}}">Add Contest</a></li>
-            <li class="divider" role="separater"></li>
             <li><a href="{{url_for('admin.list_users')}}">Manage Users</a></li>
             <li class="divider" role="separater"></li>
           {% endif %}
+          <li class="dropdown-header">Settings</li>
+          <li><a href="{{url_for('auth.edit_profile')}}">Profile</a></li>
+          <li class="divider" role="separater"></li>
           <li><a href="{{url_for('auth.user_logout')}}">Log Out</a></li>
         </ul>
       </li>
@@ -73,7 +74,7 @@
     <hr></hr>
     <p>Galaxy Online Judge System</p>
     <p id="about">
-        Powered by 
+        Powered by
         <a href="mailto:mstczuo@gmail.com" class="black">mstczuo</a> and
         <a href="mailto:leasunhy@gmail.com" class="black">leasunhy</a>
     </p>
