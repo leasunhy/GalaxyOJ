@@ -28,7 +28,8 @@ def list_problems(page = 1):
 @oj.route('/contests')
 @oj.route('/contests/<int:page>')
 def list_contests(page = 1):
-    contests = Contest.query.paginate(page=page, per_page=20).items
+    contests = Contest.query.order_by(Contest.end_time.desc())\
+                      .paginate(page=page, per_page=20).items
     return render_template('contests.html', contests=contests, page=page,
                            all_page = count_page(Contest, 20))
 
