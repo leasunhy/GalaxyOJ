@@ -62,3 +62,16 @@
   </ul>
 </nav>
 {% endmacro %}
+
+{% macro render_flashed_messages(message_categories, alert_type) %}
+    {% with messages = get_flashed_messages(category_filter=message_categories) %}
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="alert {{alert_type}}" role="alert">
+        <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% extends 'bootstrap/base.html' %}
+{% from 'tools.html' import render_flashed_messages %}
 
 {% set logged_in = current_user.is_authenticated %}
 {% set is_admin = logged_in and current_user.privilege_level >= 1 %}
@@ -69,6 +70,12 @@
 {% endblock %}
 
 {% block content %}
+{% block flashed_messages %}
+  <div class="container">
+    {{ render_flashed_messages(['error'], 'alert-danger') }}
+    {{ render_flashed_messages(['message'], 'alert-success') }}
+  </div>
+{% endblock %}
 {% block page_content %} {% endblock %}
 <div id="footer">
     <hr></hr>
@@ -80,14 +87,4 @@
     </p>
 </div>
 {% endblock %}
-
-{% macro flash(type='alert-success') %}
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for m in messages %}
-      <div class="alert {{type}}" role='alert'>{{m}}</div>
-    {% endfor %}
-    {% endif %}
-  {% endwith %}
-{% endmacro %}
 
