@@ -52,10 +52,12 @@
                 {{form.memory_limit(class_="form-control",type="number")}}
             </div>
             {{form.submit(class_="btn btn-default")}}
-            <button class="btn btn-default" type="input"
-                onclick="window.open('{{url_for('admin.manage_data', pid=pid)}}')">
+            {% if pid != 0 %}
+            <a class="btn btn-default"
+               href="{{url_for('admin.manage_data', pid=pid)}}" target="_blank">
                 Test Cases
-            </button>
+            </a>
+            {% endif %}
         </form>
     </div>
 {% endblock %}
