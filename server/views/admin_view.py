@@ -27,6 +27,7 @@ def new_contest_problem(cid):
     return edit_contest_problem(cid=cid, pid=0)
 
 @admin.route('/add_contest_problem/<int:cid>/<int:pid>')
+@privilege_required(1)
 def add_contest_problem(cid, pid):
     contest = Contest.query.get_or_404(cid)
     problem = Problem.query.get(pid)
@@ -210,6 +211,7 @@ def delete_testcase(pid, fname):
 
 
 @admin.route('/edit_user/<int:uid>', methods=['GET', 'POST'])
+@privilege_required(1)
 def edit_user(uid):
     user = User.query.get_or_404(uid)
     form = EditUserProfile(obj = user)

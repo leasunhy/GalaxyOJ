@@ -1,6 +1,7 @@
 {% extends 'post_list_base.html' %}
 
 {% set current_view = 'Tutorials' %}
+{% set permit_new = current_user.is_authenticated %}
 {% set post_view = 'post.tutorial' %}
 {% set post_list_view = 'post.tutorials' %}
 {% set post_new_view = 'post.new_tutorial' %}

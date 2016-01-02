@@ -16,7 +16,11 @@ app = Flask(__name__)
 app.config.from_object(config)
 
 db = SQLAlchemy(app)
+
 login_manager = LoginManager(app)
+from .models.user import AnonymousUser
+login_manager.anonymous_user = AnonymousUser
+
 Bootstrap(app)
 
 q = Queue(connection = conn)

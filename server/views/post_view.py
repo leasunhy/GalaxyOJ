@@ -58,13 +58,13 @@ def new_notification():
 
 
 @post.route('/new_tutorial', methods=['GET', 'POST'])
-@privilege_required(1)
+@login_required
 def new_tutorial():
     return edit_tutorial(0)
 
 
 @post.route('/new_solution', methods=['GET', 'POST'])
-@privilege_required(1)
+@login_required
 def new_solution():
     return edit_solution(0)
 
@@ -85,9 +85,11 @@ def edit_notification(id=0):
 
 
 @post.route('/edit_tutorial/<int:id>', methods=['GET', 'POST'])
-@privilege_required(1)
+@login_required
 def edit_tutorial(id=0):
     p = Tutorial() if id == 0 else Tutorial.query.get_or_404(id)
+    if id != 0 and not current_user.is_admin and current_user != p.owner:
+        abort(401)
     form = EditTutorialForm(obj = p)
     if form.validate_on_submit():
         form.populate_obj(p)
@@ -100,9 +102,11 @@ def edit_tutorial(id=0):
 
 
 @post.route('/edit_solution/<int:id>', methods=['GET', 'POST'])
-@privilege_required(1)
+@login_required
 def edit_solution(id=0):
     p = Solution() if id == 0 else Solution.query.get_or_404(id)
+    if id != 0 and not current_user.is_admin and current_user != p.owner:
+        abort(401)
     form = EditSolutionForm(obj = p)
     if form.validate_on_submit():
         form.populate_obj(p)
