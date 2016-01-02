@@ -1,6 +1,7 @@
 import os
 import subprocess
 import glob
+import math
 
 from sqlalchemy import *
 from sqlalchemy.orm import sessionmaker
@@ -41,7 +42,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     #print("execute:")
     #print(["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path])
     proc = subprocess.Popen(
-        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit // 1000), "-m", str(memory_limit), "-d", exec_path],
+        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(math.ceil(time_limit/1000)), "-m", str(memory_limit), "-d", exec_path],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
@@ -73,7 +74,7 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
     if returncode != 0:
         return {"verdict":"Compile Error", "time_usage": 0,
                 "memory_usage": 0, "log": err[:1020]}
-    sum_time = 0
+    max_time = 0
     max_mem = 0
     for filename in glob.glob(os.path.join(testcase_folder, "*.in")):
         file_in = filename
@@ -87,13 +88,18 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
             print(out)
             return {"verdict": out[0], "time_usage": out[1],
                     "memory_usage": out[2], "log": None}
+        print(out[1])
+        print(time_limit)
+        if int(out[1]) > time_limit:
+            return {"verdict": "Time Limit Exceeded", "time_usage": out[1],
+                    "memory_usage": out[2], "log": None}
         (verdict, err) = check(file_out, std_out)
         if verdict == False:
-            return {"verdict": "Wrong Answer", "time_usage": sum_time,
+            return {"verdict": "Wrong Answer", "time_usage": max_time,
                     "memory_usage": max_mem, "log": None}
-        sum_time += int(out[1])
+        if(int(out[1]) > max_time): max_time = int(out[1])
         max_mem = max(max_mem, int(out[2]))
-    return {"verdict": "Accepted", "time_usage": sum_time,
+    return {"verdict": "Accepted", "time_usage": max_time,
             "memory_usage": max_mem, "log": None}
 
 def judge(sid, *args):
