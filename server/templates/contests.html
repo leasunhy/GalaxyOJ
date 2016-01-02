@@ -24,9 +24,12 @@
             <tbody>
                 {% for c in contests %}
                     {% set contest_url = url_for('oj.contest', id=c.id) %}
+                    {#
+                    <tr class="{{'bg-success' if c.is_ended()}} {{'bg-info' if not c.is_started()}} {{'bg-danger' if c.is_running()}}">
+                    #}
                     <tr>
                         <th scope="row">{{c.id}}</th>
-                        <td><a href="{{contest_url}}">{{c.title}}</a></td>
+                        <td><a href="{{contest_url}}"><strong>{{c.title}}</strong></a></td>
                         <td>{{c.start_time | dtformat}}</td>
                         <td>{{c.end_time | dtformat}}</td>
                         <td><a>{{c.owner.display_name}}</a></td>

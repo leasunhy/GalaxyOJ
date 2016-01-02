@@ -23,7 +23,7 @@
                 {% if is_admin or p.visible %}
                     <tr>
                         <th scope="row">{{p.id}}</th>
-                        <td><a href="{{url_for('oj.problem', pid=p.id)}}">{{p.title}}</a></td>
+                        <td><a href="{{url_for('oj.problem', pid=p.id)}}"><strong>{{p.title}}</strong></a></td>
                         {% if is_admin %}
                         <td>
                             <a href="{{url_for('admin.edit_problem', pid=p.id)}}">Edit</a>
