@@ -45,10 +45,12 @@
             </div>
             <div class="form-group">
                 {{form.time_limit.label}}
+                <span> (microseconds) </span>
                 {{form.time_limit(class_="form-control",type="number")}}
             </div>
             <div class="form-group">
                 {{form.memory_limit.label}}
+                <span> (kilobytes) </span>
                 {{form.memory_limit(class_="form-control",type="number")}}
             </div>
             {{form.submit(class_="btn btn-default")}}

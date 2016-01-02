@@ -57,6 +57,9 @@ int execute(
 	struct	user_regs_struct regs;
 	FILE*	maps;
 
+    // calculate on bytes
+    memory_limit <<= 10;
+
 	// hack: triple the time limitation of java
 	if (isJava) {
 		time_limit *= 3;
@@ -229,10 +232,14 @@ int execute(
 					cur_sum=0;
 					while(fgets(buffer, 256, maps)){
 						sscanf(buffer, "%x-%x %*s %*s %*s %d", &start, &end, &inode);
-						if (inode==0) cur_sum+=end-start;// possiblly all data/stack segments
+						if (inode==0) cur_sum+=(end-start);// possiblly all data/stack segments
 					}
 					fclose(maps);
-					cur_sum>>=10;// bytes -> kb
+					//cur_sum>>=10;// bytes -> kb
+                    /* 
+                     * compare in bytes instead of KB
+                     * <by mstczuo>
+                     */
 					if (cur_sum!=mem_sum){
 						fprintf(stderr, "[Judge]: proc %d memory usage: %dk\n", pid, cur_sum);
 						mem_sum = cur_sum;
@@ -261,7 +268,8 @@ int execute(
 				ru.ru_stime.tv_sec+ru.ru_stime.tv_usec*1e-6;
 	}
 	*cputime_ptr = cputime;
-	*run_memory = maxmem;
+	*run_memory = maxmem >> 10;
+    // return memory usage in KB
 
 	fprintf(stderr, "[Judge]: cputime used %.4f\n", cputime);
 //	kill(timer_pid, SIGINT);
