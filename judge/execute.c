@@ -13,6 +13,7 @@
 #include<string.h>
 
 #include"execute.h"
+#include"syscall_table.h"
 
 /*
  * 6 possible status
@@ -49,7 +50,6 @@ int execute(
 	int	syscall_cnt=0;
 	int	syscall_enter = 1;
 	double	cputime=-1;
-	int	syscall_used[512];
 	int	syscall_number;
 	int	inode;
 	struct	rusage ru;
@@ -126,49 +126,9 @@ int execute(
 		_exit(1);
 	}
 //==============================  judge  ======================================
-	memset(syscall_used, 0, sizeof(syscall_used));
 	//initialize allowable system calls
-	
-	syscall_used[  1] = 1;// exit
-	syscall_used[  3] = 1;// read
-	syscall_used[  4] = 1;// write
-	syscall_used[  5] = 1;// open
-	syscall_used[  6] = 1;// close
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//syscall_used[ 33] = 1;// access
-	//syscall_used[ 125] = 1;// mprotect
-    ////////////
-	syscall_used[ 45] = 1;// brk
-	syscall_used[ 54] = 1;// ioctl
-	//syscall_used[ 67] = 1;// sigaction
-	syscall_used[ 90] = 1;// mmap
-	syscall_used[ 91] = 1;// munmap
-	syscall_used[122] = 1;// uname
-	//syscall_used[186] = 1;// sigaltsatck
-	syscall_used[192] = 1;// mmap2
-	syscall_used[197] = 1;// fstat64
-	syscall_used[199] = 1;// getuid32    Get user identity
-	syscall_used[200] = 1;// getegid32   Get group identity
-	syscall_used[201] = 1;// geteuid32   Get user identity
-	syscall_used[202] = 1;// getgid32    Get group identity
-	syscall_used[221] = 1;// getdents64  Get directory entrys
-	syscall_used[252] = 1;// exit group
 
-	syscall_used[140] = 1;// llseek
-	
-	syscall_used[191] = 1;
-	syscall_used[174] = 1;
-	syscall_used[85] = 1;
-	
-	
-	syscall_used[243] = 1;
-	syscall_used[146] = 1;
-	syscall_used[145] = 1;
-
-	
-	
-	//syscall_used[175] = 1;
-	//syscall_used[20] = 1;
+	init_syscall_table();
 
 	//sprintf(procmaps, "/proc/%d/maps", pid);
 	//fprintf(stderr, "[Judge]: maps: %s\n", procmaps);
