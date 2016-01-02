@@ -10,7 +10,7 @@ from werkzeug import secure_filename
 from werkzeug.security import safe_join
 
 from datetime import datetime
-from ..tools import privilege_required, root_required
+from ..tools import privilege_required, root_required, ROOT_PRIVILEGE
 
 import os
 
@@ -135,8 +135,9 @@ def delete_contest(cid=0):
 @admin.route('/users/<int:page>', methods=['GET', 'POST'])
 @privilege_required(1)
 def list_users(page=1):
-    users = User.query.paginate(page=page, per_page=20).items
-    return render_template('users.html', users=users)
+    users = User.query.filter(User.privilege_level<=current_user.privilege_level)\
+            .order_by(User.id).paginate(page=page, per_page=20).items
+    return render_template('users.html', users=users, ROOT_PRIVILEGE=ROOT_PRIVILEGE)
 
 
 @admin.route('/manage_user/<int:uid>', methods=['GET', 'POST'])

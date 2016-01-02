@@ -12,6 +12,7 @@ from ..models import Problem, Contest, Submission, User, Standing
 from .. import judge
 
 from judge.config import COMPILER_FILEEXT_LIST
+from ..tools import ROOT_PRIVILEGE
 
 
 @oj.route('/problems')
@@ -42,7 +43,7 @@ def list_status(page = 1):
 
 def check_enterable(contest):
     # admins are automatically accepted
-    if current_user.is_authenticated() and current_user.privilege_level > 0:
+    if current_user.is_authenticated and current_user.privilege_level > 0:
         flash('You are granted access to this contest because you are an admin.')
         return True
     # check session

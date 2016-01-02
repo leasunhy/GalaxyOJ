@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}Users - Galaxy OJ{% endblock %}
+{% set is_root = current_user.is_authenticated and current_user.privilege_level == ROOT_PRIVILEGE %}
 
 {% block page_content %}
     <div class="container">
@@ -26,7 +27,7 @@
                         <th>{{u.nickname or ""}}</th>
                         <th>{{u.real_name}}</th>
                         <th>{{u.email}}</th>
-                        {% set edit_url = url_for('admin.edit_user', uid = u.id) %}
+                        {% set edit_url = url_for('admin.manage_user', uid = u.id) if is_root else url_for('admin.edit_user', uid = u.id) %}
                         {% set delete_url = url_for('admin.delete_user', uid = u.id) %}
                         <th>
                             <a href="{{edit_url}}">Edit</a>
