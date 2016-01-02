@@ -110,6 +110,8 @@ def contest(id = 1):
 def problem(cid = 0, pid = 1):
     if cid == 0:
         problem = Problem.query.get_or_404(pid)
+        if not problem.visible:
+            abort(404)
     else:
         contest = Contest.query.get_or_404(cid)
         enterable, response = check_enterable(contest)
