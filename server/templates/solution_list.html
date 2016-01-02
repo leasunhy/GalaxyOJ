@@ -1,6 +1,7 @@
 {% extends 'post_list_base.html' %}
 
 {% set current_view = 'Solutions' %}
+{% set permit_new = current_user.is_authenticated %}
 {% set post_view = 'post.solution' %}
 {% set post_list_view = 'post.solutions' %}
 {% set post_new_view = 'post.new_solution' %}
