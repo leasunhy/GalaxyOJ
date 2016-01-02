@@ -2,7 +2,7 @@
 
 int	syscall_used[512];
 
-# ifdef _i386_
+# ifdef __i386__
 void init_syscall_table() {
 	memset(syscall_used, 0, sizeof(syscall_used));
 	syscall_used[  1] = 1;// exit
@@ -39,9 +39,9 @@ void init_syscall_table() {
 /* I think set_thread_area is not necessary to be allowed */
 
 }
-# endif
 
-# ifdef _x86_64_
+# else
+
 void init_syscall_table() {
 	syscall_used[ 60] = 1;	// sys_exit
 	syscall_used[  0] = 1;	// sys_read

@@ -1,5 +1,5 @@
 CC	= gcc
-CFLAGS	= -Wall -Wunused -g -O2 -D_x86_64_
+CFLAGS	= -Wall -Wunused -g -O2
 CFILES	= run.c execute.c
 COBJS	= run.o execute.o
 LIBS	= -lm
