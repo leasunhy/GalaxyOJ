@@ -3,30 +3,34 @@ from . import post
 from .. import db
 from ..models import Post, Notification, Solution, Tutorial
 from ..forms import EditNotificationForm, EditTutorialForm, EditSolutionForm
-from ..tools import privilege_required
+from ..tools import privilege_required, count_page
 
 from flask import render_template, url_for, request, redirect, flash, jsonify, session
 from flask.ext.login import current_user, login_required
+
 
 @post.route('/notifications')
 @post.route('/notifications/<int:page>')
 def notifications(page = 1):
     notifs = Notification.query.paginate(page=page, per_page=20).items
-    return render_template('notifications.html', posts=notifs)
+    return render_template('notifications.html', posts=notifs,
+                           page=page, page_count=count_page(Notification, 20))
 
 
 @post.route('/solutions')
 @post.route('/solutions/<int:page>')
 def solutions(page = 1):
     solutions = Solution.query.paginate(page=page, per_page=20).items
-    return render_template('solution_list.html', posts=solutions)
+    return render_template('solution_list.html', posts=solutions,
+                           page=page, page_count=count_page(Solution, 20))
 
 
 @post.route('/tutorials')
 @post.route('/tutorials/<int:page>')
 def tutorials(page = 1):
     tutorials = Tutorial.query.paginate(page=page, per_page=20).items
-    return render_template('tutorial_list.html', posts=tutorials)
+    return render_template('tutorial_list.html', posts=tutorials,
+                           page=page, page_count=count_page(Tutorial, 20))
 
 
 @post.route('/notification/<int:id>')
