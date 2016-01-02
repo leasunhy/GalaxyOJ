@@ -12,6 +12,7 @@ from ..models import Problem, Contest, Submission, User, Standing
 from .. import judge
 
 from judge.config import COMPILER_FILEEXT_LIST
+from ..tools import ROOT_PRIVILEGE
 
 
 @oj.route('/problems')
