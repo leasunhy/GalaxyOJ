@@ -41,7 +41,7 @@ def execute(program, input_file, output_file, time_limit, memory_limit, exec_pat
     #print("execute:")
     #print(["judge/run", "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit), "-d", exec_path])
     proc = subprocess.Popen(
-        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit), "-m", str(memory_limit // 1000), "-d", exec_path],
+        [JUDGE_BIN_PATH, "-c", program, "-i", input_file, "-o", output_file, "-t", str(time_limit // 1000), "-m", str(memory_limit), "-d", exec_path],
         stdout = subprocess.PIPE,
         stderr = subprocess.PIPE)
     (out, err) = proc.communicate()
@@ -84,6 +84,7 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
                                          tmp_folder.name)
         print(returncode, out, err)
         if out[0] != "OK":
+            print(out)
             return {"verdict": out[0], "time_usage": out[1],
                     "memory_usage": out[2], "log": None}
         (verdict, err) = check(file_out, std_out)
@@ -98,3 +99,4 @@ def judge_program(source_path, testcase_folder, compiler_id, time_limit, memory_
 def judge(sid, *args):
     verdict = judge_program(*args)
     return (sid,verdict)
+
