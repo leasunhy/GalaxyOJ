@@ -1,8 +1,9 @@
-from flask.ext.login import UserMixin
+from flask.ext.login import UserMixin, AnonymousUserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from .. import db
 from .. import login_manager
+
 
 class User(UserMixin, db.Model):
     """User model."""
@@ -36,6 +37,10 @@ class User(UserMixin, db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    @property
+    def is_admin(self):
+        return self.privilege_level > 0
+
     def __repr__(self):
         return '<User %s>' % self.login_name
 
@@ -44,6 +49,12 @@ class User(UserMixin, db.Model):
     owned_contests = db.relationship('Contest', backref='owner', lazy='dynamic')
     posts = db.relationship('Post', backref='owner', lazy='dynamic')
     comments = db.relationship('Comment', backref='owner', lazy='dynamic')
+
+
+class AnonymousUser(AnonymousUserMixin):
+    @property
+    def is_admin(self):
+        return False
 
 
 @login_manager.user_loader
