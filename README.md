@@ -42,7 +42,7 @@ REDISTOGO_URL
 Replace `$DATA_FOLDER` to the path you specified in your configuration:
 
 ```bash
-$ mkdir -p $DATA_FOLDER/{submissions, testcases, uploaded_images}
+$ mkdir -p $DATA_FOLDER/{submissions,testcases,uploaded_images}
 ```
 
 
