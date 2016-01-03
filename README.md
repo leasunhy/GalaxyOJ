@@ -33,6 +33,8 @@ DATABASE_URI
 SECRET_KEY
 # path to the data folder used by the server.
 DATA_FOLDER
+# the url to redis server
+REDISTOGO_URL
 ```
 
 
