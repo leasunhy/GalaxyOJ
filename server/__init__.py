@@ -20,6 +20,9 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 from .models.user import AnonymousUser
 login_manager.anonymous_user = AnonymousUser
+login_manager.login_view = 'auth.user_login'
+login_manager.login_message = 'You need to login to access this page.'
+login_manager.login_message_category = 'error'
 
 Bootstrap(app)
 
