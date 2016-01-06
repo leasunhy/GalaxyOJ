@@ -22,7 +22,7 @@ class LoginForm(Form):
             raise ValidationError('Username or password is invalid.')
 
 class SubmissionForm(Form):
-    compiler = SelectField('Compiler', coerce=int, choices=[(-1, 'Pleaes choose language'), *enumerate(COMPILER_NAME_LIST)])
+    compiler = SelectField('Compiler', coerce=int, choices=[(-1, 'Please choose language'), *enumerate(COMPILER_NAME_LIST)])
     code = TextAreaField('Code')
     submit = SubmitField('Submit')
     def validate_compiler(self, field):
