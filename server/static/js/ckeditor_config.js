@@ -36,10 +36,15 @@ CKEDITOR.editorConfig = function( config ) {
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 
+    // extra plugins
+    config.extraPlugins = 'uploadimage,codesnippet';
+
     // image upload
-    config.extraPlugins = 'uploadimage';
     config.image_previewText=' ';
     //config.imageUploadUrl = '/upload/upload_image';
     config.filebrowserImageUploadUrl = '/upload/upload_image';
+
+    // code snippet theme
+    config.codeSnippet_theme = 'monokai';
 };
 

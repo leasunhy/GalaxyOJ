@@ -2,6 +2,12 @@
     <script src="//cdn.ckeditor.com/4.5.6/standard-all/ckeditor.js"></script>
 {% endmacro %}
 
+{% macro ckeditor_highlight_tag() %}
+    <link rel="stylesheet" href="//cdn.ckeditor.com/4.5.6/standard-all/plugins/codesnippet/lib/highlight/styles/monokai.css" />
+    <script src="//cdn.ckeditor.com/4.5.6/standard-all/plugins/codesnippet/lib/highlight/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+{% endmacro %}
+
 {% macro ckeditor(name) %}
     <script type="text/javascript">
         $(function() {
