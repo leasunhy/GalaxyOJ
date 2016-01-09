@@ -98,11 +98,11 @@ def contest(id = 1):
     standing.sort(key = lambda u:(u[1],u[2]), reverse=True)
     accepted_problems = set()
     if current_user.is_authenticated:
-        q = db.session.query(Standing.problem_id)\
-                .filter(Standing.user_id == current_user.id)\
-                .filter(Standing.contest_id == contest.id)\
-                .filter(Standing.actime > 0)
-        accepted_problems = set(list(q))
+        ac_list = db.session.query(Standing.problem_id)\
+                    .filter(Standing.user_id == current_user.id)\
+                    .filter(Standing.contest_id == contest.id)\
+                    .filter(Standing.actime > 0).all()
+        accepted_problems = set(map(lambda p: p[0], ac_list))
     return render_template('show_contest.html', c=contest,
             standing=standing, acs = accepted_problems)
 
@@ -154,6 +154,7 @@ def save_to_database(job_id):
                         contest_id = s.contest_id,
                         problem_id = s.problem_id,
                         user_id = s.user_id,
+                        submissions = 0
                     )
             _delta = datetime.datetime.now() - contest.start_time
             rc.add_record(verdict['verdict'], _delta)
