@@ -44,9 +44,13 @@ def list_status(page = 1):
 
 
 def check_enterable(contest):
+    # first check whether there is an admission stored in the session
+    if contest.id in session.get('contests', []):
+        return True, None
     # admins are automatically accepted
     if current_user.is_authenticated and current_user.privilege_level > 0:
         flash('You are granted access to this contest because you are an admin.')
+        session.setdefault('contests', []).append(contest.id)
         return True, None
     # check start time
     if contest.start_time >= datetime.datetime.now():
@@ -57,6 +61,7 @@ def check_enterable(contest):
             (contest.id not in session.setdefault('contests', [])):
         flash('This contest is protected by a password.', 'warning')
         return False, redirect(url_for('oj.enter_contest', cid=contest.id))
+    session.setdefault('contests', []).append(contest.id)
     return True, None
 
 
