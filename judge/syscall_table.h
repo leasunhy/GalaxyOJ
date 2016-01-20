@@ -56,6 +56,7 @@ void init_syscall_table() {
 	syscall_used[ 16] = 1;	// sys_ioctl
 	syscall_used[ 19] = 1;	// sys_readv
 	syscall_used[ 20] = 1;	// sys_writev
+	syscall_used[ 21] = 1;	// sys_access
 	syscall_used[ 11] = 1;	// sys_munmap
 	syscall_used[ 63] = 1;	// sys_uname
 	syscall_used[ 89] = 1;	// sys_readlink
