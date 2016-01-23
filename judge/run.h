@@ -11,13 +11,11 @@ int time_limit;
 int memory_limit;
 int spj;
 
-const char* result[] = {
-    "OK",
-    "Runtime Error",
-    "Time Limit Exceeded",
-    "Memory Limit Exceeded",
-    "Output Limit Exceeded",
-    "Restrict Function"
-};
+const char* result[] = {"OK",
+                        "Runtime Error",
+                        "Time Limit Exceeded",
+                        "Memory Limit Exceeded",
+                        "Output Limit Exceeded",
+                        "Restrict Function"};
 
 #endif
