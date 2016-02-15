@@ -207,6 +207,8 @@ def submit_code(pid, cid=0):
             problem = contest.problems[pid-1]
         except IndexError:
             abort(404)
+    if not problem.visible and current_user.privilege_level <= 0:
+        abort(401)
     form = SubmissionForm()
     if form.validate_on_submit():
         submit = Submission()
